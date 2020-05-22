@@ -17,6 +17,33 @@
 
             </el-dialog>
 
+            <el-dialog style="" :append-to-body='true' title="添加联系人" :visible.sync="dialogFormVisible1">
+                <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.name"></el-input>
+                </el-form-item>
+
+                <el-form-item label="联系人电话" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.telephone"></el-input>
+                </el-form-item>
+
+                <el-form-item label="公司" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.company"></el-input>
+                </el-form-item>
+
+                <el-form-item label="地址" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.company_addr"></el-input>
+                </el-form-item>
+
+                <el-form-item label="邮政编码" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.post_code"></el-input>
+                </el-form-item>
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="addContactBtn1()">
+                    立即添加
+                </el-button>
+
+            </el-dialog>
+
             <el-form-item label="所属机构" class="select" >
                 <el-select v-model="form.subsidiary_organ" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
                     <!-- <el-option
@@ -230,10 +257,136 @@
             <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.delivery_note"></el-input>
             </el-form-item>
+
+            <el-form-item label="收取方式" class="select" >
+                <el-select v-model="express" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in express1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-button type="primary" style="float:left;margin-left:50px;" plain @click="addExpress()">
+                新增地址
+            </el-button>
+              
+              <el-table 
+                class="table-picture"
+                :data="ContractList"
+                border
+                max-height="150"
+                style="width:800px;margin-left:50px;float:left;">
+
+                <el-table-column
+                label="姓名"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.name}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="联系人电话"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.telephone}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="公司"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.company}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="地址"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.company_addr}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="邮政编码"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.post_code}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="操作"
+                align="center">
+                    <template slot-scope="scope">
+                        <el-button size="small" type="danger" @click="delContact(scope.$index)" >删除</el-button>
+                    </template>
+                </el-table-column>
+
+                </el-table>
+        </el-form>
+
+        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同选择</span></div>
+        <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
+
+                <el-table 
+                class="table-picture"
+                :data="contractList1"
+                border
+                max-height="150"
+                style="width:85%;margin-left:50px;float:left;">
+
+                <el-table-column
+                label="选择"
+                align="center">
+                    <template slot-scope="scope" >
+                    <el-radio v-model="checko" :label="scope.row.id">{{kong}}</el-radio>
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="合同编号"
+                align="center">
+                    <template slot-scope="scope" >
+                    {{scope.row.contract_no}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="甲方"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.first_party}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="乙方"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.second_party}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                label="合同内容"
+                align="center">
+                    <template slot-scope="scope">
+                    {{scope.row.content}}
+                    </template>
+                </el-table-column>
+
+                </el-table>
         </el-form>
 
         <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">立项备注</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
+
             <el-input
             type="textarea"
             :autosize="{ minRows: 5, maxRows: 10}"
@@ -258,6 +411,24 @@ export default {
     },
     data() {
         return {
+            contractList1:[],
+            checko : '',
+            add:{
+                name: '',
+                telephone: '',
+                company: '',
+                company_addr: '',
+                post_code: '',
+            },
+            ContractList:[],
+            tableShow :false,
+            express : '',
+            express1 : [
+                {
+                    label: "快递",
+                    value: "1",
+                }
+            ],
             linkman:[],
             options:map.options,
             quillOption: quillConfig,
@@ -318,6 +489,7 @@ export default {
         house_way :[],
         type :[],
         dialogFormVisible:false,
+        dialogFormVisible1:false,
         //*************分页变量*************
         currentPage : 1, //初始页
         // pagesize : 5,   //每页的数据
@@ -338,6 +510,9 @@ export default {
        this.getSelect()
     },
     methods: {
+        addExpress(){//新增地址
+            this.dialogFormVisible1 = true;
+        },
         delContact(row){//删除联系人
             // console.log(row)
             this.linkman.splice(row,1)
@@ -359,7 +534,32 @@ export default {
             this.telephone = '';
             this.dialogFormVisible = false;
         },
+        addContactBtn1(){
+            var s={};
+            s.name = this.add.name;
+            s.telephone = this.add.telephone;
+            s.company = this.add.company;
+            s.company_addr = this.add.company_addr;
+            s.post_code = this.add.post_code;
+            this.ContractList.push(s)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '添加联系人成功'//提示添加成功
+            });
+            this.add.name = '';
+            this.add.telephone = '';
+            this.add.company = '';
+            this.add.company_addr = '';
+            this.add.post_code = '';
+            this.dialogFormVisible1 = false;
+        },
         getSelect() {//初始渲染列表方法封装
+         request.post("/admin/contractManagement/query").then(res => {
+                    if (res.code == 200) {
+                        this.contractList1 = res.data.list;
+                    }
+                });
             request.post("/admin/project/get",{
                 id : this.$route.query.id
             }).then(res => {
@@ -369,6 +569,8 @@ export default {
                     this.form=res.data;
                     this.linkman = res.data.linkman;
                     console.log(res.data.reconnaissance)
+                    this.ContractList = res.data.express;
+                    this.checko = project_contract_id;
                     // this.ask_price_id = res.data.ask_price_id;
                     // this.city=res.data.param.city;//城市
                     // this.bank=res.data.param.bank;//询价银行
@@ -387,6 +589,8 @@ export default {
         addProjectInitiation(){
             console.log(this.form)
             request.post("/admin/project/update",{
+                express : this.ContractList,
+                project_contract_id:this.checko,
                 linkman : this.linkman,
                 id : this.$route.query.id,
                 ask_price_id : this.form.ask_price_id,
@@ -500,41 +704,7 @@ export default {
                         }
                     });
         },
-        addProjectCommodity(){
-            request.post("/admin/AskPrice/create", {//发送数据到后台
-                    plot_name : this.form.plot_name,
-                    unit_number : this.form.unit_number,
-                    construct_area : this.form.construct_area,
-                    ask_price : this.form.ask_price,
-                    ask_univalence : this.form.ask_univalence,
-                    ask_price_total : this.form.ask_price_total,
-
-                    city : this.form.city,
-                    district : this.form.district,
-                    plot_address : this.form.plot_address,
-                    floor : this.form.floor,
-                    activate_time : this.form.activate_time,
-                    house_way : this.form.house_way,
-                    special_element : this.form.special_element,
-                    ask_bank : this.form.ask_bank,
-                    remark : this.form.remark,
-                    total_floor : this.form.total_floor,
-                    plot_special : this.form.plot_special,
-                    total_prices : this.form.total_prices,
-                    bazaar_crew : this.form.bazaar_crew,
-                    factor : this.form.facto,
-                    }).then(res => {
-                        console.log(res)
-                            if(res.code == 200){
-                                this.$message({
-                                // type: res.errno === 0 ? "success" : "warning",
-                                type: "success",
-                                message: '添加成功'//提示添加成功
-                            });
-                            this.$router.push({path:'/addProjectInitiation',query:{row:res.data,id:res.data.id}})
-                        }
-                    });
-        },
+        
         imlist(){
             
         },

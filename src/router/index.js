@@ -174,7 +174,7 @@ export const constantRouterMap = [
                 title:'报告详情',
             },
             hidden: true
-        },{//修改询价
+        },{//修改报告
             path: '/updateprojectInitiation',
             component: () => import('@/views/inquiryManagement/updateprojectInitiation'),
             name:'updateprojectInitiation',
@@ -265,6 +265,14 @@ export const constantRouterMap = [
                     icon: 'product-list'
                 }
             },{
+                path: 'Refund',
+                name: 'Refund',
+                component: () => import('@/views/fieldManagement/Refund'),
+                meta: {
+                    title: '退费',
+                    icon: 'product-list'
+                }
+            },{
                 path: 'projectChange',
                 name: 'projectChange',
                 component: () => import('@/views/fieldManagement/projectChange'),
@@ -279,14 +287,6 @@ export const constantRouterMap = [
                 meta: {
                     title: '变更审核',
                     icon: 'order'
-                }
-            },{
-                path: 'jietu',
-                name: 'jietu',
-                component: () => import('@/views/fieldManagement/jietu'),
-                meta: {
-                    title: '截图',
-                    icon: 'product-brand'
                 }
             },{
                 path: '/AuditRecord',

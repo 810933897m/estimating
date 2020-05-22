@@ -15,9 +15,17 @@
       @cell-dblclick="getInfo"
       class="table-picture"
       :data="agentList"
+      max-height="600px"
       border
-      max-height="500"
       style="width: 100%;">
+
+      <el-table-column
+      label="id"
+      align="center">
+        <template slot-scope="scope" >
+          {{scope.row.id}}
+        </template>
+      </el-table-column>
 
       <el-table-column
       label="用户"
@@ -58,14 +66,14 @@
       
     </el-table>
     <!-- *************分页************* -->
-    <el-pagination
+    <!-- <el-pagination
     style="margin-top:20px;"
     @current-change="handleCurrentChange"
     :page-sizes="[20]" 
     :page-size="page"
     layout="total, sizes, prev, pager, next, jumper"
     :total="count">
-    </el-pagination>
+    </el-pagination> -->
     <!-- *************分页************* -->
 
     <!--*************修改模态框*************-->
@@ -101,17 +109,18 @@
         title="业-任务分配--分配权限"
         :visible.sync="dialogVisible1"
         width="50%" style="">
-            <el-form ref="updata" :model="form1" style="max-height:200px;" label-width="90px">
+            <el-form ref="updata" :model="form1" style="margin-bottom:30px;" label-width="90px">
               <!-- <div style="width:40%;float:left;"> -->
                 <el-table 
                 class="table-picture"
                 :data="roles"
                 border
-                max-height="200"
+                :show-header="false"
                 style="width: 100%;">
 
                   <el-table-column
-                  align="center">
+                  width="150px"
+                  align="left">
                     <template slot-scope="scope" >
                       <el-checkbox @change="allCheck(scope.row)" :checked="scope.row.used"  v-model="scope.row.used">{{scope.row.title}}</el-checkbox>
                     </template>

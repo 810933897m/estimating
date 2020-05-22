@@ -20,7 +20,7 @@
       class="table-picture"
       :data="agentList"
       border
-      max-height="450"
+       
       style="width: 100%;">
 
       <el-table-column

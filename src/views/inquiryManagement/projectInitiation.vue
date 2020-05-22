@@ -7,7 +7,7 @@
                     <el-input v-model="search" style="width:600px;" placeholder="流水号/报告号/项目地址/小区名称/看房联系人电话/估价委托方"></el-input>
                     <el-button type="info" style="margin-left:0px;" plain >高级</el-button>
                     <el-button type="primary" style="" plain @click="searchBtn()">搜索</el-button>
-                    <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button>
+                    <!-- <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button> -->
                 </el-form-item>
             </el-form>
 
@@ -15,8 +15,16 @@
       class="table-picture"
       :data="agentList"
       border
-      max-height="500"
+       
       style="width: 100%;">
+
+      <el-table-column
+      label="id"
+      align="center">
+        <template slot-scope="scope" >
+          {{scope.row.id}}
+        </template>
+      </el-table-column>
 
       <el-table-column
       label="流水号"

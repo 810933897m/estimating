@@ -15,7 +15,7 @@
         <el-form-item>
             <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
-            <el-button style="margin-left:0px;" plain @click="addCommodity">添加询价</el-button>
+            <el-button style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
         </el-form-item>
     </el-form>
 
@@ -23,9 +23,17 @@
       @cell-dblclick="getInfo"
       class="table-picture"
       :data="agentList"
+      max-height="500px"
       border
-      max-height="500"
       style="width: 100%;">
+
+      <el-table-column
+      label="id"
+      align="center">
+        <template slot-scope="scope" >
+          {{scope.row.id}}
+        </template>
+      </el-table-column>
 
       <el-table-column
       label="用户名"
@@ -137,7 +145,7 @@
                     <el-radio disabled v-model="form1.status" label="1">禁用</el-radio>
                 </el-form-item>
 
-                <el-table 
+                <!-- <el-table 
                 :data="roles"
                 max-height="300"
                 style="width: 100%;margin-left:0px;">
@@ -152,24 +160,10 @@
                     </el-checkbox>
                   </template>
                 </el-table-column>
-
-                <!-- <el-table-column
-              
-                align="left">
-                  <template slot-scope="scope" >
-                    
-                  </template>
-                </el-table-column> -->
-
-                <!-- <el-table-column
-                label="状态"
-                align="center">
-                  <template slot-scope="scope" >
-                    {{scope.row.used}}
-                  </template>
-                </el-table-column> -->
-
-                 </el-table>
+                 </el-table> -->
+                 <el-checkbox v-for="(item,index) in roles" :key="index" :checked="item.used" v-model="item.used">
+                      {{item.name}}
+                    </el-checkbox>
 
             </el-form>
         

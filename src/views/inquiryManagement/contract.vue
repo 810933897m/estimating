@@ -15,7 +15,7 @@
         <el-form-item>
             <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
-            <el-button style="margin-left:0px;" plain @click="addCommodity">添加询价</el-button>
+            <el-button style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
         </el-form-item>
     </el-form>
 
@@ -24,8 +24,16 @@
       class="table-picture"
       :data="agentList"
       border
-      max-height="500"
+       
       style="width: 100%;">
+
+      <el-table-column
+      label="id"
+      align="center">
+        <template slot-scope="scope" >
+          {{scope.row.id}}
+        </template>
+      </el-table-column>
 
       <el-table-column
       label="合同编号"

@@ -24,8 +24,16 @@
       class="table-picture"
       :data="agentList"
       border
-      max-height="500"
+       
       style="width: 100%;">
+
+      <el-table-column
+      label="id"
+      align="center">
+        <template slot-scope="scope" >
+          {{scope.row.id}}
+        </template>
+      </el-table-column>
 
       <el-table-column
       label="小区名称"

@@ -155,7 +155,7 @@
                     class="table-picture"
                     :data="allInquiry1"
                     border
-                    max-height="500"
+                     
                     style="width: 90%;margin-left:5%;">
                     
                     <el-table-column

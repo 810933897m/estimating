@@ -20,15 +20,15 @@
     </el-form>
 
     <el-table 
-      @cell-dblclick="getInfo"
       class="table-picture"
       :data="agentList"
       border
-       
+      max-height="550" 
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}

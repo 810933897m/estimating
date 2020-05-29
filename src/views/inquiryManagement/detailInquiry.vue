@@ -26,7 +26,7 @@
                 <el-input  placeholder="请输入建筑面积" disabled v-model="form.construct_area"></el-input>
             </el-form-item>
             
-            <span style="margin-top:10px;float:left;">m²</span>
+            <span style="margin-top:10px;float:left;"> </span>
 
             <el-form-item label="所在楼层" class="form-input" prop="title" style="width:270px;float:left;">
                 <el-input  placeholder="请输入所在楼层" disabled v-model="form.floor"></el-input>

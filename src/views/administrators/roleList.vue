@@ -11,8 +11,7 @@
       </el-dialog>
       <!-- **************查看报告任务弹出框************** -->
 
-    <el-table 
-      @cell-dblclick="getInfo"
+    <el-table
       class="table-picture"
       :data="agentList"
       max-height="600px"
@@ -20,7 +19,8 @@
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -127,7 +127,7 @@
                   </el-table-column>
 
                   <el-table-column
-                  align="center">
+                  align="left">
                     <template slot-scope="scope" >
                       <el-checkbox @change="oneCheck(scope.row)" v-for="(item1,index) in scope.row.children"  v-model="item1.used" :key="index" :checked="item1.used">{{item1.title}}</el-checkbox>
                     </template>
@@ -253,7 +253,7 @@ export default {
             
         });
     },serachBtn(){ // 搜索功能
-        request.post("/admin/admin/query",{
+        request.post("/admin/access/query",{
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
@@ -351,10 +351,6 @@ export default {
       addCommodity(){//添加询价
         this.$router.push({path:'/addUser'})
       },
-      getInfo(row, event, column){
-        console.log(row.id);
-        this.dialogFormVisible = true;
-      }
   }
 }
 </script>

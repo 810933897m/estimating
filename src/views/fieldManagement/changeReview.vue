@@ -2,9 +2,9 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="未盖章" name="first"></el-tab-pane>
-    <el-tab-pane label="盖章成功" name="success"></el-tab-pane>
-    <el-tab-pane label="盖章收回" name="last"></el-tab-pane>
+    <el-tab-pane label="未审核" name="first"></el-tab-pane>
+    <el-tab-pane label="审核成功" name="success"></el-tab-pane>
+    <el-tab-pane label="审核收回" name="last"></el-tab-pane>
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
@@ -17,11 +17,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -139,6 +141,7 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName == 'first'"
       width="200px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
@@ -288,7 +291,7 @@ export default {
         console.log(this.activeName)
         if(this.activeName == 'first'){
           request.post("/admin/changeAudit/query",{
-            seal_status : 1,
+            seal_status : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -299,8 +302,8 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 2,
+          request.post("/admin/changeAudit/query",{
+            seal_status : 1,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -313,7 +316,7 @@ export default {
         }
         else if(this.activeName == 'last'){
           request.post("/admin/ProjectSeal/query",{
-            seal_status : 3,
+            seal_status : 2,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -349,7 +352,7 @@ export default {
       },
       getAgentList() {//初始渲染列表方法封装某人
         request.post("/admin/changeAudit/query",{
-            seal_status : 1,
+            seal_status : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -376,7 +379,21 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/ProjectSeal/query",{
+          request.post("/admin/changeAudit/query",{
+          keyword : this.search,
+          seal_status : 0,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'success'){
+          request.post("/admin/changeAudit/query",{
           keyword : this.search,
           seal_status : 1,
           // page : this.currentPage,
@@ -389,24 +406,10 @@ export default {
                 this.size = res.data.page.size;
               }
           });
-        }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectSeal/query",{
+        }else if(this.activeName == 'last'){
+          request.post("/admin/changeAudit/query",{
           keyword : this.search,
           seal_status : 2,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'last'){
-          request.post("/admin/Auditing/inquire",{
-          keyword : this.search,
-          seal_status : 3,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -476,7 +479,18 @@ export default {
           console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/ProjectSeal/query",{
+            request.post("/admin/changeAudit/query",{
+              seal_status : 0,
+              page : currentPage,
+              keyword : this.search,
+          }).then(res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'two'){
+            request.post("/admin/changeAudit/query",{
               seal_status : 1,
               page : currentPage,
               keyword : this.search,
@@ -487,19 +501,8 @@ export default {
               }
           });
           }else if(this.activeName == 'two'){
-            request.post("/admin/ProjectSeal/query",{
+            request.post("/admin/changeAudit/query",{
               seal_status : 2,
-              page : currentPage,
-              keyword : this.search,
-          }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/ProjectSeal/query",{
-              seal_status : 3,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -523,6 +526,16 @@ export default {
         this.price_status = row.price_status;
         this.dialogFormVisible2 = true;
         console.log(this.ReportReviewerId,this.price_status)
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       submit(){
         request.post("/admin/Auditing/affirm",{

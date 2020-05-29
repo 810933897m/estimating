@@ -1,5 +1,8 @@
 <template>
   <div class="menu-wrapper">
+    <div>
+      1213
+    </div>
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
 
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
@@ -28,7 +31,10 @@
         </template>
       </el-submenu>
 
+      
+
     </template>
+    
 
 
     <!-- <el-menu
@@ -64,10 +70,11 @@
 </template>
 
 <script>
+import request from "@/utils/request";
 export default {
   data(){
     return{
-
+      arr:[],
       routers1:[
         {
           "name": "商家管理",
@@ -102,7 +109,7 @@ export default {
     },
     computed: {
         routeList() {
-            this.pathList = this.$store.state.user.pathList.map(
+            this.pathList = localStorage.getItem("pathList").map(
                 item => item.path
             );
             const list = JSON.parse(JSON.stringify(this.routes));
@@ -113,6 +120,9 @@ export default {
             return [...home, ...this.getRouter(list)];
         }
     },
+    created(){
+       this.getList()
+    },
   methods: {
     hasOneShowingChildren(children) {
       const showingChildren = children.filter(item => {
@@ -122,6 +132,16 @@ export default {
         return true
       }
       return false
+    },
+    getList(){
+      // request.post("/admin/access/menu").then(res => {
+      //       // console.log(res)
+      //       if (res.code == 200) {
+      //         // console.log(res1)
+      //         localStorage.setItem('user_id',res.data.user.id)
+              
+      //       }
+      //   });
     },
         getRouter(arr, path) {
             let data = [];

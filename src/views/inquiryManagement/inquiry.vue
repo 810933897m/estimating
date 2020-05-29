@@ -16,19 +16,20 @@
             <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
             <el-button style="margin-left:0px;" plain @click="addCommodity">添加询价</el-button>
+            <el-button style="margin-left:0px;" plain @click="publicAddCommodity">添加对公询价</el-button>
         </el-form-item>
     </el-form>
 
     <el-table 
-      @cell-dblclick="getInfo"
       class="table-picture"
       :data="agentList"
       border
-       
+      max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -45,6 +46,15 @@
       </el-table-column>
 
       <el-table-column
+      label="询价地址"
+      width="300px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.show_merge_addr}}
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column
       label="城市"
       width="100px"
       align="center">
@@ -69,7 +79,7 @@
         <template slot-scope="scope">
           {{scope.row.total_floor}}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="房屋用途"
@@ -98,14 +108,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="所在楼层"
       width="120px"
       align="center">
         <template slot-scope="scope">
           {{scope.row.floor}}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="市场人员"
@@ -125,14 +135,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="小区地址"
       width="120px"
       align="center">
         <template slot-scope="scope">
           {{scope.row.plot_address}}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="询值价格"
@@ -206,14 +216,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="楼栋号和单元号"
       width="180px"
       align="center">
         <template slot-scope="scope">
           {{scope.row.unit_number}}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="净值系数"
@@ -380,7 +390,7 @@ export default {
         });
       },
       updateAgent(row) {//修改按钮
-        this.$router.push({path:'/updataInquiry',query:{id:row.id}})
+        this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
       },
       handleChange (value) {
         this.center = value[2];
@@ -408,6 +418,9 @@ export default {
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})
+      },
+      publicAddCommodity(){//添加对公询价
+        this.$router.push({path:'/publicAddInquiry'})
       },
       getInfo(row, event, column){
         console.log(row.id);

@@ -2,8 +2,8 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="等待打印" name="first"></el-tab-pane>
-    <el-tab-pane label="已打印" name="success"></el-tab-pane>
+    <el-tab-pane label="等待发送" name="first"></el-tab-pane>
+    <el-tab-pane label="已发送" name="success"></el-tab-pane>
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
@@ -16,11 +16,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -156,6 +158,7 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName == 'first'"
       width="200px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button>
@@ -214,7 +217,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="快递单号" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="邮政编码" class="form-input" prop="title" style="width:300px;">
                 <el-input  placeholder="请输入" v-model="form.post_code"></el-input>
               </el-form-item>
 
@@ -249,7 +252,6 @@
               class="table-picture"
               :data="listAdd"
               border
-              @cell-click="getInfo"
                
               style="width: 100%;">
 
@@ -420,6 +422,16 @@ export default {
         });
         }
       },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
+      },
       recovery(row){//回收
         this.$confirm("您确定要回收？", "提示", {
                 confirmButtonText: "确定",
@@ -566,8 +578,8 @@ export default {
           console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/projectPrint/query",{
-              seal_status : 1,
+            request.post("/admin/projectMake/query",{
+              make_status : 1,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -577,8 +589,8 @@ export default {
               }
           });
           }else if(this.activeName == 'success'){
-            request.post("/admin/projectPrint/query",{
-              seal_status : 2,
+            request.post("/admin/projectMake/query",{
+              make_status : 2,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -589,9 +601,6 @@ export default {
           });
           }
       },
-      getInfo(row, event, column){
-        this.form = row;
-      }
   }
 }
 </script>

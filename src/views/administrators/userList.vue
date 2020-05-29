@@ -19,8 +19,7 @@
         </el-form-item>
     </el-form>
 
-    <el-table 
-      @cell-dblclick="getInfo"
+    <el-table
       class="table-picture"
       :data="agentList"
       max-height="500px"
@@ -28,7 +27,8 @@
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -363,10 +363,6 @@ export default {
       addCommodity(){//添加询价
         this.$router.push({path:'/addUser'})
       },
-      getInfo(row, event, column){
-        console.log(row.id);
-        this.dialogFormVisible = true;
-      }
   }
 }
 </script>

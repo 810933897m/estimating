@@ -2,7 +2,7 @@
     <div class="app-container">
 
         <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价更新</span></div>
-        <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
+        <el-form label-width="120px" style="width:90%;">
             <el-form-item label="城市" class="select">
                 <el-select ref="selectionCity" v-model="city1" filterable placeholder="请选择产品分类" style="width:150px;float:left;">
                     <el-option
@@ -152,70 +152,7 @@
             </el-input>
             </el-form-item>
 
-            
-
         </el-form>
-        <div style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">列表</span></div>
-        <el-button type="primary" style="float:left;margin-top:10px;margin-bottom:10px;" plain @click="addPublic()">
-                添加
-        </el-button>
-
-        <el-table 
-        class="table-picture"
-        :data="publicAgentList"
-        border
-        max-height="550" 
-        style="width: 100%;">
-
-        <el-table-column
-        label="对公楼栋单元号"
-        align="center">
-            <template slot-scope="scope" >
-                <el-input v-model="scope.row.public_unit_number"></el-input>
-            </template>
-        </el-table-column>
-
-        <el-table-column
-        label="对公建筑面积"
-        align="center">
-            <template slot-scope="scope" >
-               <el-input v-model="scope.row.public_construct_area"></el-input>
-            </template>
-        </el-table-column>
-
-        <el-table-column
-        label="对公楼层"
-        align="center">
-            <template slot-scope="scope" >
-                <el-input v-model="scope.row.public_floor"></el-input>
-            </template>
-        </el-table-column>
-
-        <el-table-column
-        label="对公询值单价"
-        align="center">
-            <template slot-scope="scope" >
-            <!-- {{scope.row.id}} -->
-                <el-input v-model="scope.row.public_ask_univalence"></el-input>
-            </template>
-        </el-table-column>
-
-        <el-table-column
-        label="对公询值总价"
-        align="center">
-            <template slot-scope="scope" >
-                <el-input v-model="scope.row.public_ask_price_total"></el-input>
-            </template>
-        </el-table-column>
-
-        <el-table-column
-            label="操作"
-            align="center">
-                <template slot-scope="scope">
-                    <el-button size="small" type="danger" @click="delContact(scope.$index)" >删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
         <div style="width:100%;float:left;">
             
             <!-- <table>
@@ -283,6 +220,67 @@
                 </tr>
             </table> -->
 
+            <div style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">列表</span></div>
+        <el-button type="primary" style="float:left;margin-top:10px;margin-bottom:10px;" plain @click="addPublic()">
+                添加
+        </el-button>
+
+        <el-table 
+        class="table-picture"
+        :data="publicAgentList"
+        border
+        max-height="550" 
+        style="width: 100%;">
+
+        <el-table-column
+        label="对公楼栋单元号"
+        align="center">
+            <template slot-scope="scope" >
+                <el-input v-model="scope.row.public_unit_number"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+        label="对公建筑面积"
+        align="center">
+            <template slot-scope="scope" >
+               <el-input v-model="scope.row.public_construct_area"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+        label="对公楼层"
+        align="center">
+            <template slot-scope="scope" >
+                <el-input v-model="scope.row.public_floor"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+        label="对公询值单价"
+        align="center">
+            <template slot-scope="scope" >
+            <!-- {{scope.row.id}} -->
+                <el-input v-model="scope.row.public_ask_univalence"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+        label="对公询值总价"
+        align="center">
+            <template slot-scope="scope" >
+                <el-input v-model="scope.row.public_ask_price_total"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+            label="操作"
+            align="center">
+                <template slot-scope="scope">
+                    <el-button size="small" type="danger" @click="delContact(scope.$index)" >删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
             
 
             <el-button type="primary" style="margin-left:60%;" plain @click="updataCommodity()">
@@ -311,8 +309,8 @@
                     style="width: 90%;margin-left:5%;">
                     
                     <el-table-column
-                     label="id"
-      width="50px"
+                    label="id"
+                    width="50px"
                     align="center">
                         <template slot-scope="scope">
                         {{scope.row.id}}
@@ -404,6 +402,35 @@
                     </el-pagination>
                     <!-- 分页 -->
         </div>
+
+        <el-dialog style="" :append-to-body='true' title="添加" :visible.sync="dialogFormVisible">
+            <el-form label-width="120px" style="width:90%;">
+                <el-form-item label="对公楼栋单元号" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="publicList.public_unit_number"></el-input>
+                </el-form-item>
+
+                <el-form-item label="对公建筑面积" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="publicList.public_construct_area"></el-input>
+                </el-form-item>
+
+                <el-form-item label="对公楼层" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="publicList.public_floor"></el-input>
+                </el-form-item>
+
+                <el-form-item label="对公询值单价" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="publicList.public_ask_univalence"></el-input>
+                </el-form-item>
+
+                <el-form-item label="对公询值总价" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="publicList.public_ask_price_total"></el-input>
+                </el-form-item>
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="addContactBtn()">
+                    立即添加
+                </el-button>
+             </el-form>
+
+            </el-dialog>
     </div>
 </template>
 
@@ -418,7 +445,15 @@ export default {
     },
     data() {
         return {
-            publicAgentList:[],
+            publicList:{
+                public_unit_number : '',
+                public_construct_area : '',
+                public_floor : '',
+                public_ask_univalence : '',
+                public_ask_price_total : '',
+            },
+            publicAgentList:[
+            ],
             textarea: '',
             showDiv : false,
             showBtn : false,
@@ -487,7 +522,7 @@ export default {
         priceOneChange :'',
         ask_price1 : '',
         dialogVisible: false,
-
+        dialogFormVisible :false,
         //*************分页变量*************
         // currentPage : 1, //初始页
         // pagesize : 5,   //每页的数据
@@ -506,6 +541,25 @@ export default {
        this.getSelect()
     },
     methods: {
+        delContact(row){//删除
+            // console.log(row)
+            this.publicAgentList.splice(row,1)
+        },
+        addContactBtn(){
+            this.publicAgentList.push(this.publicList)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '添加成功'//添加成功
+            });
+            this.dialogFormVisible = false;
+            this.publicList = {
+                id:'',
+            }
+        },
+        addPublic(){
+            this.dialogFormVisible = true;
+        },
         showInput(){
             this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 询值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.$refs.selectAskPrice.selectedLabel
         },
@@ -543,6 +597,7 @@ export default {
                     this.showBtn = true;
                     // console.log(this.showBtn)
                 }
+                // this.publicAgentList = child;
                 this.form = res.data;
                 this.form.ask_price = res.data.ask_price;
                 this.priceOne = res.data.ask_univalence;
@@ -553,6 +608,7 @@ export default {
                 this.ask_bank = res.data.ask_bank;
                 this.bazaar_crew1 = res.data.bazaar_crew;
                 this.factor_value1 = res.data.factor;
+                this.publicAgentList = res.data.child;
             }
         });
             request.post("/admin/askPrice/param").then(res => {//获取选择器数据
@@ -581,6 +637,7 @@ export default {
             this.dialogVisible = false;
             console.log(this.form.ask_price)
             request.post("/admin/AskPrice/update", {//发送数据到后台
+                    child:this.publicAgentList,
                     id:this.$route.query.id,
                     plot_name : this.form.plot_name,
                     unit_number : this.form.unit_number,
@@ -618,6 +675,7 @@ export default {
             this.dialogVisible = true;
         }else{
             request.post("/admin/AskPrice/update", {//发送数据到后台
+                    child:this.publicAgentList,
                     id:this.$route.query.id,
                     plot_name : this.form.plot_name,
                     unit_number : this.form.unit_number,

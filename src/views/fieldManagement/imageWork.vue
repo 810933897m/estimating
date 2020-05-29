@@ -1,13 +1,15 @@
 <template>
     <div class="app-container" style="">
-        <el-button type="info" style="float:right;" @click="loadBtn()">
-                    下载材料
-                </el-button>
+        
         <el-tabs v-model="activeName" type="card" style="position:relative;">
             <el-tab-pane label="图片信息" name="img">
-                <div style="width:100%;float:left;">
+                
+            <el-button type="info" style="float:left;" @click="loadBtn()">
+                    下载材料
+            </el-button>
+                <div style="width:100%;float:left;margin-top:10px;">
                 <el-button v-for="(item,index) in list" :key="index" @click="first(index)">
-                    {{item.title}}
+                    {{item.title}}({{item.count}})
                 </el-button>
 
                 
@@ -15,6 +17,7 @@
                     {{item.title}}
                 </div> -->
             </div>
+            
             
             <div style="width:100%;float:left;margin-top:30px;">
                 <el-button v-for="(item1,index1) in list1" :key="index1+'B'" @click="last(index1)">
@@ -43,17 +46,17 @@
                 </vue-preview> -->
                 <!-- </div> -->
                 <div style="width:100%;float:left;margin-top:10px;">
-                    <div v-for="(item,index) in slide1" :key="index" class="preview">
-                        <img @click="preview" :src="item.msrc" alt="">
-                        <el-button type="danger" circle icon="el-icon-delete" @click="del(item.guid)">
-                           
-                        </el-button>
-                        <!-- 查看报告任务弹出框 -->
+                    <div v-for="(item,index) in slide1" :key="index" style="width:230px;float:left;margin-top:10px;">
+                        <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
+                        <el-button type="danger" circle icon="el-icon-delete" @click="del(item.guid)"></el-button>
+                        
+                    </div>
+
+                    <!-- 查看报告任务弹出框 -->
                         <el-dialog style="" :append-to-body='true' title="查看大图" :visible.sync="dialogFormVisible">
-                            <img class="preview1" :src="item.src" alt="">
+                            <img class="preview1" :src="suolueImg" alt="">
                         </el-dialog>
                         <!-- **************查看报告任务弹出框************** -->
-                    </div>
                 </div>
 
             </el-tab-pane>
@@ -61,9 +64,13 @@
                     
                         
                     <el-tab-pane label="地图信息" name="map">
-                        <el-form ref="form" label-width="120px" style="">
+                        <el-button type="info" style="float:left;" @click="loadBtn()">
+                                下载材料
+                        </el-button>
+
+                        <el-form ref="form" label-width="120px" style="margin-top:10px;">
                             
-                            <el-form-item label="具体位置" class="form-input" prop="title" style="width:500px;float:left;">
+                            <el-form-item label="具体位置" class="form-input" prop="title" style="width:60%;float:left;">
                                 <el-input  placeholder="请输入" v-model="position"></el-input>
                             </el-form-item>
 
@@ -79,26 +86,28 @@
                                 地图
                             </el-button> -->
 
-                            <el-tabs v-model="activeName1">
+                            <el-tabs v-model="activeName1" @tab-click="handleClick" style="float:left;width:1000px;height:600px;">
                                 <el-tab-pane label="全景图" name="first">
                                     
 
-                                    <img v-show="!baiduShow" style="width;1000px;height:600px;margin-left:20px;" :src="bigImg" alt="">
+                                    <img v-show="!baiduShow1" style="width;1000px;height:600px;" :src="bigImg" alt="">
                                 </el-tab-pane>
 
                                 <el-tab-pane label="小区" name="second">
-                                    <img v-show="!baiduShow" style="width;1000px;height:600px;margin-left:20px;" :src="smallImg" alt="">
+                                    <img v-show="!baiduShow1" style="width:1000px;height:600px;" :src="smallImg" alt="">
                                 </el-tab-pane>
                                 <!-- 百度地图插件 -->
+                                <div style="float:left;width:1000px;height:600px;margin-top:;">
                                     <baidu-map 
-                                    v-show="baiduShow"
+                                    v-show="baiduShow1"
                                     id="allmap"
                                     :center="center"
                                     :zoom="zoom" 
                                     @ready="handler" 
-                                    style="margin-left:20px;width:800px;height:500px;"
+                                    style="float:left;width:1000px;height:600px;"
                                     @click="getClickInfo" 
                                     :scroll-wheel-zoom='true'></baidu-map>
+                                </div>
                             </el-tabs>
                             
                             
@@ -156,16 +165,19 @@ export default {
     },
     data() {
         return {
+            showImg : false,
+            suolueImg : '',
             activeName1:'first',
             bigImg : '',
             smallImg:'',
-            baiduShow : false,
+            baiduShow1 : false,
             position : '',
             activeName:'img',
             show1 : true,
             show : false,
             longitude:"",
             latitude:"",
+            index_img:'',
             center: '中国',
       //  {lng: 109.45744048529967, lat: 36.49771311230842}
             zoom: 13,
@@ -211,6 +223,9 @@ export default {
        this.getlist()
     },
     methods: {
+        handleClick(tab, event){
+            this.baiduShow1 = false;
+        },
         baiduShowBtn(){//百度地图显示
             
         },
@@ -230,14 +245,17 @@ export default {
                 message: '图片保存成功'//图片保存成功
             });
         },
-        preview(){
+        preview(row){
+            this.suolueImg = row;
             this.dialogFormVisible = true;
         },
         positionBtn(){
             this.center = this.position;
-            // if(this.baiduShow == false){
-                this.baiduShow = true;
-            // }else{
+            if(this.baiduShow1 == false){
+                this.baiduShow1 = true;
+                console.log(this.baiduShow1)
+            }
+            //else{
             //     this.baiduShow = false;
             // }
         },
@@ -284,10 +302,12 @@ export default {
             // }
         },
         last(inx){
+            this.index_img = inx;
+            this.showImg = true;
             this.slide1 = [];
             this.imgs = [];
             console.log(inx)
-            this.list1[inx].files.forEach(element => {
+            this.list1[this.index_img].files.forEach(element => {
                 var ss={};
                 ss.src = element.src;
                 ss.msrc = element.thumb;
@@ -312,13 +332,17 @@ export default {
                 request.post("/admin/appraisal/delete", {
                         guid:row
                 }).then(res => {
-                    this.getlist()
                     // res.errno === 0 && this.getList();
                     this.$message({
                         // type: res.errno === 0 ? "success" : "warning",
                         type: "success",
                         message: '删除成功！'
                     });
+                    if(this.showImg == false){
+                        this.getlist();
+                    }else{
+                        this.last();
+                    }
                     
                 }).catch(res => {
                     this.$message({
@@ -329,6 +353,8 @@ export default {
             });
         },
         getlist(){
+            this.list11 = [];
+            this.slide1 = [];
             request.post("/admin/appraisal/info",{
                 id : this.$route.query.id
             }).then(res => {

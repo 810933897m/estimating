@@ -17,12 +17,14 @@
     <el-table 
       class="table-picture"
       :data="agentList"
+      @cell-dblclick="getInfo"
       border
-       
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -88,7 +90,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          {{scope.row.status}}
         </template>
       </el-table-column>
 
@@ -157,6 +159,7 @@
 
       <el-table-column
       label="操作"
+      v-if="distribution == '1'||distribution == '2' ||distribution == '3'"
       fixed="right"
       width="200px" align="center">
         <template slot-scope="scope">
@@ -473,6 +476,16 @@ export default {
         console.log(this.ROW.id);
         console.log(this.outworkid);
         
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       updateAgent(row) {//修改按钮
         console.log(row);

@@ -247,9 +247,6 @@
         
         <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">收件信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
-            <el-form-item label="收取方式" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input disabled v-model="form.courier_method"></el-input>
-            </el-form-item>
 
             <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input disabled v-model="form.delivery_note"></el-input>

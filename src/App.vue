@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
+    <!-- <router-view/> -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
     <!-- <lg-preview></lg-preview> -->
   </div>
 </template>
@@ -50,6 +54,11 @@ import request from "./utils/request";
 </script>
 
 <style>
+.el-form-item__content {
+    line-height: 40px;
+    position: static;
+    font-size: 14px;
+}
 .preview figure {
   float: left;
   width: 22%;

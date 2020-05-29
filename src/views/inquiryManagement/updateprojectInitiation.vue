@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价信息</span></div>
+        <div style="margin-top:15px;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
             <el-dialog style="" :append-to-body='true' title="添加联系人" :visible.sync="dialogFormVisible">
                 <el-form-item label="看房联系人" class="form-input" prop="title" style="width:90%;">
@@ -45,24 +45,24 @@
             </el-dialog>
 
             <el-form-item label="所属机构" class="select" >
-                <el-select v-model="form.subsidiary_organ" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
-                    <!-- <el-option
-                    v-for="item in city"
+                <el-select @change="subsidiary" v-model="form.subsidiary_organ" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in subsidiary_organ1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
-                    </el-option> -->
+                    </el-option>
                 </el-select>
               </el-form-item>
 
             <el-form-item label="分支机构" class="select" >
                 <el-select v-model="form.affiliated_agency" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
-                    <!-- <el-option
-                    v-for="item in city"
+                    <el-option
+                    v-for="item in affiliated_agency1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
-                    </el-option> -->
+                    </el-option>
                 </el-select>
               </el-form-item>
 
@@ -75,45 +75,63 @@
             </el-form-item>
         </el-form>
         
-        <div style="margin-top:10px;margin-bottom:20px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">项目信息</span></div>
+        <div style="margin-top:15px;margin-top:10px;margin-bottom:20px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">项目信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
+            <el-form-item label="报告号" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input v-model="form.report_number"></el-input>
+            </el-form-item>
+            
             <el-form-item label="所属部门" class="select" >
                 <el-select v-model="form.subsidiary_department" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
-                    <!-- <el-option
-                    v-for="item in city"
+                    <el-option
+                    v-for="item in subsidiary_department1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
-                    </el-option> -->
+                    </el-option>
                 </el-select>
               </el-form-item>
 
-            <el-form-item label="发送份数" class="select" >
-                <el-select v-model="form.send_num" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
-                    <!-- <el-option
-                    v-for="item in city"
+              <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input v-model="form.send_num"></el-input>
+            </el-form-item>
+
+            <el-form-item label="项目分类" class="select" >
+                <el-select v-model="form.project_classify" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in project_classify1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
-                    </el-option> -->
+                    </el-option>
                 </el-select>
               </el-form-item>
 
-            <el-form-item label="项目分类" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.project_classify"></el-input>
-            </el-form-item>
-
-            <el-form-item label="估价目的" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.inquiry_purpose"></el-input>
-            </el-form-item>
+            <el-form-item label="估价目的" class="select" >
+                <el-select v-model="form.inquiry_purpose" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in inquiry_purpose1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+              </el-form-item>
 
             <el-form-item label="物业名称" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.property_type"></el-input>
             </el-form-item>
 
-            <el-form-item label="报告类型" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.report_tale"></el-input>
-            </el-form-item>
+            <el-form-item label="报告类型" class="select" >
+                <el-select v-model="form.report_tale" filterable placeholder="请选择" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in report_tale1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+              </el-form-item>
 
             <el-form-item label="城市" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.city"></el-input>
@@ -166,13 +184,22 @@
             <el-form-item label="估价委托方电话" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.valuation_client_phone"></el-input>
             </el-form-item>
+
+            
         </el-form>
 
-        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">收费信息</span></div>
+        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">收费信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
-            <el-form-item label="市场负责人" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.market_leader"></el-input>
-            </el-form-item>
+            <el-form-item label="市场负责人" class="select" >
+                <el-select v-model="form.market_leader" filterable placeholder="请选择" style="width:180px;float:left;">
+                    <el-option
+                    v-for="item in market_leader1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+              </el-form-item>
 
             <el-form-item label="是否要发票" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.invoice"></el-input>
@@ -195,7 +222,7 @@
             </el-form-item>
         </el-form>
 
-        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">勘察事项</span></div>
+        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">勘察事项</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
             <!-- <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.reconnaissance"></el-input>
@@ -212,12 +239,16 @@
                 <el-input v-model="form.materials_offer_way"></el-input>
             </el-form-item>
 
+            <el-button type="primary" style="float:left;margin-left:50px;" plain @click="addContact()">
+                添加联系人
+            </el-button>
+
             <el-table 
             class="table-picture"
             :data="linkman"
             border
             max-height="200"
-            style="width:800px;margin-left:50px;float:left;">
+            style="margin-top:15px;width:80%;margin-left:50px;float:left;">
 
             <el-table-column
             label="看房联系人"
@@ -243,16 +274,11 @@
                 </template>
             </el-table-column>
             </el-table>
-            <el-button type="primary" style="float:left;margin-top:30px;margin-left:50px;" plain @click="addContact()">
-                添加联系人
-            </el-button>
+            
         </el-form>
         
-        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">收件信息</span></div>
+        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">收件信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
-            <el-form-item label="收取方式" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.courier_method"></el-input>
-            </el-form-item>
 
             <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.delivery_note"></el-input>
@@ -278,7 +304,7 @@
                 :data="ContractList"
                 border
                 max-height="150"
-                style="width:800px;margin-left:50px;float:left;">
+                style="margin-top:15px;width:80%;margin-left:50px;float:left;">
 
                 <el-table-column
                 label="姓名"
@@ -331,7 +357,7 @@
                 </el-table>
         </el-form>
 
-        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同选择</span></div>
+        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同选择</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
                 <el-table 
@@ -384,7 +410,7 @@
                 </el-table>
         </el-form>
 
-        <div style="float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">立项备注</span></div>
+        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">立项备注</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-input
@@ -392,7 +418,7 @@
             :autosize="{ minRows: 5, maxRows: 10}"
             v-model="form.project_approval_remark">
             </el-input>
-            <el-button type="primary" style="margin-left:60%;" plain @click="addProjectInitiation()">
+            <el-button type="primary" style="margin-top:15px;margin-left:60%;" plain @click="addProjectInitiation()">
                 修改立项
             </el-button>
         </el-form>
@@ -411,6 +437,9 @@ export default {
     },
     data() {
         return {
+            subsidiary_organ1:[],
+            affiliated_agency1:[],
+            subsidiary_department1:[],
             contractList1:[],
             checko : '',
             add:{
@@ -436,7 +465,10 @@ export default {
             paramFile : '',
             name : '',
             telephone : '',
-                
+            report_tale1:[],
+            inquiry_purpose1:[],
+            project_classify1:[],
+            market_leader1:[],
             form : {
                 subsidiary_organ : '',
                 affiliated_agency : '',
@@ -466,6 +498,7 @@ export default {
                 contract : '',
                 settlement_method : '',
                 money_due : '',
+                report_number:'',
                 fee_note : '',
                 reconnaissance : '0',
                 costs_reserved : '',
@@ -510,6 +543,14 @@ export default {
        this.getSelect()
     },
     methods: {
+        subsidiary(){
+            console.log(this.form.subsidiary_organ)
+            this.subsidiary_organ1.forEach(element => {
+                if(element.value == this.form.subsidiary_organ){
+                    this.affiliated_agency1 = element.children;
+                }
+            });
+        },
         addExpress(){//新增地址
             this.dialogFormVisible1 = true;
         },
@@ -560,6 +601,16 @@ export default {
                         this.contractList1 = res.data.list;
                     }
                 });
+                request.post("/admin/project/param").then(res => {
+                    if (res.code == 200) {
+                        this.subsidiary_organ1 = res.data.param.subsidiary_organ;
+                        this.subsidiary_department1 = res.data.param.subsidiary_department;
+                        this.report_tale1 = res.data.param.report_tale;
+                        this.market_leader1 = res.data.market_leader;
+                        this.project_classify1 = res.data.param.project_classify;
+                        this.inquiry_purpose1 = res.data.param.inquiry_purpose;
+                    }
+                });
             request.post("/admin/project/get",{
                 id : this.$route.query.id
             }).then(res => {
@@ -589,6 +640,7 @@ export default {
         addProjectInitiation(){
             console.log(this.form)
             request.post("/admin/project/update",{
+                report_number:this.form.report_number,
                 express : this.ContractList,
                 project_contract_id:this.checko,
                 linkman : this.linkman,
@@ -623,7 +675,7 @@ export default {
                 settlement_method : this.form.settlement_method,
                 money_due : this.form.money_due,
                 fee_note : this.form.fee_note,
-                reconnaissance : this.form.reconnaissance,
+                reconnaissance : Number(this.form.reconnaissance),
                 costs_reserved : this.form.costs_reserved,
                 materials_offer_way : this.form.materials_offer_way,
                 courier_method : this.form.courier_method,

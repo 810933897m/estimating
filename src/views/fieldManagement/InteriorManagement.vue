@@ -40,11 +40,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -404,6 +406,16 @@ export default {
         console.log(this.ROW.id);
         console.log(this.outworkid);
         
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       updateAgent(row) {//修改按钮
         console.log(row);

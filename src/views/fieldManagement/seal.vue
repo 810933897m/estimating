@@ -17,11 +17,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -139,6 +141,7 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName == 'first'"
       width="200px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >盖章</el-button>
@@ -347,6 +350,16 @@ export default {
                 });
             });
       },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
+      },
       getAgentList() {//初始渲染列表方法封装某人
         request.post("/admin/ProjectSeal/query",{
             seal_status : 1,
@@ -404,7 +417,7 @@ export default {
               }
           });
         }else if(this.activeName == 'last'){
-          request.post("/admin/Auditing/inquire",{
+          request.post("/admin/ProjectSeal/query",{
           keyword : this.search,
           seal_status : 3,
           // page : this.currentPage,
@@ -486,7 +499,7 @@ export default {
                 this.agentList = res.data.list;
               }
           });
-          }else if(this.activeName == 'two'){
+          }else if(this.activeName == 'success'){
             request.post("/admin/ProjectSeal/query",{
               seal_status : 2,
               page : currentPage,
@@ -497,7 +510,7 @@ export default {
                 this.agentList = res.data.list;
               }
           });
-          }else if(this.activeName == 'two'){
+          }else if(this.activeName == 'last'){
             request.post("/admin/ProjectSeal/query",{
               seal_status : 3,
               page : currentPage,

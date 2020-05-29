@@ -2,11 +2,11 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="未分配" name="first">
+    <el-tab-pane label="未审核" name="first">
       
     </el-tab-pane>
 
-    <el-tab-pane label="已分配" name="two">
+    <el-tab-pane label="已审核" name="two">
     </el-tab-pane>
 
     <el-form ref="form" >
@@ -40,11 +40,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -165,9 +167,10 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName == 'first'"
       width="150px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >任务分配</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >审核</el-button>
           <!-- <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="AssignTasks(scope.row)">重新分配</el-button> -->
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
 
@@ -421,6 +424,16 @@ export default {
       updateAgent(row) {//修改按钮
         console.log(row);
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       confirmDetail(row) {//点击查看询价详情
          this.shopId = row.id;

@@ -108,7 +108,8 @@ export const constantRouterMap = [
             component: () => import('@/views/inquiryManagement/projectInitiation'),
             meta: {
                 title: '报告立项',
-                icon: 'product-brand'
+                icon: 'product-brand',
+                // keepAlive: true
             }
         },{//合同管理
             path: 'contract',
@@ -124,6 +125,14 @@ export const constantRouterMap = [
             name:'addInquiry',
             meta:{
                 title:'添加询价',
+            },
+            hidden: true
+        },{//添加询价
+            path: '/publicAddInquiry',
+            component: () => import('@/views/inquiryManagement/publicAddInquiry'),
+            name:'publicAddInquiry',
+            meta:{
+                title:'添加对公询价',
             },
             hidden: true
         },{//添加合同
@@ -146,6 +155,14 @@ export const constantRouterMap = [
             path: '/updataInquiry',
             component: () => import('@/views/inquiryManagement/updataInquiry'),
             name:'updataInquiry',
+            meta:{
+                title:'修改询价',
+            },
+            hidden: true
+        },{//修改询价
+            path: '/updataInquiry1',
+            component: () => import('@/views/inquiryManagement/updataInquiry1'),
+            name:'updataInquiry1',
             meta:{
                 title:'修改询价',
             },
@@ -182,6 +199,14 @@ export const constantRouterMap = [
                 title:'修改报告立项',
             },
             hidden: true
+        },{//报告详情
+            path: '/comprehensiveList',
+            component: () => import('@/views/inquiryManagement/comprehensiveList'),
+            name:'comprehensiveList',
+            meta:{
+                title:'综合数据',
+            },
+            hidden: true
         },
     ],
     },{//我的项目
@@ -198,7 +223,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/fieldManagement'),
                 meta: {
                     title: '外业管理',
-                    icon: 'sms-subject'
+                    icon: 'sms-subject',
+                    // keepAlive: true
                 }
             },{
                 path: 'InteriorManagement',
@@ -206,7 +232,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/InteriorManagement'),
                 meta: {
                     title: '内业分配',
-                    icon: 'example'
+                    icon: 'example',
+                    // keepAlive: true
                 }
             },{
                 path: 'AppraisalOperation',
@@ -214,7 +241,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/AppraisalOperation'),
                 meta: {
                     title: '估价作业',
-                    icon: 'marker'
+                    icon: 'marker',
+                    // keepAlive: true
                 }
             },{
                 path: 'ProjectReview',
@@ -222,7 +250,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/ProjectReview'),
                 meta: {
                     title: '项目审核',
-                    icon: 'product-brand'
+                    icon: 'product-brand',
+                    // keepAlive: true
                 }
             },{
                 path: 'seal',
@@ -230,7 +259,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/seal'),
                 meta: {
                     title: '合同盖章',
-                    icon: 'sms-new'
+                    icon: 'sms-new',
+                    // keepAlive: true
                 }
             },{
                 path: 'printing',
@@ -238,7 +268,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/printing'),
                 meta: {
                     title: '报告打印',
-                    icon: 'sms'
+                    icon: 'sms',
+                    // keepAlive: true
                 }
             },{
                 path: 'binding',
@@ -246,7 +277,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/binding'),
                 meta: {
                     title: '报告装订',
-                    icon: 'product-comment'
+                    icon: 'product-comment',
+                    // keepAlive: true
                 }
             },{
                 path: 'SendReport',
@@ -254,7 +286,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/SendReport'),
                 meta: {
                     title: '报告发送',
-                    icon: 'product-comment'
+                    icon: 'product-comment',
+                    // keepAlive: true
                 }
             },{
                 path: 'application',
@@ -262,7 +295,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/application'),
                 meta: {
                     title: '项目终申',
-                    icon: 'product-list'
+                    icon: 'product-list',
+                    // keepAlive: true
                 }
             },{
                 path: 'Refund',
@@ -270,15 +304,26 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/Refund'),
                 meta: {
                     title: '退费',
-                    icon: 'product-list'
+                    icon: 'product-list',
+                    // keepAlive: true
                 }
+            },{
+                path: '/addRefund',
+                name: 'addRefund',
+                component: () => import('@/views/fieldManagement/addRefund'),
+                meta: {
+                    title: '退费添加',
+                    icon: 'marker'
+                },
+                hidden: true
             },{
                 path: 'projectChange',
                 name: 'projectChange',
                 component: () => import('@/views/fieldManagement/projectChange'),
                 meta: {
                     title: '项目变更',
-                    icon: 'order'
+                    icon: 'order',
+                    // keepAlive: true
                 }
             },{
                 path: 'changeReview',
@@ -286,7 +331,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/fieldManagement/changeReview'),
                 meta: {
                     title: '变更审核',
-                    icon: 'order'
+                    icon: 'order',
+                    // keepAlive: true
                 }
             },{
                 path: '/AuditRecord',
@@ -306,6 +352,15 @@ export const constantRouterMap = [
                     icon: 'marker'
                 },
                 hidden: true
+            },{
+                path: '/uploadDetail',
+                name: 'uploadDetail',
+                component: () => import('@/views/fieldManagement/uploadDetail'),
+                meta: {
+                    title: '上传详情',
+                    icon: 'marker'
+                },
+                hidden: true
             }],
     },{//审核管理
         path: '/AuditManagement',
@@ -322,15 +377,17 @@ export const constantRouterMap = [
                 component: () => import('@/views/AuditManagement/InquiryApproval'),
                 meta: {
                     title: '询值单价审核',
-                    icon: 'sms-subject'
+                    icon: 'sms-subject',
+                    // keepAlive: true
                 }
             },{
                 path: 'SecondProject',
                 name: 'SecondProject',
                 component: () => import('@/views/AuditManagement/SecondProject'),
                 meta: {
-                    title: '项目二审审核',
-                    icon: 'example'
+                    title: '估价作业审核',
+                    icon: 'example',
+                    // keepAlive: true
                 }
             },{
                 path: 'FinancialCollection',
@@ -338,7 +395,17 @@ export const constantRouterMap = [
                 component: () => import('@/views/AuditManagement/FinancialCollection'),
                 meta: {
                     title: '财务收款审核',
-                    icon: 'order'
+                    icon: 'order',
+                    // keepAlive: true
+                }
+            },{
+                path: 'RefundReview',
+                name: 'RefundReview',
+                component: () => import('@/views/AuditManagement/RefundReview'),
+                meta: {
+                    title: '退费退单审核',
+                    icon: 'order',
+                    // keepAlive: true
                 }
             },{
                 path: '/FinancialCollectionDetail',
@@ -352,201 +419,6 @@ export const constantRouterMap = [
             },
         ],
     },
-    // {//激励与认证
-    //     path: '/incentiveplan',
-    //     component: Layout,
-    //     name: 'incentiveplan',
-    //     meta: {
-    //         title: '激励与认证',
-    //         icon: 'example'
-    //     },
-    //     children: [{
-    //         path: 'IncentivePlanList',
-    //         name: 'IncentivePlanList',
-    //         component: () => import('@/views/incentiveplan/IncentivePlanList'),
-    //         meta: {
-    //             title: '激励列表',
-    //             icon: 'order'
-    //         }
-    //     },{
-    //         path: 'addIncentivePlan',
-    //         name: 'addIncentivePlan',
-    //         component: () => import('@/views/incentiveplan/addIncentivePlan'),
-    //         meta: {
-    //             title: '添加激励计划',
-    //             icon: 'product-add'
-    //         }
-    //     },{
-    //         path: 'LevelCertificationList',
-    //         name: 'LevelCertificationList',
-    //         component: () => import('@/views/incentiveplan/LevelCertificationList'),
-    //         meta: {
-    //             title: '级别列表',
-    //             icon: 'order'
-    //         }
-    //     },{
-    //         path: 'addLevelCertification',
-    //         name: 'addLevelCertification',
-    //         component: () => import('@/views/incentiveplan/addLevelCertification'),
-    //         meta: {
-    //             title: '添加级别认证',
-    //             icon: 'product-add'
-    //         }
-    //     },{
-    //         path: 'incentivePlanAndlevelUpload',
-    //         name: 'incentivePlanAndlevelUpload',
-    //         component: () => import('@/views/incentiveplan/incentivePlanAndlevelUpload'),
-    //         meta: {
-    //             title: '激励与认证导入',
-    //             icon: 'order-return'
-    //         }
-    //     }],
-    // },
-    // {//渠道政策管理
-    //     path: '/channelPolicy',
-    //     component: Layout,
-    //     name: 'channelPolicy',
-    //     meta: {
-    //         title: '政策管理',
-    //         icon: 'font'
-    //     },
-    //     children: [{
-    //         path: 'list',
-    //         name: 'list',
-    //         component: () => import('@/views/channelPolicy/channelPolicyList'),
-    //         meta: {
-    //             title: '渠道政策列表',
-    //             icon: 'form'
-    //         }
-    //     },{
-    //         path: 'add',
-    //         name: 'add',
-    //         component: () => import('@/views/channelPolicy/addChannelPolicy'),
-    //         meta: {
-    //             title: '渠道政策添加',
-    //             icon: 'product-add'
-    //         }
-    //     },{
-    //         path: 'list1',
-    //         name: 'list1',
-    //         component: () => import('@/views/productPolicy/productPolicyList'),
-    //         meta: {
-    //             title: '产品政策列表',
-    //             icon: 'marker'
-    //         }
-    //     },{
-    //         path: 'add1',
-    //         name: 'add1',
-    //         component: () => import('@/views/productPolicy/addProductPolicy'),
-    //         meta: {
-    //             title: '添加产品政策',
-    //             icon: 'product-cate'
-    //         } 
-    //     }],
-    // },
-    // {//分类管理
-    //     path: '/classification',
-    //     component: Layout,
-    //     name: 'classification',
-    //     meta: {
-    //         title: '分类管理',
-    //         icon: 'sms-new'
-    //     },
-    //     children: [{
-    //         path: 'list',
-    //         name: 'list',
-    //         component: () => import('@/views/classification/classificationList'),
-    //         meta: {
-    //             title: '分类管理',
-    //             icon: 'product-list'
-    //         }
-    //     }],
-    // },
-    // {//分销管理
-    //     path: '/distribution',
-    //     component: Layout,
-    //     name: 'distribution',
-    //     meta: {
-    //         title: '分销管理',
-    //         icon: 'sms-ad'
-    //     },
-    //     children: [{
-    //         path: 'list',
-    //         name: 'list',
-    //         component: () => import('@/views/distribution/distributionList'),
-    //         meta: {
-    //             title: '分销列表',
-    //             icon: 'product-list'
-    //         }
-    //     },{
-    //         path: 'add',
-    //         name: 'add',
-    //         component: () => import('@/views/distribution/addDistribution'),
-    //         meta: {
-    //             title: '添加分销',
-    //             icon: 'product-comment'
-    //         } 
-    //     },{//分销详情
-    //         path: '/distributionDetail',
-    //         component: () => import('@/views/distribution/distributionDetail'),
-    //         name:'distributionDetail',
-    //         meta:{
-    //             title:'详情',
-    //         },
-    //         hidden: true
-    //     }],
-    // },
-    // {//学习视频管理
-    //     path: '/learningVideo',
-    //     component: Layout,
-    //     name: 'learningVideo',
-    //     meta: {
-    //         title: '学习视频',
-    //         icon: 'product-brand'
-    //     },
-    //     children: [{
-    //         path: 'list',
-    //         name: 'list',
-    //         component: () => import('@/views/learningVideo/videoList'),
-    //         meta: {
-    //             title: '学习视频列表',
-    //             icon: 'sms-ad'
-    //         }
-    //     },{
-    //         path: 'add',
-    //         name: 'add',
-    //         component: () => import('@/views/learningVideo/addVideo'),
-    //         meta: {
-    //             title: '添加视频与答题',
-    //             icon: 'product-comment'
-    //         }
-    //     },{//学习视频详情
-    //         path: '/videoDetail',
-    //         component: () => import('@/views/learningVideo/videoDetail'),
-    //         name:'videoDetail',
-    //         meta:{
-    //             title:'详情',
-    //         },
-    //         hidden: true
-    //     },],
-    // },{//分类管理.vue
-    //     path: '/userAgreement',
-    //     component: Layout,
-    //     name: 'userAgreement',
-    //     meta: {
-    //         title: '用户协议',
-    //         icon: 'sms-new'
-    //     },
-    //     children: [{
-    //         path: 'userAgreement',
-    //         name: 'userAgreement',
-    //         component: () => import('@/views/userAgreement/userAgreementList'),
-    //         meta: {
-    //             title: '用户协议',
-    //             icon: 'product-list'
-    //         }
-    //     }],
-    // },
 
     {
         path: '*',

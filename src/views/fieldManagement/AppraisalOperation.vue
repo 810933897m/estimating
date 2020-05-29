@@ -2,8 +2,7 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="进行中" name="first"></el-tab-pane>
-    <el-tab-pane label="审核中" name="two"></el-tab-pane>
+    <el-tab-pane label="估价中" name="first"></el-tab-pane>
     <el-tab-pane label="已完成" name="last"></el-tab-pane>
 
     <el-form ref="form" >
@@ -17,11 +16,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -159,10 +160,11 @@
       fixed="right"
       width="200px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="examineBtn(scope.row)" >二次审核</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="imageBtn(scope.row)" >图片资料</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="examineBtn(scope.row)" >提交审核</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="imageBtn(scope.row)" >获取资料</el-button>
           <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="examineBtn(scope.row)">审核提交</el-button>
           <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">上传附件</el-button>
+          <el-button size="small" type="info" v-if="activeName == 'last'" @click="uploadDetail(scope.row)">附近内容</el-button>
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
 
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
@@ -230,8 +232,8 @@
 
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="上传报告文件" :visible.sync="dialogFormVisible1">
-            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <el-form-item label="文件类型" class="select" style="">
+            <el-form ref="form" label-width="150px" :model="form" style="width:100%;">
+              <!-- <el-form-item label="文件类型" class="select" style="">
                 <el-select v-model="fileType" filterable style="width:120px;">
                       <el-option
                       v-for="item in fileType1"
@@ -240,11 +242,12 @@
                       :value="item.value">
                       </el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
 
               <!-- *************文件上传************* -->
             <el-form-item label="文件" prop="coverFile">
                   <el-upload
+                  ref="uploadExcel"
                   class="upload-demo"
                   drag
                   :limit="1"
@@ -256,24 +259,17 @@
                   <div class="el-upload__text"><em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip">xlsx/xls/csv/pdf，且不超过200M</div>
                 </el-upload>
-
-                <!-- <el-upload
-                class="upload-demo"
-                ref="uploadExcel"
-                :limit="1"
-                accept=".xlsx,.xls,.csv,.pdf"
-                :http-request="excelFileClass"
-                :with-credentials="true"
-                :auto-upload="true"
-                action=""
-                list-type="list"
-                :file-list="fileList">
-                    <el-button slot="trigger" type="primary">
-                        选取文件
-                    </el-button>
-                </el-upload> -->
             </el-form-item>
             <!-- *************文件上传************* -->
+
+            <el-form-item v-for="(item,index) in uploadListBack" :key="index" :label="item.title" class="form-input" prop="title" style="width:300px;">
+              <!-- <span>{{item.title}}</span> -->
+                <el-input  v-model="item.value"></el-input>
+            </el-form-item>
+
+             <el-button size="small" type="" style="" @click="dialogFormVisible1 = false">取消</el-button>
+             <el-button size="small" type="primary" style="" @click="save">确定</el-button>
+            
               
             </el-form>
           </el-dialog>
@@ -288,6 +284,8 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
+        
+        uploadListBack:[],
         admin_desc : '',
         fileList:[],
         twoExamine:'',
@@ -324,6 +322,7 @@ export default {
         form:{
           user : '',
         },
+        formData : new FormData(),
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible3 : false,
@@ -331,6 +330,7 @@ export default {
         shopId : '',//id存储
         formLabelWidth : '120px',
         Id : '',
+        uploadId : '',
 
         //*************分页变量*************
         // currentPage : 1, //初始页
@@ -347,22 +347,62 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
-      excelFileClass(param){//修改题目
+      uploadDetail(row){
+        this.$router.push({path:'/uploadDetail',query:{id:row.id}})
+      },
+      save(){//附件列表保存
+        request.post("/admin/excel/save",{
+          id : this.uploadId,
+          data : this.uploadListBack,
+        }).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '保存成功'//提示保存成功
+              });
+              this.dialogFormVisible1 = false;
+              this.uploadListBack = [];
+            }
+        });
+      },
+      excelFileClass(param){//上传附件
           console.log(param);
-            // let formData = new FormData();
-            // formData.append('Excelfile', param.file);
-            // request.post("/api/classroom/questions/add", formData).then(res => {
-            //     if (res.code == 200){
-            //         this.questions = res.data;
-            //     }
-            // });
+            let formData = new FormData();
+            formData.append('id', this.uploadId);
+            formData.append('excel', param.file);
+            console.log(formData)
+            request.post("/admin/excel/upload",
+              formData
+              ).then(res => {
+                if (res.code == 200){
+                    this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '上传成功'//提示上传成功
+                });
+                this.$refs.uploadExcel.clearFiles();
+                this.uploadListBack = res.data.data;
+                    console.log(this.uploadListBack)
+                }
+            });
       },
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
+          this.getAgentList();
           console.log('1')
         }else if(this.activeName == 'last'){
           console.log('2')
+          request.post("/admin/appraisal/finish").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }
       },
       recovery(row){//回收
@@ -428,37 +468,9 @@ export default {
                 this.size = res.data.page.size;
               }
           });
-        }else if(this.activeName == 'two'){
-          console.log('已分配')
-          request.post("/admin/Outwork/assigned",{
-          keyword : this.search,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'last'){
-          console.log('已回收')
-          request.post("/admin/Outwork/recycled",{
-          keyword : this.search,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.distribution == 4){
+        }else if(this.distribution == 'last'){
           console.log('已完成')
-          request.post("/admin/Outwork/finished",{
+          request.post("/admin/appraisal/finish",{
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -516,6 +528,16 @@ export default {
         console.log(this.outworkid);
         
       },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
+      },
       updateAgent(row) {//修改按钮
         console.log(row);
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
@@ -531,21 +553,42 @@ export default {
       handleCurrentChange: function(currentPage){//换页
       console.log(currentPage)  
           this.currentPage = currentPage;
+          if(this.activeName == 'first'){
+          console.log('未分配')
           request.post("/admin/appraisal/query",{
-          page : currentPage,
           keyword : this.search,
-        }).then(res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-            }
-        });
+          page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.distribution == 'last'){
+          console.log('已完成')
+          request.post("/admin/appraisal/finish",{
+          keyword : this.search,
+          page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})
       },
       uploadBtn(row){
         console.log(row);
+        this.uploadId = row.id;
         this.dialogFormVisible1 = true;
       },
       imageBtn(row){//图片

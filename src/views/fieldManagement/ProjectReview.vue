@@ -17,11 +17,13 @@
       class="table-picture"
       :data="agentList"
       border
-       
+      @cell-dblclick="getInfo"
+       max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -437,7 +439,7 @@ export default {
                 this.size = res.data.page.size;
               }
           });
-        }else if(this.activeName == 'two'){
+        }else if(this.activeName == 'last'){
           request.post("/admin/Auditing/inquire",{
           keyword : this.search,
           // page : this.currentPage,
@@ -456,6 +458,16 @@ export default {
       AssignTasks(row){//分配任务
         console.log(row)
         this.$router.push({path:'/AuditRecord',query:{row:row}})
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       outworkidBtn(){//分配任务确定
         if(this.distribution == 1){
@@ -512,7 +524,7 @@ export default {
                   this.agentList = res.data.list;
                 }
             });
-          }else if(this.activeName == 'two'){
+          }else if(this.activeName == 'last'){
             request.post("/admin/Auditing/inquire",{
               page : currentPage,
               keyword : this.search,

@@ -40,10 +40,13 @@
       class="table-picture"
       :data="agentList"
       border
+      @cell-dblclick="getInfo"
+      max-height="550"
       style="width: 100%;">
 
       <el-table-column
-      label="id"
+       label="id"
+      width="50px"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -164,6 +167,7 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName == 'first'"
       width="300px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="addRecord(scope.row)" >记录添加</el-button>
@@ -471,6 +475,16 @@ export default {
               }
           });
           }
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
+        }
+      })
+      window.open(href, '_blank')
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})

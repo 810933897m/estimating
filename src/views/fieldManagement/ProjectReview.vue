@@ -52,9 +52,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          {{scope.row.report_number}}
+        </template>
       </el-table-column>
 
       <el-table-column

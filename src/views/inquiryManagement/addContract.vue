@@ -16,7 +16,12 @@
             </el-form-item>
 
             <el-form-item label="合同内容" class="form-input" prop="title" style="width:500px;">
-                <el-input  placeholder="请输入合同内容" v-model="form.content"></el-input>
+                <!-- <el-input  placeholder="请输入合同内容" v-model="form.content"></el-input> -->
+                <el-input
+                type="textarea"
+                :autosize="{ minRows: 5, maxRows: 10}"
+                v-model="form.content">
+                </el-input>
             </el-form-item>
 
         </el-form>

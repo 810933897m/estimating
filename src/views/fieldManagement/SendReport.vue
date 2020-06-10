@@ -34,7 +34,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -43,7 +43,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.send_num}}
+          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
         </template>
       </el-table-column>
 
@@ -52,7 +52,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.is_send_num}}
+          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
         </template>
       </el-table-column>
 
@@ -61,7 +61,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
+          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -69,9 +69,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -79,7 +79,7 @@
       width="150px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.city}}
+          <p :title="scope.row.city" class="nooverflow">{{scope.row.city}}</p>
         </template> -->
       </el-table-column>
 
@@ -88,7 +88,7 @@
       width="200px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template> -->
       </el-table-column>
 
@@ -96,9 +96,9 @@
       label="项目状态"
       width="100px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -106,7 +106,7 @@
       width="130px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_name}}
+          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
         </template>
       </el-table-column>
 
@@ -115,7 +115,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -124,7 +124,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -133,7 +133,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
         </template>
       </el-table-column>
 
@@ -142,7 +142,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.price_status" class="nooverflow">{{scope.row.price_status}}</p>
         </template>
       </el-table-column>
 
@@ -152,6 +152,7 @@
       align="center">
         <!-- <template slot-scope="scope">
           {{scope.row.approval_status}}
+          <p :title="scope.row.create_username" class="nooverflow">{{scope.row.price_status}}</p>
         </template> -->
       </el-table-column>
     
@@ -184,8 +185,8 @@
            
             <el-form ref="form" label-width="120px" style="width:100%;">
               <!-- <div style="width:100%;position:relative;height:50px;"> -->
-              <el-form-item label="快递公司" class="select" style="">
-                <el-select v-model="express_type" filterable style="width:200px;">
+              <el-form-item label="快递公司" class="select" style="width:300px;float:left;">
+                <el-select v-model="express_type" filterable style="">
                       <el-option
                       v-for="item in express_type1"
                       :key="item.value"
@@ -195,8 +196,8 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="发送方式" class="select" style="">
-                <el-select v-model="send_type" filterable style="width:200px;">
+              <el-form-item label="发送方式" class="select" style="width:300px;float:left;">
+                <el-select v-model="send_type" filterable style="">
                       <el-option
                       v-for="item in send_type1"
                       :key="item.value"
@@ -206,8 +207,8 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="物品类型" class="select" style="">
-                <el-select v-model="type" filterable style="width:200px;">
+              <el-form-item label="物品类型" class="select" style="width:300px;float:left;">
+                <el-select v-model="type" filterable style="">
                       <el-option
                       v-for="item in type1"
                       :key="item.value"
@@ -217,35 +218,35 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="邮政编码" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="邮政编码" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.post_code"></el-input>
               </el-form-item>
 
-              <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.send_num"></el-input>
               </el-form-item>
 
-              <el-form-item label="公司" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="公司" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.company"></el-input>
               </el-form-item>
 
-              <el-form-item label="接收人" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="接收人" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.name"></el-input>
               </el-form-item>
 
-              <el-form-item label="接收人电话" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="接收人电话" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.telephone"></el-input>
               </el-form-item>
 
-              <el-form-item label="接收地址" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="接收地址" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.company_addr"></el-input>
               </el-form-item>
 
-              <el-form-item label="快递单号" class="form-input" prop="title" style="width:300px;">
+              <el-form-item label="快递单号" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.express_num"></el-input>
               </el-form-item>
 
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;margin-bottom:20px;" @click="outworkidBtn1()">报告发送</el-button>
+              <el-button size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;margin-bottom:20px;" @click="outworkidBtn1()">报告发送</el-button>
               <!-- </div> -->
 
               <el-table 

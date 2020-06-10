@@ -1,111 +1,128 @@
 <template>
-    <div class="app-container">
-        <div style="height: 300px;">
-          <el-steps direction="vertical" >
-            <el-step process-status="finish" title="步骤 1"></el-step>
-            <el-step process-status="finish" title="步骤 2"></el-step>
-            <el-step process-status="finish" title="步骤 3" description="这是一段很长很长很长的描述性文字"></el-step>
-          </el-steps>
-        </div>
+  <div class="app-container">
+    <el-autocomplete
+      v-model="mapLocation.address"
+      :fetch-suggestions="querySearch"
+      placeholder="请输入详细地址"
+      style="width:60%;"
+      :trigger-on-focus="false"
+      @select="handleSelect"
+    />
+    <div style="margin: 5px">
+      <baidu-map
+      v-show="showBaidu"
+       class="bm-view"
+        :center="mapCenter"
+         :zoom="mapZoom"
+         @click="getClickInfo"
+          :scroll-wheel-zoom="true"
+       ak="baidu-ak" @ready="handlerBMap" />
     </div>
+  </div>
 </template>
 
 <script>
-import request from "@/utils/request";
-import { quillEditor } from 'vue-quill-editor';
-import quillConfig from '@/utils/quill-config'
-import map from '@/utils/city';
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 export default {
-    created() {
-        
-    },
-    data() {
-        return {
-            
-        };
-    },
-    computed: {
-       
-    },
-    created(){
-       quillEditor,
-    //    console.log(map.options)
-        // console.log(this.$route.query.id)
-       this.getSelect()
-    },
-    methods: {
-        getSelect() {//初始渲染数据
-            request.post("/admin/Auditing/inquire",{
-            id : this.$route.query.row.id 
-        }).then(res => {
-            // console.log(res)
-            if (res.code == 200) {
-                console.log(res)
-            }
-        });
-        },
-        handleChange1(){
-
-        },
+  name: 'BaiduMapDemo',
+  components: {
+    BaiduMap
+  },
+  data() {
+    return {
+      mapZoom: 15,
+      mapCenter: { lng: 0, lat: 0 },
+      mapLocation: {
+        address: undefined,
+        coordinate: undefined
+      },
+      showBaidu:false,
     }
-};
+  },
+  methods: {
+    handlerBMap({ BMap, map }) {
+      this.BMap = BMap
+      this.map = map
+      if (this.mapLocation.coordinate && this.mapLocation.coordinate.lng) {
+        this.mapCenter.lng = this.mapLocation.coordinate.lng
+        this.mapCenter.lat = this.mapLocation.coordinate.lat
+        this.mapZoom = 15
+        map.addOverlay(new this.BMap.Marker(this.mapLocation.coordinate))
+      } else {
+        this.mapCenter.lng = 113.271429
+        this.mapCenter.lat = 23.135336
+        this.mapZoom = 10
+      }
+    },
+    querySearch(queryString, cb) {
+      var that = this
+      var myGeo = new this.BMap.Geocoder()
+      myGeo.getPoint(queryString, function(point) {
+        if (point) {
+          that.mapLocation.coordinate = point
+          that.makerCenter(point)
+        } else {
+          that.mapLocation.coordinate = null
+        }
+      }, this.locationCity)
+      var options = {
+        onSearchComplete: function(results) {
+          if (local.getStatus() === 0) {
+            // 判断状态是否正确
+            var s = []
+            for (var i = 0; i < results.getCurrentNumPois(); i++) {
+              var x = results.getPoi(i)
+              var item = { value: x.address + x.title, point: x.point }
+              s.push(item)
+              cb(s)
+            }
+          } else {
+            cb()
+          }
+        }
+      }
+      var local = new this.BMap.LocalSearch(this.map, options)
+      local.search(queryString)
+    },
+    handleSelect(item) {
+      this.showBaidu = true;
+      var { point } = item
+      this.mapLocation.coordinate = point
+      this.makerCenter(point)
+    },
+    makerCenter(point) {
+      if (this.map) {
+        this.map.clearOverlays()
+        this.map.addOverlay(new this.BMap.Marker(point))
+        this.mapCenter.lng = point.lng
+        this.mapCenter.lat = point.lat
+        this.mapZoom = 15
+      }
+    },
+    getClickInfo (e) {
+        console.log(event.offsetX,event.offsetY)
+            var point = new BMap.Point(e.point.lng, e.point.lat);
+                var gc = new BMap.Geocoder();
+                let _this = this;
+                gc.getLocation(point, function (rs) {
+                    // var addComp = rs.addressComponents;
+                    // console.log(rs);//地址信息
+                    // console.log(rs.surroundingPois[0].title);//地址信息
+                    _this.mapLocation.address = rs.address
+ 
+                });
+        // console.log(e.point.lng)
+        // console.log(e.point.lat)
+        //this.center.lng = e.point.lng
+        //this.center.lat = e.point.lat
+        },
+  }
+}
 </script>
 
-<style style lang="less" scoped>
-    .app-container {
-        .table-list {
-            margin: 0 auto;
-            .table-content {
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-        .table-page {
-            margin-top: 20px;
-            float: right;
-        }
-    }
-    .editor{
-        width: 200%;
-        height: 300px;
-    }
-    .hot{
-        color: #606266;
-        font-size: 14px;
-        margin-left:10px;
-        margin-right:10px;
-    }
-    .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 50px;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-    }
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
-    }
-    .form-input{
-        width:300px;float:left;
-    }
-    el-form-item{
-        width: 20% !important;
-    }
-    .select{
-        float:left;
-    }
+<style>
+.bm-view {
+  width: 1000px;
+  height: 600px;
+}
 </style>

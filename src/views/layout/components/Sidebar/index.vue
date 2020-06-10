@@ -35,7 +35,7 @@ export default {
   },
   methods:{
     routes1(){
-      console.log(this.$router.options.routes)
+      // console.log(this.$router.options.routes)
       localStorage.setItem("pathList",this.$router.options.routes)
       // return this.$router.options.routes
     }
@@ -45,37 +45,36 @@ export default {
       'sidebar'
     ]),
     routes() {
-      request.post("/admin/access/menu").then(res => { 
-            // console.log(res)
-            if (res.code == 200) {
+      // request.post("/admin/access/menu").then(res => { 
+      //       // console.log(res)
+      //       if (res.code == 200) {
 
-              this.menuList = res.data.list;
-              console.log(this.menuList)
-              // menuList.JSON.string(menuList)
-              localStorage.setItem('user_id',res.data.user.id)
+      //         this.menuList = res.data.list;
+      //         console.log(this.menuList)
+      //         // menuList.JSON.string(menuList)
+      //         localStorage.setItem('user_id',res.data.user.id)
               
 
-              this.$router.options.routes.forEach(element => {
-                  element.hidden = !this.menuList.includes(element.path)
-                  if(element.children){
-                      element.children.forEach(element1 => {
-                          element1.hidden = !this.menuList.includes(element1.path)
-                      });
-                  }
-              });
+      //         this.$router.options.routes.forEach(element => {
+      //             element.hidden = !this.menuList.includes(element.path)
+      //             if(element.children){
+      //                 element.children.forEach(element1 => {
+      //                     element1.hidden = !this.menuList.includes(element1.path)
+      //                 });
+      //             }
+      //         });
               
-              console.log('1234')
-              console.log(this.$router.options.routes)
-              // this.$router.options.routes[2].path = '2124'
+      //         console.log('1234')
+      //         console.log(this.$router.options.routes)
+      //         // this.$router.options.routes[2].path = '2124'
               
-              localStorage.setItem("pathList",this.$router.options.routes)
-            }
-        });
+      //         localStorage.setItem("pathList",this.$router.options.routes)
+      //       }
+      //   });
 
         
       
-      console.log(this.$router.options.routes)
-      setTimeout(console.log(this.$router.options.routes), 5000);
+      // console.log(this.$router.options.routes)
       return this.$router.options.routes
     },
     isCollapse() {

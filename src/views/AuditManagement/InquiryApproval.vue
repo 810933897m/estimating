@@ -66,9 +66,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          {{scope.row.report_number}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -335,12 +335,12 @@ export default {
             }
         });
 
-        request.post("/admin/Secretary/param").then(res => {
-            if (res.code == 200) {
-              console.log(res)
-              this.outworkid1 = res.data.admin_username;
-            }
-        });
+        // request.post("/admin/Secretary/param").then(res => {
+        //     if (res.code == 200) {
+        //       console.log(res)
+        //       this.outworkid1 = res.data.admin_username;
+        //     }
+        // });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){

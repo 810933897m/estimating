@@ -13,9 +13,9 @@
     
     <el-form ref="form" >
         <el-form-item>
-            <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
-            <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
-            <el-button style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
+            <el-input v-model="search" style="width:300px;" placeholder=""></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+            <el-button type="primary" style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
         </el-form-item>
     </el-form>
 
@@ -36,18 +36,26 @@
       </el-table-column>
 
       <el-table-column
-      label="用户名"
+      label="编号"
       align="center">
-        <template slot-scope="scope" >
-          {{scope.row.username}}
+        <template slot-scope="scope">
+          <p :title="scope.row.userno" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.userno}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="昵称"
+      label="用户名"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.username" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.username}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="邮箱地址"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.nickname}}
+          <p :title="scope.row.email" class="nooverflow">{{scope.row.email}}</p>
         </template>
       </el-table-column>
 
@@ -55,7 +63,7 @@
       label="状态"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.status}}
+          <p :title="scope.row.status" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.status}}</p>
         </template>
       </el-table-column>
 
@@ -63,15 +71,7 @@
       label="创建时间"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="修改时间"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.update_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -83,7 +83,7 @@
         <template slot-scope="scope">
           <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-          <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
+          <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button>
           <!-- <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
         </template>
       </el-table-column>
@@ -107,24 +107,23 @@
         width="50%">
         <!-- :before-close="handleClose" -->
             <el-form ref="updata" :model="updata" label-width="90px">
-                <el-form-item label="昵称">
-                    <el-input v-model="updata.nickname"></el-input>
+                <el-form-item label="编号">
+                    <el-input v-model="updata.userno"></el-input>
                 </el-form-item>
 
-                <el-form-item label="密码">
-                    <el-input v-model="updata.password"></el-input>
+                <el-form-item label="邮箱">
+                    <el-input v-model="updata.email"></el-input>
                 </el-form-item>
 
                 <el-form-item label="状态">
                     <el-radio v-model="updata.status" label="0">正常</el-radio>
                     <el-radio v-model="updata.status" label="1">禁用</el-radio>
                 </el-form-item>
-
             </el-form>
         
             <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">保 存</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">修 改</el-button>
             </span>
         </el-dialog>
         <!--*************修改模态框结束*************-->
@@ -136,40 +135,24 @@
         width="50%">
         <!-- :before-close="handleClose" -->
             <el-form ref="updata" :model="form1" label-width="90px">
-                <el-form-item label="昵称">
-                    <el-input disabled v-model="form1.nickname"></el-input>
+                <el-form-item label="用户名:">
+                    <p style="float:left;margin-top:0;">{{form1.username}}</p>
+                    <!-- <el-input disabled v-model="form1.nickname"></el-input> -->
                 </el-form-item>
-
-                <el-form-item label="状态">
-                    <el-radio disabled v-model="form1.status" label="0">正常</el-radio>
-                    <el-radio disabled v-model="form1.status" label="1">禁用</el-radio>
-                </el-form-item>
-
-                <!-- <el-table 
-                :data="roles"
-                max-height="300"
-                style="width: 100%;margin-left:0px;">
-
-                <el-table-column
-                label=""
-                style="width: 20%;"
-                align="center">
-                  <template slot-scope="scope" >
-                    <el-checkbox :checked="scope.row.used" v-model="scope.row.used">
-                      {{scope.row.name}}
-                    </el-checkbox>
-                  </template>
-                </el-table-column>
-                 </el-table> -->
-                 <el-checkbox v-for="(item,index) in roles" :key="index" :checked="item.used" v-model="item.used">
+                <!-- <el-form-item label="编号:">
+                    <p style="float:left;margin-top:0;">{{form1.userno}}</p>
+                </el-form-item> -->
+                <el-form-item label="权限:">
+                    <el-checkbox v-for="(item,index) in roles" :key="index" :checked="item.used" v-model="item.used">
                       {{item.name}}
                     </el-checkbox>
-
+                </el-form-item>
+                <!-- <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">权限</span></div> -->  
             </el-form>
         
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible1 = false">取 消</el-button>
-                <el-button type="primary" @click="updataRoles(),dialogVisible1 = false">菜单更新</el-button>
+                <el-button type="primary" @click="updataRoles(),dialogVisible1 = false">保 存</el-button>
+                <el-button @click="dialogVisible1 = false">关 闭</el-button>
             </span>
         </el-dialog>
         <!--*************查看模态框结束*************-->
@@ -194,8 +177,8 @@ export default {
           status: '',
         },
         updata:{
-          nickname : '',
-          password : '',
+          userno : '',
+          email : '',
           status : '',
         },
         search : '',
@@ -286,7 +269,6 @@ export default {
             if (res.code == 200) {
               this.updata = res.data;
               this.updata.status = res.data.status+'';
-              this.updata.password = '';
             }
         });
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
@@ -294,8 +276,8 @@ export default {
       confirmRevision(){//确认修改
         request.post("/admin/admin/update",{
           id : this.UpId,
-          nickname : this.updata.nickname,
-          password : this.updata.password,
+          userno : this.updata.userno,
+          email : this.updata.email,
           status : Number(this.updata.status),
         }).then(res => {
             console.log(res)

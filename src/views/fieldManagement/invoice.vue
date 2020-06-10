@@ -2,9 +2,8 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="未盖章" name="first"></el-tab-pane>
-    <el-tab-pane label="盖章成功" name="success"></el-tab-pane>
-    <el-tab-pane label="盖章收回" name="last"></el-tab-pane>
+    <el-tab-pane label="发票对私" name="first"></el-tab-pane>
+    <el-tab-pane label="发票对公" name="success"></el-tab-pane>
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
@@ -36,6 +35,24 @@
       align="center">
         <template slot-scope="scope">
           {{scope.row.approval_status}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="项目报告份数"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.send_num}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="已发报告份数"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.is_send_num}}
         </template>
       </el-table-column>
 
@@ -141,19 +158,11 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-if="activeName == 'first'"
-      width="200px" align="center">
+      width="100px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >盖章</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >回收</el-button>
-          <!-- <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">审核历史</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="submitBtn(scope.row)" >提交</el-button>
-          <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">查看详细</el-button> -->
-          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-
-          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
-        </template>
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
+          <el-button size="small" type="primary" @click="Report(scope.row)" >申请发票</el-button>
+          </template>
       </el-table-column>
       
     </el-table>
@@ -171,38 +180,104 @@
   </el-tabs>
     
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
+          <el-dialog style="" :append-to-body='true' title="申请发票" :visible.sync="dialogFormVisible">
            
-            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <div style="width:100%;position:relative;height:50px;">
-              <el-form-item label="提示信息" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入提示信息" v-model="admin_desc"></el-input>
+            <el-form ref="form" label-width="120px" style="width:100%;">
+              <!-- <div style="width:100%;position:relative;height:50px;"> -->
+
+              <el-form-item label="单位名称" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_company"></el-input>
               </el-form-item>
 
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-if="tongyi" @click="outworkidBtn()">盖章</el-button>
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-else @click="outworkidBtn1()">回收</el-button>
-              </div>
+              <el-form-item label="纳税人识别码" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.taxpayer_identification"></el-input>
+              </el-form-item>
 
-            </el-form>
-            
-          </el-dialog>
-          <!-- **************分配任务弹出框************** -->
+              <el-form-item label="开票人电话" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_telephone"></el-input>
+              </el-form-item>
 
-          <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="上传报告文件" :visible.sync="dialogFormVisible1">
-            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <el-form-item label="文件类型" class="select" style="">
-                <el-select v-model="fileType" filterable style="width:120px;">
+              <el-form-item label="开票人地址" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_address"></el-input>
+              </el-form-item>
+
+              <el-form-item label="开票人姓名" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_username"></el-input>
+              </el-form-item>
+
+              <el-form-item label="开票人开户行" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_bank"></el-input>
+              </el-form-item>
+
+              <el-form-item label="开票人银行账户" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_bank_card"></el-input>
+              </el-form-item>
+
+              <el-form-item label="开票审核人id" class="select" style="width:500px;">
+                <el-select v-model="form.Invoice_examiner_id" filterable style="">
                       <el-option
-                      v-for="item in fileType1"
+                      v-for="item in invoice_examiner"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
                       </el-option>
                 </el-select>
               </el-form-item>
-              
+
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;margin-bottom:20px;" @click="outworkidBtn1()">添加发票</el-button>
+              <!-- </div> -->
+
+              <!-- <el-table 
+              class="table-picture"
+              :data="listAdd"
+              border
+               
+              style="width: 100%;">
+
+              <el-table-column
+              label="姓名"
+              align="center">
+                <template slot-scope="scope">
+                  {{scope.row.create_username}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="手机号"
+              align="center">
+                <template slot-scope="scope">
+                  {{scope.row.telephone}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="公司"
+              align="center">
+                <template slot-scope="scope">
+                  {{scope.row.company}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="地址"
+              align="center">
+                <template slot-scope="scope">
+                  {{scope.row.company_addr}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="邮政编码"
+              align="center">
+                <template slot-scope="scope">
+                  {{scope.row.post_code}}
+                </template>
+              </el-table-column>
+
+              </el-table> -->
+
             </el-form>
+            
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
@@ -215,6 +290,13 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
+        type:'',
+        listAdd:[],
+        type1:[],
+        send_type:'',
+        send_type1:[],
+        express_type:'',
+        express_type1:[],
         tongyi : '',
         admin_desc:'',
         ReportReviewerId: '',
@@ -252,8 +334,17 @@ export default {
             
         },],//列表绑定
         form:{
-          user : '',
+          invoice_company : '',
+          taxpayer_identification : '',
+          invoice_telephone : '',
+          invoice_address : '',
+          invoice_username : '',
+          invoice_bank : '',
+          invoice_bank_card : '',
+          Invoice_examiner_id:'',
         },
+        invoice_examiner:[],
+
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
@@ -261,6 +352,7 @@ export default {
         shopId : '',//id存储
         formLabelWidth : '120px',
         Id : '',
+        Invoice_examiner_id : '',
 
         //*************分页变量*************
         // currentPage : 1, //初始页
@@ -274,7 +366,7 @@ export default {
       }
     },
     created() {
-     this.getAgentList();//渲染列表
+     this.getAgentList();//-渲染列表
     },
     methods: {
       excelFileClass(param){//修改题目
@@ -290,9 +382,7 @@ export default {
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 1,
-          }).then(res => {
+          request.post("/admin/ProjectInvoice/ProjectList").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -302,9 +392,7 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 2,
-          }).then(res => {
+          request.post("/admin/ProjectInvoice/ProjectPublicList").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -314,19 +402,16 @@ export default {
             }
         });
         }
-        else if(this.activeName == 'last'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 3,
-          }).then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-              this.count = res.data.page.count;
-              this.max = res.data.page.max;
-              this.page = res.data.page.page;
-              this.size = res.data.page.size;
-            }
-        });
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        console.log(row.id);
+        const {href} = this.$router.resolve({
+        path: '/comprehensiveList',
+        query: {
+          id: row.id
         }
+      })
+      window.open(href, '_blank')
       },
       recovery(row){//回收
         this.$confirm("您确定要回收？", "提示", {
@@ -350,20 +435,8 @@ export default {
                 });
             });
       },
-      getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
-      },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/ProjectSeal/query",{
-            seal_status : 1,
-          }).then(res => {
+        request.post("/admin/ProjectInvoice/ProjectList").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -372,10 +445,10 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        request.post("/admin/Auditing/param").then(res => {
+        request.post("/admin/ProjectInvoice/param").then(res => {
             if (res.code == 200) {
               console.log(res)
-              this.ask_univalence1 = res.data.check_user;
+              this.invoice_examiner = res.data.invoice_examiner;
               // this.agentList = res.data.list;
             }
         });
@@ -389,9 +462,8 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/ProjectSeal/query",{
+          request.post("/admin/ProjectInvoice/ProjectList",{
           keyword : this.search,
-          seal_status : 1,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -403,23 +475,8 @@ export default {
               }
           });
         }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectSeal/query",{
+          request.post("/admin/ProjectInvoice/ProjectPublicList",{
           keyword : this.search,
-          seal_status : 2,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'last'){
-          request.post("/admin/ProjectSeal/query",{
-          keyword : this.search,
-          seal_status : 3,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -431,7 +488,6 @@ export default {
               }
           });
         }
-        
       },
       AssignTasks(row){//分配任务
         this.tongyi = true;
@@ -439,58 +495,64 @@ export default {
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
-      refuse(row){
+      Report(row){
         this.tongyi = false;
         console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
+        this.Invoice_examiner_id = row.Invoice_examiner_id;
+
+        // request.post("/admin/ProjectInvoice/param").then(res => {
+        //       if (res.code == 200) {
+        //         console.log(res)
+        //           this.finance_user = res.data.finance_user;
+        //         // this.handleClick();
+        //       }
+        //   });
       },
-      outworkidBtn(){//分配任务确定
-          request.post("/admin/ProjectSeal/submit",{
-          id : this.Id,
-          admin_desc : this.admin_desc,
+      outworkidBtn1(){//报告装订
+          request.post("/admin/ProjectInvoice/create",{
+          project_id : this.Id,
+          invoice_examiner_id : this.form.Invoice_examiner_id,
+          invoice_company : this.form.invoice_company,
+          taxpayer_identification : this.form.taxpayer_identification,
+          invoice_telephone : this.form.invoice_telephone,
+          invoice_address : this.form.invoice_address,
+          invoice_username : this.form.invoice_username,
+          invoice_bank : this.form.invoice_bank,
+          invoice_bank_card : this.form.invoice_bank_card,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
                     // type: res.errno === 0 ? "success" : "warning",
                     type: "success",
-                    message: '盖章成功'//提示盖章成功
+                    message: '发送成功'//提示发送成功
                 });
+                this.form = {
+                  invoice_bank_card : '',
+                  taxpayer_identification : '',
+                  invoice_telephone : '',
+                  invoice_address : '',
+                  invoice_username : '',
+                  invoice_bank : '',
+                  invoice_bank_card : '',
+                };
+                this.express_type = '';
+                this.type = '';
+                this.send_type = '';
                 this.handleClick();
               }
           });
         this.dialogFormVisible=false;
-        this.admin_desc = '';
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
-      },
-      outworkidBtn1(){//分配任务确定
-          request.post("/admin/ProjectSeal/refuse",{
-          id : this.Id,
-          admin_desc : this.admin_desc,
-          }).then(res => {
-              if (res.code == 200) {
-                this.$message({
-                    // type: res.errno === 0 ? "success" : "warning",
-                    type: "success",
-                    message: '回收成功'//提示回收成功
-                });
-                this.handleClick();
-              }
-          });
-        this.dialogFormVisible=false;
-        this.admin_desc = '';
         
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
           console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/ProjectSeal/query",{
-              seal_status : 1,
+            request.post("/admin/ProjectInvoice/ProjectList",{
+              
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -500,19 +562,7 @@ export default {
               }
           });
           }else if(this.activeName == 'success'){
-            request.post("/admin/ProjectSeal/query",{
-              seal_status : 2,
-              page : currentPage,
-              keyword : this.search,
-          }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'last'){
-            request.post("/admin/ProjectSeal/query",{
-              seal_status : 3,
+            request.post("/admin/ProjectInvoice/ProjectPublicList",{
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -522,38 +572,6 @@ export default {
               }
           });
           }
-          
-      },
-      addCommodity(){//添加询价
-        this.$router.push({path:'/addInquiry'})
-      },
-      uploadBtn(row){
-        console.log(row);
-        this.dialogFormVisible1 = true;
-      },
-      submitBtn(row){//提交
-        this.ReportReviewerId = row.id;
-        this.price_status = row.price_status;
-        this.dialogFormVisible2 = true;
-        console.log(this.ReportReviewerId,this.price_status)
-      },
-      submit(){
-        request.post("/admin/Auditing/affirm",{
-          id : this.ReportReviewerId,
-          price_status : this.price_status,
-          ask_univalence : this.ask_univalence,
-        }).then(res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                    // type: res.errno === 0 ? "success" : "warning",
-                    type: "success",
-                    message: '提交成功'//提交成功
-                });
-              this.getAgentList();//渲染列表
-              // this.agentList = res.data.list;
-            }
-        });
       },
   }
 }

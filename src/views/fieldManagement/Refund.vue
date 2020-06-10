@@ -2,16 +2,16 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="退费" name="first"></el-tab-pane>
-    <!-- <el-tab-pane label="盖章成功" name="success"></el-tab-pane>
-    <el-tab-pane label="盖章收回" name="last"></el-tab-pane> -->
+    <el-tab-pane label="退单" name="first"></el-tab-pane>
+    <!-- <el-tab-pane label="盖章成功" name="success"></el-tab-pane>-->
+    <el-tab-pane label="撤单" name="last"></el-tab-pane> 
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
             <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
-        <el-button style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>
+        <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>
     </el-form>
 
     <el-table 
@@ -36,7 +36,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -45,7 +45,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
+          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -53,9 +53,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -63,7 +63,7 @@
       width="150px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.city}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template> -->
       </el-table-column>
 
@@ -72,7 +72,7 @@
       width="200px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template> -->
       </el-table-column>
 
@@ -80,9 +80,9 @@
       label="项目状态"
       width="100px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -90,7 +90,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.withdraw_status}}
+          <p :title="scope.row.show_withdraw_status" class="nooverflow">{{scope.row.show_withdraw_status}}</p>
         </template>
       </el-table-column>
       
@@ -100,7 +100,7 @@
       width="130px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_name}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -109,7 +109,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -118,7 +118,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.created_time" class="nooverflow">{{scope.row.created_time}}</p>
         </template>
       </el-table-column>
 
@@ -127,7 +127,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -136,7 +136,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
         </template>
       </el-table-column>
 
@@ -145,7 +145,7 @@
       width="100px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template> -->
       </el-table-column>
     
@@ -388,18 +388,8 @@ export default {
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/projectWithdraw/query").then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-              this.count = res.data.page.count;
-              this.max = res.data.page.max;
-              this.page = res.data.page.page;
-              this.size = res.data.page.size;
-            }
-        });
-        }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 2,
+          request.post("/admin/projectWithdraw/query",{
+            exit_type:0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -409,10 +399,9 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        }
-        else if(this.activeName == 'last'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 3,
+        }else if(this.activeName == 'last'){
+          request.post("/admin/projectWithdraw/query",{
+            exit_type:1,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -447,7 +436,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/projectWithdraw/query").then(res => {
+        request.post("/admin/projectWithdraw/query",{
+            exit_type:0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -471,7 +462,7 @@ export default {
         // });
     },
     cancel(row){
-      this.$confirm("您确定要删除？", "提示", {
+      this.$confirm("您确定要取消？", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消"
             }).then(() => {
@@ -484,7 +475,7 @@ export default {
                     this.$message({
                         // type: res.errno === 0 ? "success" : "warning",
                         type: "success",
-                        message: '删除成功！'
+                        message: '取消成功！'
                     });
                 })
                 // .catch(res => {

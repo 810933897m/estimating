@@ -46,9 +46,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          {{scope.row.report_number}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -170,7 +170,7 @@
   </el-tabs>
     
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
+          <el-dialog style="" :append-to-body='true' title="操作" :visible.sync="dialogFormVisible">
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
@@ -259,7 +259,7 @@ export default {
           this.getAgentList();//渲染列表
         }else if(this.activeName == 'two'){
           // console.log('2')
-          request.post("/admin/Secretary/assigned").then(res => {
+          request.post("/admin/projectReview/finish").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -303,12 +303,12 @@ export default {
             }
         });
 
-        request.post("/admin/Secretary/param").then(res => {
-            if (res.code == 200) {
-              console.log(res)
-              this.outworkid1 = res.data.admin_username;
-            }
-        });
+        // request.post("/admin/Secretary/param").then(res => {
+        //     if (res.code == 200) {
+        //       console.log(res)
+        //       this.outworkid1 = res.data.admin_username;
+        //     }
+        // });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
@@ -325,7 +325,7 @@ export default {
               }
           });
         }else if(this.activeName == 'two'){
-          request.post("/admin/Secretary/assigned",{
+          request.post("/admin/projectReview/finish",{
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -405,7 +405,7 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
             request.post("/admin/projectReview/query",{
@@ -418,7 +418,7 @@ export default {
               }
           });
           }else if(this.activeName == 'two'){
-            request.post("/admin/Secretary/assigned",{
+            request.post("/admin/projectReview/finish",{
             page : currentPage,
             keyword : this.search,
           }).then(res => {

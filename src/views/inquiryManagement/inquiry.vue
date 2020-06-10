@@ -14,9 +14,10 @@
     <el-form ref="form" >
         <el-form-item>
             <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
-            <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
-            <el-button style="margin-left:0px;" plain @click="addCommodity">添加询价</el-button>
-            <el-button style="margin-left:0px;" plain @click="publicAddCommodity">添加对公询价</el-button>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+            <el-button type="primary" style="margin-left:0px;" plain @click="addCommodity">添加询价</el-button>
+            <!-- <el-button type="primary" style="margin-left:0px;" plain @click="publicAddCommodity">添加对公询价</el-button> -->
+            
         </el-form-item>
     </el-form>
 
@@ -33,6 +34,7 @@
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
+          <!-- <el-radio @change="radioChange(scope.row)" v-model="radioBtn" :label="scope.row.id">{{allNull}}</el-radio> -->
         </template>
       </el-table-column>
 
@@ -41,7 +43,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope" >
-          {{scope.row.plot_name}}
+          <p :title="scope.row.plot_name" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_name}}</p>
         </template>
       </el-table-column>
 
@@ -50,7 +52,7 @@
       width="300px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.show_merge_addr}}
+          <p :title="scope.row.show_merge_addr" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_merge_addr}}</p>
         </template>
       </el-table-column>
 
@@ -86,25 +88,61 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.house_way}}
+          <p :title="scope.row.house_way" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.house_way}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="特殊因素"
+      label="建筑面积"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.special_element}}
+          <p :title="scope.row.construct_area" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.construct_area}}</p>
         </template>
       </el-table-column>
 
+      <el-table-column
+      label="询值单价"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.ask_univalence" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_univalence}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="备注"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.remark" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.remark}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="市场人员"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.bazaar_crew" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.bazaar_crew}}</p>
+        </template>
+      </el-table-column>
+  
       <el-table-column
       label="询价银行"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.ask_bank}}
+          <p :title="scope.row.ask_bank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_bank}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="市场人员"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.ask_bank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.bazaar_crew}}</p>
         </template>
       </el-table-column>
 
@@ -117,21 +155,14 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column
-      label="市场人员"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.bazaar_crew}}
-        </template>
-      </el-table-column>
+      
 
       <el-table-column
       label="建成年代"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.activate_time}}
+          <p :title="scope.row.activate_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.activate_time}}</p>
         </template>
       </el-table-column>
 
@@ -149,25 +180,18 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.ask_price_total}}
+          <p :title="scope.row.ask_price_total" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price_total}}</p>
         </template>
       </el-table-column>
 
-      <el-table-column
-      label="建筑面积"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.construct_area}}
-        </template>
-      </el-table-column>
+      
 
       <el-table-column
       label="询价人"
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.ask_price}}
+          <p :title="scope.row.ask_price" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price}}</p>
         </template>
       </el-table-column>
 
@@ -176,7 +200,7 @@
       width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -185,25 +209,18 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_username}}
+          <p :title="scope.row.create_username" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_username}}</p>
         </template>
       </el-table-column>
 
-      <el-table-column
-      label="备注"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.remark}}
-        </template>
-      </el-table-column>
+      
 
       <el-table-column
       label="已立项"
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.show_project_status}}
+          <p :title="scope.row.show_project_status" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_project_status}}</p>
         </template>
       </el-table-column>
 
@@ -212,7 +229,8 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.show_price_status}} <!-- 0 未审核 1待审核 -->
+           <!-- 0 未审核 1待审核 -->
+          <p :title="scope.row.show_price_status" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_price_status}}</p>
         </template>
       </el-table-column>
 
@@ -230,7 +248,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.factor}}
+          <p :title="scope.row.factor" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.factor}}</p>
         </template>
       </el-table-column>
 
@@ -239,22 +257,24 @@
       width="150px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_special}}
+          <p :title="scope.row.plot_special" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_special}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="操作"
       fixed="right"
-      
       width="250px" align="center">
         <template slot-scope="scope">
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
-          
-          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
+            <p style="display:none;">{{scope.row}}</p>
+            <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button>
+            <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
+            <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
+            <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
+            <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button>
 
-          <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button>
+          
+          
         </template>
       </el-table-column>
 
@@ -288,6 +308,10 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
+        allNull : '',
+        ROW:{},
+        project_status : 1,
+        radioBtn : '',
         timestamp : [
           {
             time:'1937-5-25',
@@ -359,6 +383,7 @@ export default {
     },
     created() {
      this.getAgentList();//渲染列表
+     console.log(this.project_status)
     },
     methods: {
       getAgentList() {//初始渲染列表方法封装
@@ -389,18 +414,29 @@ export default {
             }
         });
       },
+      radioChange(row){
+        console.log(row)
+        this.ROW = row;
+        this.project_status = row.project_status;
+      },
       updateAgent(row) {//修改按钮
-        this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
+      // v-if="!scope.row.project_status"
+      console.log(row)
+          this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
+        
+        
       },
       handleChange (value) {
         this.center = value[2];
       },
       confirmDetail(row) {//点击查看询价详情
-         this.shopId = row.id;
+      console.log(row)
+        //  this.shopId = row.id;
           this.$router.push({path:'/detailInquiry',query:{id:row.id}})
       },
       addProject(row){//转立项
-         this.$router.push({path:'/addProjectInitiation',query:{row:row,id:row.id}})
+          this.$router.push({path:'/addProjectInitiation',query:{row:row,id:row.id}})
+        
       },
       //分页
       handleCurrentChange: function(currentPage){//换页

@@ -2,9 +2,18 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="未审核" name="first"></el-tab-pane>
-    <el-tab-pane label="审核成功" name="success"></el-tab-pane>
-    <el-tab-pane label="审核收回" name="last"></el-tab-pane>
+    <el-tab-pane label="对私" name="first">
+      
+    </el-tab-pane>
+
+    <el-tab-pane label="对公" name="two">
+
+    </el-tab-pane>
+
+    <el-tabs v-model="activeName1" @tab-click="handleClick1">
+      <el-tab-pane label="未审核" name="0"></el-tab-pane>
+      <el-tab-pane label="已审核" name="1"></el-tab-pane>
+    </el-tabs>
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
@@ -31,15 +40,6 @@
       </el-table-column>
 
       <el-table-column
-      label="紧急程度"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.approval_status}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
       label="流水号"
       width="120px"
       align="center">
@@ -58,34 +58,16 @@
       </el-table-column>
 
       <el-table-column
-      label="旧流水号"
-      width="150px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="旧报告编号"
+      label="项目地址"
       width="200px"
       align="center">
-        <!-- <template slot-scope="scope">
+        <template slot-scope="scope">
           {{scope.row.plot_address}}
-        </template> -->
+        </template>
       </el-table-column>
 
       <el-table-column
-      label="项目状态"
-      width="100px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目地址"
+      label="小区名称"
       width="130px"
       align="center">
         <template slot-scope="scope">
@@ -94,16 +76,7 @@
       </el-table-column>
 
       <el-table-column
-      label="小区名称"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_tale}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="受理时间"
+      label="紧急程度"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -121,7 +94,7 @@
       </el-table-column>
 
       <el-table-column
-      label="流程状态"
+      label="物业类型"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -130,29 +103,61 @@
       </el-table-column>
 
       <el-table-column
-      label="撰写人员"
+      label="项目状态"
       width="100px"
       align="center">
-        <!-- <template slot-scope="scope">
+        <template slot-scope="scope">
           {{scope.row.approval_status}}
-        </template> -->
+        </template>
       </el-table-column>
     
       <el-table-column
+      label="撰写人员"
+      width="100px"
+      v-if="activeName == 'two'"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.approval_status}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="流程状态"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.approval_status}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="立项时间"
+      v-if="activeName == 'first'"
+      width="150px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.create_time}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="分配时间"
+      v-else-if="activeName == 'two'"
+      width="150px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.finish_time}}
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="操作"
       fixed="right"
-      v-if="activeName == 'first'"
-      width="200px" align="center">
+      v-if="activeName1 =='0'"
+      width="150px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >拒绝</el-button>
-          <!-- <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">审核历史</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="submitBtn(scope.row)" >提交</el-button>
-          <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">查看详细</el-button> -->
-          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-
-          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
+          <el-button size="small" type="primary" @click="submit(scope.row)" >同意</el-button>
+          <el-button size="small" type="primary" @click="refuse(scope.row)">拒绝</el-button>
         </template>
       </el-table-column>
       
@@ -175,11 +180,11 @@
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
-              <el-form-item label="审核" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入审核建议" v-model="admin_desc"></el-input>
+              <el-form-item label="提示信息" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入提示信息" v-model="admin_desc"></el-input>
               </el-form-item>
 
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-if="tongyi" @click="outworkidBtn()">同意</el-button>
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-if="tongyi" @click="outworkidBtn()">确定</el-button>
               <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-else @click="outworkidBtn1()">拒绝</el-button>
               </div>
 
@@ -187,25 +192,6 @@
             
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
-
-          <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="上传报告文件" :visible.sync="dialogFormVisible1">
-            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <el-form-item label="文件类型" class="select" style="">
-                <el-select v-model="fileType" filterable style="width:120px;">
-                      <el-option
-                      v-for="item in fileType1"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                      </el-option>
-                </el-select>
-              </el-form-item>
-              
-            </el-form>
-          </el-dialog>
-          <!-- **************分配任务弹出框************** -->
-
   </div>
 </template>
 <script>
@@ -217,18 +203,6 @@ export default {
       return {
         tongyi : '',
         admin_desc:'',
-        ReportReviewerId: '',
-        price_status: '',
-        ask_univalence: '',
-        ask_univalence1 : [],
-        fileList:[],
-        fileType:'',
-        fileType1:[
-          {
-            label:'其它',
-            value:'1'
-          }
-        ],
         distribution:'1',
         search : '',
         ROW : {},
@@ -236,6 +210,7 @@ export default {
         options:map.options,
         activeName: 'first',
         outworkid:'',
+        activeName1:'0',
         outworkid1:[
           {
             value:'1',
@@ -255,8 +230,6 @@ export default {
           user : '',
         },
         dialogFormVisible : false,//弹出框
-        dialogFormVisible1 : false,//上传附件弹出框
-        dialogFormVisible2 : false,//报告审核人弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -277,34 +250,25 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
-      excelFileClass(param){//修改题目
-          console.log(param);
-            // let formData = new FormData();
-            // formData.append('Excelfile', param.file);
-            // request.post("/api/classroom/questions/add", formData).then(res => {
-            //     if (res.code == 200){
-            //         this.questions = res.data;
-            //     }
-            // });
+      submit(row){//同意按钮
+        this.tongyi = true;
+        this.dialogFormVisible = true;
+        this.Id = row.id;
+      },
+      refuse(row){//拒绝按钮
+        this.tongyi = false;
+        this.dialogFormVisible = true;
+        this.Id = row.id;
       },
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/changeAudit/query",{
-            seal_status : 0,
-          }).then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-              this.count = res.data.page.count;
-              this.max = res.data.page.max;
-              this.page = res.data.page.page;
-              this.size = res.data.page.size;
-            }
-        });
-        }else if(this.activeName == 'success'){
-          request.post("/admin/changeAudit/query",{
-            seal_status : 1,
-          }).then(res => {
+          this.getAgentList();//渲染列表
+        }else if(this.activeName == 'two'){
+          // console.log('2')
+          request.post("/admin/ProjectInvoice/PublicUnreviewed",{
+          invoice_examiner_status : this.activeName1,
+        }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -314,10 +278,16 @@ export default {
             }
         });
         }
-        else if(this.activeName == 'last'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 2,
-          }).then(res => {
+      },
+      handleClick1(tab, event){//改变状态
+        console.log(this.activeName)
+        if(this.activeName == 'first'){
+          this.getAgentList();//渲染列表
+        }else if(this.activeName == 'two'){
+          // console.log('2')
+          request.post("/admin/ProjectInvoice/PublicUnreviewed",{
+          invoice_examiner_status : this.activeName1,
+        }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -351,9 +321,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/changeAudit/query",{
-            seal_status : 0,
-          }).then(res => {
+        request.post("/admin/ProjectInvoice/PrivateUnreviewed",{
+          invoice_examiner_status : this.activeName1,
+        }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -362,29 +332,12 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        request.post("/admin/values/query",{
-          type : 'change_auditor',
-          name:'',
-        }).then(res => {
-            if (res.code == 200) {
-              console.log(res)
-              this.ask_univalence1 = res.data.check_user;
-              // this.agentList = res.data.list;
-            }
-        });
-
-        // request.post("/admin/outwork/param").then(res => {
-        //     if (res.code == 200) {
-        //       console.log(res)
-        //       this.outworkid1 = res.data.admin_username;
-        //     }
-        // });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/changeAudit/query",{
+          request.post("/admin/ProjectInvoice/PrivateUnreviewed",{
           keyword : this.search,
-          seal_status : 0,
+          invoice_examiner_status : this.activeName1,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -395,24 +348,10 @@ export default {
                 this.size = res.data.page.size;
               }
           });
-        }else if(this.activeName == 'success'){
-          request.post("/admin/changeAudit/query",{
+        }else if(this.activeName == 'two'){
+          request.post("/admin/ProjectInvoice/PublicUnreviewed",{
           keyword : this.search,
-          seal_status : 1,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'last'){
-          request.post("/admin/changeAudit/query",{
-          keyword : this.search,
-          seal_status : 2,
+          invoice_examiner_status : this.activeName1,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -427,108 +366,10 @@ export default {
         
       },
       AssignTasks(row){//分配任务
-        this.tongyi = true;
+        this.dialogFormVisible=true;
         console.log(row)
-        this.dialogFormVisible = true;
-        this.Id = row.id;
-      },
-      refuse(row){
-        this.tongyi = false;
-        console.log(row)
-        this.dialogFormVisible = true;
-        this.Id = row.id;
-      },
-      outworkidBtn(){//分配任务确定
-          request.post("/admin/changeAudit/submit",{
-          id : this.Id,
-          change_desc : this.admin_desc,
-          }).then(res => {
-              if (res.code == 200) {
-                this.$message({
-                    // type: res.errno === 0 ? "success" : "warning",
-                    type: "success",
-                    message: '变成成功'//提示变成成功
-                });
-                this.handleClick();
-              }
-          });
-        this.dialogFormVisible=false;
-        this.admin_desc = '';
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
-      },
-      outworkidBtn1(){//分配任务确定
-          request.post("/admin/changeAudit/refuse",{
-          id : this.Id,
-          change_desc : this.admin_desc,
-          }).then(res => {
-              if (res.code == 200) {
-                this.$message({
-                    // type: res.errno === 0 ? "success" : "warning",
-                    type: "success",
-                    message: '拒绝成功'//提示拒绝成功
-                });
-                this.handleClick();
-              }
-          });
-        this.dialogFormVisible=false;
-        this.admin_desc = '';
-        
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
-      },
-      //分页
-      handleCurrentChange: function(currentPage){//换页
-          console.log(currentPage)  
-          this.currentPage = currentPage;
-          if(this.activeName == 'first'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 0,
-              page : currentPage,
-              keyword : this.search,
-          }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 1,
-              page : currentPage,
-              keyword : this.search,
-          }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 2,
-              page : currentPage,
-              keyword : this.search,
-          }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }
-          
-      },
-      addCommodity(){//添加询价
-        this.$router.push({path:'/addInquiry'})
-      },
-      uploadBtn(row){
-        console.log(row);
-        this.dialogFormVisible1 = true;
-      },
-      submitBtn(row){//提交
-        this.ReportReviewerId = row.id;
-        this.price_status = row.price_status;
-        this.dialogFormVisible2 = true;
-        console.log(this.ReportReviewerId,this.price_status)
+        this.outworkid = row.admin_id;
+        this.ROW = row;
       },
       getInfo(row, event, column){//点击跳到综合页面
         console.log(row.id);
@@ -540,24 +381,128 @@ export default {
       })
       window.open(href, '_blank')
       },
-      submit(){
-        request.post("/admin/Auditing/affirm",{
-          id : this.ReportReviewerId,
-          price_status : this.price_status,
-          ask_univalence : this.ask_univalence,
-        }).then(res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
+      outworkidBtn(){//同意确定
+      if(this.activeName == 'first'){
+        request.post("/admin/ProjectInvoice/update",{
+          id : this.Id,
+          invoice_remark : this.admin_desc,
+          invoice_examiner_status : '1',
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
                     // type: res.errno === 0 ? "success" : "warning",
                     type: "success",
-                    message: '提交成功'//提交成功
+                    message: '同意成功'//提示同意成功
                 });
-              this.getAgentList();//渲染列表
-              // this.agentList = res.data.list;
-            }
-        });
+                this.getAgentList();
+              }
+          });
+        this.dialogFormVisible=false;
+        this.admin_desc = '';
+      }else if(this.activeName == 'two'){
+        request.post("/admin/ProjectInvoice/update",{
+          id : this.Id,
+          invoice_remark : this.admin_desc,
+          invoice_examiner_status : '0',
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '同意成功'//提示同意成功
+                });
+                this.getAgentList();
+              }
+          });
+        this.dialogFormVisible=false;
+        this.admin_desc = '';
+      }
+          
       },
+      outworkidBtn1(){//拒绝确定
+      if(this.activeName == 'first'){
+        request.post("/admin/ProjectInvoice/update",{
+          id : this.Id,
+          invoice_remark : this.admin_desc,
+          invoice_examiner_status : '0',
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '拒绝成功'//提示拒绝成功
+                });
+                this.getAgentList();
+              }
+          });
+        this.dialogFormVisible=false;
+        this.admin_desc = '';
+      }else if(this.activeName == 'two'){
+        request.post("/admin/ProjectInvoice/update",{
+          id : this.Id,
+          invoice_remark : this.admin_desc,
+          invoice_examiner_status : '0',
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '拒绝成功'//提示拒绝成功
+                });
+                this.getAgentList();
+              }
+          });
+        this.dialogFormVisible=false;
+        this.admin_desc = '';
+      }
+          
+      },
+      updateAgent(row) {//修改按钮
+        console.log(row);
+        // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
+      },
+      confirmDetail(row) {//点击查看询价详情
+         this.shopId = row.id;
+          this.$router.push({path:'/detailInquiry',query:{id:row.id}})
+      },
+      addProject(row){//转立项
+         this.$router.push({path:'/addProjectInitiation',query:{row:row,id:row.id}})
+      },
+      //分页
+      handleCurrentChange: function(currentPage){//换页
+      console.log(currentPage)  
+          this.currentPage = currentPage;
+          if(this.activeName == 'first'){
+            request.post("/admin/ProjectInvoice/PrivateUnreviewed",{
+            page : currentPage,
+            keyword : this.search,
+            invoice_examiner_status : this.activeName1,
+          }).then(res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'two'){
+            request.post("/admin/ProjectInvoice/PublicUnreviewed",{
+            page : currentPage,
+            keyword : this.search,
+            invoice_examiner_status : this.activeName1,
+          }).then(res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }
+      },
+      addCommodity(){//添加询价
+        this.$router.push({path:'/addInquiry'})
+      }
   }
 }
 </script>

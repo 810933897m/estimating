@@ -55,112 +55,74 @@
 
       <el-table-column
       label="流水号"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.serial_number}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告编号"
-      width="150px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目地址"
       width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_address}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="小区名称"
-      width="130px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.plot_name}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="紧急程度"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="报告类型"
-      width="100px"
+      width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="物业类型"
-      width="100px"
+      label="估价目的"
+      width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="项目状态"
-      width="100px"
+      label="报告号"
+      width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
-        </template>
-      </el-table-column>
-    
-      <el-table-column
-      label="撰写人员"
-      width="100px"
-      v-if="activeName == 'two'"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="流程状态"
-      width="100px"
+      label="报告地址"
+      width="300px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="立项时间"
-      v-if="activeName == 'first'"
+      label="受理时间"
       width="150px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="分配时间"
-      v-else-if="activeName == 'two'"
-      width="150px"
+      width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.finish_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="内业人员"
+      width="100px"
+      v-if="activeName == 'two'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.admin_username" class="nooverflow">{{scope.row.admin_username}}</p>
         </template>
       </el-table-column>
 
@@ -170,14 +132,9 @@
       width="150px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >任务分配</el-button>
-          <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="AssignTasks(scope.row)">重新分配</el-button>
-          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-
-          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
+          <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="AssignTasks1(scope.row)">重新分配</el-button>
         </template>
       </el-table-column>
-      
     </el-table>
     <!-- *************分页************* -->
     <el-pagination
@@ -194,7 +151,6 @@
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
-           
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
                   <el-form-item label="外采用户" class="select" style="float:left;">
@@ -202,22 +158,34 @@
                       <el-option
                       v-for="item in outworkid1"
                       :key="item.value"
-                      :label="item.label"
+                      :label="item.value"
                       :value="item.value">
                       </el-option>
                   </el-select>
                 </el-form-item>
               <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
               </div>
-
-
             </el-form>
-            <!-- </div> -->
-            <!-- <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="confirmRevision()">确定修改</el-button>
-            </div> -->
-            
+          </el-dialog>
+          <!-- **************分配任务弹出框************** -->
+
+          <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible1">
+            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
+              <div style="width:100%;position:relative;height:50px;">
+                  <el-form-item label="外采用户" class="select" style="float:left;">
+                  <el-select v-model="outworkid2" filterable style="width:120px;">
+                      <el-option
+                      v-for="item in outworkid22"
+                      :key="item.value"
+                      :label="item.value"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
+              </div>
+            </el-form>
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
   </div>
@@ -235,19 +203,10 @@ export default {
         checked:'',
         options:map.options,
         activeName: 'first',
+        outworkid2 : '',
+        outworkid22 : [],
         outworkid:'',
-        outworkid1:[
-          {
-            value:'1',
-            label: "外采用户1",
-          }, {
-            value:'2',
-            label: "外采用户2",
-          }, {
-            value:'3',
-            label: "外采用户3",
-          }
-        ],
+        outworkid1:[],
         agentList : [{
             
         },],//列表绑定
@@ -255,6 +214,7 @@ export default {
           user : '',
         },
         dialogFormVisible : false,//弹出框
+        dialogFormVisible1 : false,//弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -276,11 +236,9 @@ export default {
     },
     methods: {
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
         if(this.activeName == 'first'){
           this.getAgentList();//渲染列表
         }else if(this.activeName == 'two'){
-          // console.log('2')
           request.post("/admin/Secretary/assigned").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -290,6 +248,16 @@ export default {
               this.size = res.data.page.size;
             }
         });
+        request.post("/admin/values/query",{
+          type : 'secretary_relevance_user',
+          name :'',
+        }).then(res => {
+            if (res.code == 200) {
+              this.outworkid1 = res.data;
+              this.outworkid22 = res.data;
+            }
+        });
+        
         }
       },
       recovery(row){//回收
@@ -325,17 +293,19 @@ export default {
             }
         });
 
-        request.post("/admin/Secretary/param").then(res => {
+        request.post("/admin/values/query",{
+          type : 'secretary_relevance_user',
+          name :'',
+        }).then(res => {
             if (res.code == 200) {
-              console.log(res)
-              this.outworkid1 = res.data.admin_username;
+              this.outworkid1 = res.data;
             }
         });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
           request.post("/admin/Secretary/undistributed",{
-          keyword : this.search,
+            keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -348,7 +318,7 @@ export default {
           });
         }else if(this.activeName == 'two'){
           request.post("/admin/Secretary/assigned",{
-          keyword : this.search,
+            keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -363,16 +333,36 @@ export default {
         
       },
       AssignTasks(row){//分配任务
+        request.post("/admin/values/query",{
+          type : 'secretary_relevance_user',
+          name :'',
+        }).then(res => {
+            if (res.code == 200) {
+              this.outworkid1 = res.data;
+            }
+        });
         this.dialogFormVisible=true;
-        console.log(row)
         this.outworkid = row.admin_id;
+        this.ROW = row;
+      },
+      AssignTasks1(row){//分配任务
+        request.post("/admin/values/query",{
+          type : 'secretary_relevance_user',
+          name :'',
+        }).then(res => {
+            if (res.code == 200) {
+              this.outworkid22 = res.data;
+            }
+        });
+        this.dialogFormVisible1=true;
+        // this.outworkid = row.admin_id;
         this.ROW = row;
       },
       outworkidBtn(){//分配任务确定
         if(this.activeName == 'first'){
           request.post("/admin/Secretary/create",{
           id : this.ROW.id,
-          secretaryid : this.outworkid,
+          secretary_relevance_name : this.outworkid,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -388,7 +378,7 @@ export default {
         }else if(this.activeName == 'two'){
           request.post("/admin/Secretary/update",{
           id : this.ROW.id,
-          secretaryid : this.outworkid,
+          secretary_relevance_name : this.outworkid2,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -403,12 +393,9 @@ export default {
         this.dialogFormVisible=false;
         }
 
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
         
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
         const {href} = this.$router.resolve({
         path: '/comprehensiveList',
         query: {
@@ -418,7 +405,6 @@ export default {
       window.open(href, '_blank')
       },
       updateAgent(row) {//修改按钮
-        console.log(row);
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
       confirmDetail(row) {//点击查看询价详情
@@ -430,14 +416,12 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
             request.post("/admin/Secretary/undistributed",{
             page : currentPage,
             keyword : this.search,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
@@ -447,7 +431,6 @@ export default {
             page : currentPage,
             keyword : this.search,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }

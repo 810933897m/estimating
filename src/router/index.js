@@ -5,6 +5,9 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
+import request from "@/utils/request";
+
+import {getRoute} from '@/utils/route.js'
 
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -18,7 +21,10 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
  **/
-export const constantRouterMap = [
+// import home from "@/views/home/index";
+
+// import userList from "@/views/administrators/userList";
+ var constantRouterMap = [
     {//登录页
         path: '/login',
         component: () => import('@/views/login/index'),
@@ -54,6 +60,7 @@ export const constantRouterMap = [
         children: [{//用户列表
             path: 'userList',
             name: 'userList',
+            // component : userList,
             component: () => import('@/views/administrators/userList'),
             meta: {
                 title: '用户列表',
@@ -110,14 +117,6 @@ export const constantRouterMap = [
                 title: '报告立项',
                 icon: 'product-brand',
                 // keepAlive: true
-            }
-        },{//合同管理
-            path: 'contract',
-            name: 'contract',
-            component: () => import('@/views/inquiryManagement/contract'),
-            meta: {
-                title: '合同管理',
-                icon: 'sms-subject'
             }
         },{//添加询价
             path: '/addInquiry',
@@ -199,14 +198,6 @@ export const constantRouterMap = [
                 title:'修改报告立项',
             },
             hidden: true
-        },{//报告详情
-            path: '/comprehensiveList',
-            component: () => import('@/views/inquiryManagement/comprehensiveList'),
-            name:'comprehensiveList',
-            meta:{
-                title:'综合数据',
-            },
-            hidden: true
         },
     ],
     },{//我的项目
@@ -244,25 +235,37 @@ export const constantRouterMap = [
                     icon: 'marker',
                     // keepAlive: true
                 }
-            },{
-                path: 'ProjectReview',
-                name: 'ProjectReview',
-                component: () => import('@/views/fieldManagement/ProjectReview'),
+            }
+            // ,{
+            //     path: 'ProjectReview',
+            //     name: 'ProjectReview',
+            //     component: () => import('@/views/fieldManagement/ProjectReview'),
+            //     meta: {
+            //         title: '项目审核',
+            //         icon: 'product-brand',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{//合同管理
+                path: 'contract',
+                name: 'contract',
+                component: () => import('@/views/inquiryManagement/contract'),
                 meta: {
-                    title: '项目审核',
-                    icon: 'product-brand',
-                    // keepAlive: true
+                    title: '合同管理',
+                    icon: 'sms-subject'
                 }
-            },{
-                path: 'seal',
-                name: 'seal',
-                component: () => import('@/views/fieldManagement/seal'),
-                meta: {
-                    title: '合同盖章',
-                    icon: 'sms-new',
-                    // keepAlive: true
-                }
-            },{
+            }
+            // ,{
+            //     path: 'seal',
+            //     name: 'seal',
+            //     component: () => import('@/views/fieldManagement/seal'),
+            //     meta: {
+            //         title: '合同盖章',
+            //         icon: 'sms-new',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{
                 path: 'printing',
                 name: 'printing',
                 component: () => import('@/views/fieldManagement/printing'),
@@ -289,21 +292,32 @@ export const constantRouterMap = [
                     icon: 'product-comment',
                     // keepAlive: true
                 }
-            },{
-                path: 'application',
-                name: 'application',
-                component: () => import('@/views/fieldManagement/application'),
-                meta: {
-                    title: '项目终申',
-                    icon: 'product-list',
-                    // keepAlive: true
-                }
-            },{
+            }
+            // ,{
+            //     path: 'application',
+            //     name: 'application',
+            //     component: () => import('@/views/fieldManagement/application'),
+            //     meta: {
+            //         title: '项目终申',
+            //         icon: 'product-list',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{
                 path: 'Refund',
                 name: 'Refund',
                 component: () => import('@/views/fieldManagement/Refund'),
                 meta: {
-                    title: '退费',
+                    title: '退单撤单',
+                    icon: 'product-list',
+                    // keepAlive: true
+                }
+            },{
+                path: 'invoice',
+                name: 'invoice',
+                component: () => import('@/views/fieldManagement/invoice'),
+                meta: {
+                    title: '发票',
                     icon: 'product-list',
                     // keepAlive: true
                 }
@@ -371,16 +385,17 @@ export const constantRouterMap = [
             icon: 'marker'
         },
         children: [
+            // {
+            //     path: 'InquiryApproval',
+            //     name: 'InquiryApproval',
+            //     component: () => import('@/views/AuditManagement/InquiryApproval'),
+            //     meta: {
+            //         title: '询值单价审核',
+            //         icon: 'sms-subject',
+            //         // keepAlive: true
+            //     }
+            // },
             {
-                path: 'InquiryApproval',
-                name: 'InquiryApproval',
-                component: () => import('@/views/AuditManagement/InquiryApproval'),
-                meta: {
-                    title: '询值单价审核',
-                    icon: 'sms-subject',
-                    // keepAlive: true
-                }
-            },{
                 path: 'SecondProject',
                 name: 'SecondProject',
                 component: () => import('@/views/AuditManagement/SecondProject'),
@@ -408,6 +423,15 @@ export const constantRouterMap = [
                     // keepAlive: true
                 }
             },{
+                path: 'InvoiceReview',
+                name: 'InvoiceReview',
+                component: () => import('@/views/AuditManagement/InvoiceReview'),
+                meta: {
+                    title: '发票审核',
+                    icon: 'order',
+                    // keepAlive: true
+                }
+            },{
                 path: '/FinancialCollectionDetail',
                 name: 'FinancialCollectionDetail',
                 component: () => import('@/views/AuditManagement/FinancialCollectionDetail'),
@@ -419,6 +443,15 @@ export const constantRouterMap = [
             },
         ],
     },
+    {//综合数据
+        path: '/comprehensiveList',
+        component: () => import('@/views/inquiryManagement/comprehensiveList'),
+        name:'comprehensiveList',
+        meta:{
+            title:'综合数据',
+        },
+        hidden: true
+    },
 
     {
         path: '*',
@@ -426,11 +459,26 @@ export const constantRouterMap = [
         hidden: true
     },
     
-    
-    
 ]
+console.log(constantRouterMap)
+sessionStorage.setItem('route',JSON.stringify(constantRouterMap))
+// console.log()
+getRoute()
+// constantRouterMap = JSON.parse(sessionStorage.getItem('route'));
 
+
+console.log('1')
+console.log('1')
+// console.log(JSON.parse(sessionStorage.getItem('route1')))
+console.log(JSON.parse(sessionStorage.getItem('route1')))
+// constantRouterMap = JSON.parse(sessionStorage.getItem('route1'))
+// console.log(constantRouterMap)
+
+// constantRouterMap = JSON.parse(sessionStorage.getItem('route1'))
+// const router = JSON.parse(sessionStorage.getItem('route1'))
+// console.log(router)
 export default new Router({
+    
     // mode: 'history', //后端支持可开
     scrollBehavior: () => ({
         y: 0

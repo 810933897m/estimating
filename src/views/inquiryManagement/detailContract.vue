@@ -90,24 +90,6 @@ export default {
                 console.log(typeof this.form.bazaar_crew)
             }
         });
-        request.post("/admin/askPrice/param").then(res => {//获取选择器数据
-                // console.log(res)
-                if (res.code == 200) {
-                    this.city=res.data.param.city;//城市
-                    this.bank=res.data.param.bank;//询价银行
-                    this.factor=res.data.param.factor;//特殊因素
-                    this.factor_value=res.data.param.factor_value;//净值系数
-                    this.house_way=res.data.param.house_way;//房屋用途
-                    this.type=res.data.param.type;//房屋类型
-                    
-                    this.bazaar_crew=res.data.bazaar_crew;//市场人员
-                    this.ask_price=res.data.ask_price;//询值人员
-                    this.price_check=res.data.price_check;//价格变更审核人员
-                    
-                    this.price_check1 = res.data.price_check[0].value;
-                    // console.log(this.ask_price)
-                }
-            });
         },
         handleChange1(){
 

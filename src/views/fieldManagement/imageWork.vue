@@ -3,10 +3,6 @@
         
         <el-tabs v-model="activeName" type="card" style="position:relative;">
             <el-tab-pane label="图片信息" name="img">
-                
-            <el-button type="info" style="float:left;" @click="loadBtn()">
-                    下载材料
-            </el-button>
                 <div style="width:100%;float:left;margin-top:10px;">
                 <el-button v-for="(item,index) in list" :key="index" @click="first(index)">
                     {{item.title}}({{item.count}})
@@ -48,6 +44,14 @@
                 <div style="width:100%;float:left;margin-top:10px;">
                     <div v-for="(item,index) in slide1" :key="index" style="width:230px;float:left;margin-top:10px;">
                         <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
+                        <!-- <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;"> -->
+                        <!-- <el-form-item label="应收金额" class="form-input" prop="title" style="width:300px;float:left;"> -->
+                            <el-input v-model="item.order" style="margin-left:20px;width:70px;"></el-input>
+                            <!-- <el-button type="primary" style="margin-left:10px;width:60px;" @click="sortBtn(item.order)" plain>
+                                保存
+                            </el-button> -->
+                            <el-button type="success"  style="margin-left:15px;" icon="el-icon-check" circle  @click="sortBtn(item.guid,item.order)"></el-button>
+                        <!-- </el-form-item> -->
                         <el-button type="danger" circle icon="el-icon-delete" @click="del(item.guid)"></el-button>
                         
                     </div>
@@ -64,9 +68,6 @@
                     
                         
                     <el-tab-pane label="地图信息" name="map">
-                        <el-button type="info" style="float:left;" @click="loadBtn()">
-                                下载材料
-                        </el-button>
 
                         <el-form ref="form" label-width="120px" style="margin-top:10px;">
                             
@@ -81,15 +82,12 @@
                             <el-button @click="canvas">
                                 截屏
                             </el-button>
-
                             <!-- <el-button @click="baiduShowBtn">
                                 地图
                             </el-button> -->
 
                             <el-tabs v-model="activeName1" @tab-click="handleClick" style="float:left;width:1000px;height:600px;">
                                 <el-tab-pane label="全景图" name="first">
-                                    
-
                                     <img v-show="!baiduShow1" style="width;1000px;height:600px;" :src="bigImg" alt="">
                                 </el-tab-pane>
 
@@ -110,42 +108,9 @@
                                 </div>
                             </el-tabs>
                             
-                            
-
-                            
                         </el-form>
                 </el-tab-pane>
-            
         </el-tabs>
-
-
-   
-    <!-- <div class="demo-image__preview" v-for="(item,index) in imgs" :key="index">
-    <el-image 
-        style="width: 100px; height: 100px"
-        :src="item.src"
-        :preview-src-list="srcList">
-    </el-image>
-    </div> -->
-
-    <!-- <div> -->
-        <!-- <div style=""  >
-            <el-button style="" @click="delImage(ind)" v-for="(item,ind) in slide1" :key="ind">
-                X
-                {{ind}}
-            </el-button>
-        </div> -->
-        
-    <!-- </div> -->
-    <!-- 百度地图插件 -->
-  <!-- <baidu-map 
-  :center="center"
-   :zoom="zoom" 
-   @ready="handler" 
-   style="margin-left:20px;height:300px"
-    @click="getClickInfo" 
-    :scroll-wheel-zoom='true'></baidu-map> -->
-  
     </div>
 </template>
 
@@ -165,6 +130,7 @@ export default {
     },
     data() {
         return {
+            loader : 'all',
             showImg : false,
             suolueImg : '',
             activeName1:'first',
@@ -178,9 +144,10 @@ export default {
             longitude:"",
             latitude:"",
             index_img:'',
+            index11 : '',
             center: '中国',
       //  {lng: 109.45744048529967, lat: 36.49771311230842}
-            zoom: 13,
+            zoom: 17,
             loadUrl: '',
             dialogFormVisible : false,
             imgs: [
@@ -250,6 +217,13 @@ export default {
             this.dialogFormVisible = true;
         },
         positionBtn(){
+            // var map = new BMap.Map("allmap");          
+            // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+            // var local = new BMap.LocalSearch(map, {
+            // renderOptions:{map: map}
+            // });
+            // local.search(this.center);
+
             this.center = this.position;
             if(this.baiduShow1 == false){
                 this.baiduShow1 = true;
@@ -273,8 +247,9 @@ export default {
                 let _this = this;
                 gc.getLocation(point, function (rs) {
                     var addComp = rs.addressComponents;
-                    // console.log(rs.address);//地址信息
-                    _this.position = rs.address;
+                    // console.log(rs);//地址信息
+                    // console.log(rs.surroundingPois[0].title);//地址信息
+                    _this.position = rs.surroundingPois[0].address;
  
                 });
         // console.log(e.point.lng)
@@ -284,15 +259,18 @@ export default {
         //this.center.lng = e.point.lng
         //this.center.lat = e.point.lat
         },
-        loadBtn(){//下载材料跳转链接
-            // console.log(this.$route.query.id)
-            window.open(this.loadUrl, '_blank')
-        },
+        // loadBtn(){//下载材料跳转链接
+        //     // console.log(this.$route.query.id)
+        //     window.open(this.loadUrl, '_blank')
+        // },
         first(ind){
+            // console.log(ind)
+            this.index11= ind;
+            
             this.show1 = false;
             this.show = true;
             this.list1 = [];
-            this.list[ind].category.forEach(element => {
+            this.list[this.index11].category.forEach(element => {
                 this.list1.push(element)
             });
             // for(let i=0;i<this.list[ind].category.length;i++){
@@ -302,6 +280,7 @@ export default {
             // }
         },
         last(inx){
+            this.loader = 'one';
             this.index_img = inx;
             this.showImg = true;
             this.slide1 = [];
@@ -316,6 +295,7 @@ export default {
                 ss.guid = element.guid;
                 ss.w = 800;
                 ss.h = 800;
+                ss.order = element.order;
                 
                 this.slide1.push(ss)
                 // this.imgs.push(ss)
@@ -383,6 +363,7 @@ export default {
                             ss.title = element.title;
                             ss.w = 800;
                             ss.h = 800;
+                            ss.order = element.order;
                             this.slide1.push(ss)
                             // this.imgs.push(ss)
                             // element.thumb
@@ -401,6 +382,26 @@ export default {
             console.log(index + fileList + target)
             this.imgs = fileList
             
+        },
+        sortBtn(guid,order){//排序
+            request.post("/admin/appraisal/order",{
+                guid : guid,
+                order : order,
+            }).then(res => {
+                if(res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '排序成功'//提示排序成功
+                    });
+                    // console.log(this.loader)
+                    if(this.loader == 'all'){
+                        this.getlist();
+                    }else{
+                        this.last();
+                    }
+                }
+            })
         },
     }
 };

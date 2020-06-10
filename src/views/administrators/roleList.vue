@@ -31,7 +31,7 @@
       label="用户"
       align="center">
         <template slot-scope="scope" >
-          {{scope.row.name}}
+          <p :title="scope.row.name" class="nooverflow">{{scope.row.name}}</p>
         </template>
       </el-table-column>
 
@@ -39,7 +39,7 @@
       label="创建时间"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -47,7 +47,7 @@
       label="修改时间"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.update_time}}
+          <p :title="scope.row.update_time" class="nooverflow">{{scope.row.update_time}}</p>
         </template>
       </el-table-column>
 
@@ -106,11 +106,11 @@
 
         <!--*************查看模态框*************-->
         <el-dialog
-        title="业-任务分配--分配权限"
+        title="分配权限"
         :visible.sync="dialogVisible1"
-        width="50%" style="">
-            <el-form ref="updata" :model="form1" style="margin-bottom:30px;" label-width="90px">
-              <!-- <div style="width:40%;float:left;"> -->
+        width="50%">
+        <!-- :before-close="handleClose" -->
+            <el-form ref="updata" :model="form1" label-width="90px">
                 <el-table 
                 class="table-picture"
                 :data="roles"
@@ -134,17 +134,17 @@
                   </el-table-column>
 
                 </el-table>
-                
-                
-            </el-form>
-                <!-- <span slot="footer" class="dialog-footer" style="float:left;"> -->
-                    <el-button @click="dialogVisible1 = false">取 消</el-button>
-                    <el-button type="primary" @click="updataRoles(),dialogVisible1 = false">保存</el-button>
-                <!-- </span> -->
-        
-            
-        </el-dialog>
 
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="updataRoles(),dialogVisible1 = false">保存</el-button>
+            </span>
+        </el-dialog>
+        <!--*************查看模态框结束*************-->
+
+        
   </div>
 </template>
 <script>

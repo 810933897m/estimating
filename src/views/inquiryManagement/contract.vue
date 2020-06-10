@@ -14,8 +14,8 @@
     <el-form ref="form" >
         <el-form-item>
             <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
-            <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button>
-            <el-button style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+            <el-button type="primary" style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
         </el-form-item>
     </el-form>
 
@@ -39,7 +39,7 @@
       label="合同编号"
       align="center">
         <template slot-scope="scope" >
-          {{scope.row.contract_no}}
+          <p :title="scope.row.contract_no" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_no}}</p>
         </template>
       </el-table-column>
 
@@ -47,7 +47,7 @@
       label="甲方"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.first_party}}
+          <p :title="scope.row.first_party" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.first_party}}</p>
         </template>
       </el-table-column>
 
@@ -55,7 +55,7 @@
       label="乙方"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.second_party}}
+          <p :title="scope.row.second_party" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.second_party}}</p>
         </template>
       </el-table-column>
 
@@ -63,7 +63,7 @@
       label="合同内容"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.content}}
+          <p :title="scope.row.content" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.content}}</p>
         </template>
       </el-table-column>
 
@@ -71,7 +71,7 @@
       label="创建时间"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -79,7 +79,7 @@
       label="修改时间"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.update_time}}
+          <p :title="scope.row.update_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.update_time}}</p>
         </template>
       </el-table-column>
 
@@ -91,7 +91,7 @@
         <template slot-scope="scope">
           <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-          <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
+          <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button>
           <!-- <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
         </template>
       </el-table-column>
@@ -128,7 +128,12 @@
                 </el-form-item>
 
                 <el-form-item label="合同内容">
-                    <el-input v-model="updata.content"></el-input>
+                    <!-- <el-input v-model="updata.content"></el-input> -->
+                    <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 10}"
+                    v-model="updata.content">
+                    </el-input>
                 </el-form-item>
 
             </el-form>

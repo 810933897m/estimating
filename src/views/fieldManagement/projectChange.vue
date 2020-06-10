@@ -44,9 +44,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          {{scope.row.report_number}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -294,14 +294,14 @@
           <!-- **************分配任务弹出框************** -->
 
           <!-- 选择项目弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="选择项目" :visible.sync="dialogFormVisible2">
+          <el-dialog style="" :append-to-body='true' title="提交" :visible.sync="dialogFormVisible2">
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <el-form-item label="流水号" class="form-input" prop="title" style="width:250px;">
+              <el-form-item label="流水号" class="form-input" prop="title" style="float:left;width:300px;">
                 <el-input :disabled="true"  v-model="serial_number"></el-input>
               </el-form-item>
               
-              <el-form-item label="变更类型" class="select" style="">
-                <el-select v-model="change_type" filterable style="width:120px;">
+              <el-form-item label="变更类型" class="select" style="float:left;width:300px;">
+                <el-select v-model="change_type" filterable style="">
                       <el-option
                       v-for="item in change_type1"
                       :key="item.value"
@@ -311,12 +311,12 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="加收金额" class="form-input" prop="title" style="width:250px;">
+              <el-form-item label="加收金额" class="form-input" prop="title" style="float:left;width:300px;">
                 <el-input v-model="money"></el-input>
               </el-form-item>
 
-              <el-form-item label="变更原因" class="select" style="">
-                <el-select v-model="change_because" filterable style="width:120px;">
+              <el-form-item label="变更原因" class="select" style="float:left;width:300px;">
+                <el-select v-model="change_because" filterable style="">
                       <el-option
                       v-for="item in change_because1"
                       :key="item.value"
@@ -326,8 +326,8 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="重新看房" class="select" style="">
-                <el-select v-model="scan_room" filterable style="width:120px;">
+              <el-form-item label="重新看房" class="select" style="float:left;width:300px;">
+                <el-select v-model="scan_room" filterable style="">
                       <el-option
                       v-for="item in scan_room1"
                       :key="item.value"
@@ -337,8 +337,8 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="修改审批人" class="select" style="">
-                <el-select v-model="change_user" filterable style="width:120px;">
+              <el-form-item label="修改审批人" class="select" style="float:left;width:300px;">
+                <el-select v-model="change_user" filterable style="">
                       <el-option
                       v-for="item in change_user1"
                       :key="item.value"
@@ -348,7 +348,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="备注" class="form-input" prop="title" style="width:250px;">
+              <el-form-item label="备注" class="form-input" prop="title" style="float:left;width:300px;">
                 <el-input v-model="admin_desc"></el-input>
               </el-form-item>
 

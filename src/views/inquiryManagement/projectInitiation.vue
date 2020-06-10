@@ -6,7 +6,7 @@
                 <el-form-item>
                     <el-input v-model="search" style="width:600px;" placeholder="流水号/报告号/项目地址/小区名称/看房联系人电话/估价委托方"></el-input>
                     <el-button type="info" style="margin-left:0px;" plain >高级</el-button>
-                    <el-button type="primary" style="" plain @click="searchBtn()">搜索</el-button>
+                    <el-button type="primary" style="" plain @click="searchBtn()">查询</el-button>
                     <!-- <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button> -->
                 </el-form-item>
             </el-form>
@@ -33,70 +33,7 @@
       width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告号"
-      width="200px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_number}}
-        </template>
-      </el-table-column>
-<!-- 
-      <el-table-column
-      label="项目地址"
-      width="250px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.project_address}}
-        </template>
-      </el-table-column> -->
-
-      <el-table-column
-      label="报告地址"
-      width="300px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.show_merge_addr}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="受理时间"
-      width="200px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.create_time}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="项目分类"
-      width="200px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.project_classify}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="物业类型"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="估价目的"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.inquiry_purpose}}
+          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -105,97 +42,52 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="业务来源"
+      label="估价目的"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.source}}
+          <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="资料齐全"
-      width="120px"
+      label="报告号"
+      width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.materials_offer_way}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="业务员姓名"
-      width="120px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.ask_price_total}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="受理人"
-      width="120px"
+      label="报告地址"
+      width="300px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_username}}
+          <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="旧流水号"
-      width="100px"
+      label="立项时间"
+      width="200px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.ask_price}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
       label="旧报告号"
       width="120px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.create_time}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="估价委托方"
-      width="100px"
-      align="center">
         <template slot-scope="scope">
-          {{scope.row.valuation_principal}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="状态"
-      width="100px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.remark}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.approval_status}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="收费备注"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.fee_note}} <!-- 0 未审核 1待审核 -->
+          <p :title="scope.row.source" class="nooverflow">{{scope.row.source}}</p>
         </template>
       </el-table-column>
 
@@ -208,7 +100,8 @@
           <el-button size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
           <div v-show="dialogFormVisible" class="dialog-box"></div>
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button> -->
-          <el-button size="small" type="primary" v-if="!scope.row.report_number" @click="generateReport(scope.row)">生成报告</el-button>
+          <el-button size="small" type="primary" @click="generateReport(scope.row)">生成报告</el-button>
+          <!-- <el-button size="small" type="info" v-else disabled >生成报告</el-button> -->
         </template>
       </el-table-column>
 
@@ -225,14 +118,14 @@
 
     <!--*************修改模态框*************-->
         <el-dialog
-        title="生成报告"
+        title="生成报告号"
         :visible.sync="dialogVisible"
         width="50%">
         <!-- :before-close="handleClose" -->
             <el-form label-width="90px">
 
                 <el-form-item label="公司简称" class="select" >
-                <el-select v-model="company" filterable placeholder="请选择公司简称" style="width:250px;">
+                <el-select v-model="company" @change="reportChange" filterable placeholder="请选择" style="width:250px;">
                     <el-option
                     v-for="item in company1"
                     :key="item.value"
@@ -242,10 +135,10 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="评估类型1" class="select" >
-                <el-select v-model="assess_type1" filterable placeholder="请选择评估类型1" style="width:250px;">
+              <el-form-item label="项目分类" class="select" >
+                <el-select v-model="project_classify" filterable placeholder="请选择" style="width:250px;">
                     <el-option
-                    v-for="item in assess_type11"
+                    v-for="item in project_classify1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -253,10 +146,10 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="评估类型2" class="select" >
-                <el-select v-model="assess_type2" filterable placeholder="请选择评估类型2" style="width:250px;">
+              <el-form-item label="报告类型" class="select" >
+                <el-select v-model="report_tale" filterable placeholder="请选择评估类型2" style="width:250px;">
                     <el-option
-                    v-for="item in assess_type22"
+                    v-for="item in report_tale1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -264,34 +157,22 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="字母类型" class="select" >
-                <el-select v-model="assess_type3" filterable placeholder="请选择字母类型" style="width:250px;">
+              <el-form-item label="字母分类" class="select" >
+                <el-select v-model="Alphabetic" filterable placeholder="请选择字母类型" style="width:250px;">
                     <el-option
-                    v-for="item in assess_type33"
+                    v-for="item in Alphabetic1"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                     </el-option>
                 </el-select>
               </el-form-item>
-                <!-- <el-form-item label="昵称">
-                    <el-input v-model="updata.nickname"></el-input>
-                </el-form-item>
-
-                <el-form-item label="密码">
-                    <el-input v-model="updata.password"></el-input>
-                </el-form-item>
-
-                <el-form-item label="状态">
-                    <el-radio v-model="updata.status" label="0">正常</el-radio>
-                    <el-radio v-model="updata.status" label="1">禁用</el-radio>
-                </el-form-item> -->
 
             </el-form>
         
             <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">保 存</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">生 成</el-button>
             </span>
         </el-dialog>
         <!--*************修改模态框结束*************-->
@@ -318,12 +199,12 @@ export default {
       return {
         company : '',
         company1 : [],
-        assess_type1 : '',
-        assess_type11 : [],
-        assess_type2 : '',
-        assess_type22 : [],
-        assess_type3 : '',
-        assess_type33 : [],
+        project_classify : '',
+        project_classify1 : [],
+        report_tale : '',
+        report_tale1 : [],
+        Alphabetic : '',
+        Alphabetic1 : [],
         search : '',
         options:map.options,
         agentList : [],//列表 绑定
@@ -334,6 +215,11 @@ export default {
         formLabelWidth : '120px',
         Id : '',
         generateReportId:'',
+
+        report_number :'',
+        report_number1 : [],
+        report_number_children : '',
+        report_number_children1 : [],
 
         //*************分页变量*************
         // currentPage : 1, //初始页
@@ -353,9 +239,9 @@ export default {
           request.post("/admin/project/projectReport",{
             id : this.generateReportId,
             company : this.company,
-            assess_type1 : this.assess_type1,
-            assess_type2 : this.assess_type2,
-            assess_type3 : this.assess_type3,
+            assess_type1 : this.project_classify,
+            assess_type2 : this.report_tale,
+            assess_type3 : this.Alphabetic,
 
           }).then(res => {
             if (res.code == 200) {
@@ -367,9 +253,9 @@ export default {
               });
               this.getAgentList();
               this.company = '';
-              this.assess_type1 = '';
-              this.assess_type2 = '';
-              this.assess_type3 = '';
+              this.project_classify = '';
+              this.report_tale = '';
+              this.Alphabetic = '';
 
             }
         });
@@ -393,18 +279,65 @@ export default {
               this.size = res.data.page.size;
             }
         });
-
-        request.post("/admin/project/param").then(res => {
+        
+        request.post("/admin/projectExpress/param").then(res => {
             if (res.code == 200) {
-              this.company1 = res.data.param.report_number.company;
-              this.assess_type11 = res.data.param.report_number.assess_type1;
-              this.assess_type22 = res.data.param.report_number.assess_type2;
-              this.assess_type33 = res.data.param.report_number.assess_type3;
+              console.log(res)
             }
         });
+
+        
+        request.post("/admin/values/query",{
+          type : 'report_number_children',
+          name : '公司简称',
+        }).then(res => {
+            if (res.code == 200) {
+              console.log(res)
+              this.company1 = res.data;
+            }
+        });
+        request.post("/admin/values/query",{
+          type : 'report_number_children',
+          name : '项目分类',
+        }).then(res => {
+            if (res.code == 200) {
+              console.log(res)
+              this.project_classify1 = res.data;
+            }
+        });
+        request.post("/admin/values/query",{
+          type : 'report_number_children',
+          name : '报告类型',
+        }).then(res => {
+            if (res.code == 200) {
+              console.log(res)
+              this.report_tale1 = res.data;
+            }
+        });
+        request.post("/admin/values/query",{
+          type : 'report_number_children',
+          name : '字母分类',
+        }).then(res => {
+            if (res.code == 200) {
+              console.log(res)
+              this.Alphabetic1 = res.data;
+            }
+        });
+
     },updateAgent(row) {//修改按钮
-       this.$router.push({path:'/updateprojectInitiation',query:{id:row.id}})
+       this.$router.push({path:'/updateprojectInitiation',query:{row:row,id:row.id}})
        
+      },
+      reportChange(){//报告改变
+        request.post("/admin/values/query",{
+          type : 'report_number_children',
+          name : this.report_number,
+        }).then(res => {
+            if (res.code == 200) {
+              console.log(res)
+              this.report_number_children1 = res.data;
+            }
+        });
       },
       generateReport(row){//生成报告
         console.log(row.id)

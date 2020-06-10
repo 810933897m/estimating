@@ -51,9 +51,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          {{scope.row.report_number}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -162,7 +162,7 @@
   </el-tabs>
     
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
+          <el-dialog style="" :append-to-body='true' title="打印报告" :visible.sync="dialogFormVisible">
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">

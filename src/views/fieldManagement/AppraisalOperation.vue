@@ -2,6 +2,7 @@
 
   <div class="app-container">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tab-pane label="待领取" name="wait"></el-tab-pane>
     <el-tab-pane label="估价中" name="first"></el-tab-pane>
     <el-tab-pane label="已完成" name="last"></el-tab-pane>
 
@@ -34,7 +35,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
+          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -42,9 +43,9 @@
       label="报告编号"
       width="150px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -52,7 +53,7 @@
       width="150px"
       align="center">
         <!-- <template slot-scope="scope">
-          {{scope.row.city}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template> -->
       </el-table-column>
 
@@ -61,7 +62,7 @@
       width="200px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_address}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -70,7 +71,7 @@
       width="130px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_name}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -79,7 +80,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -88,7 +89,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -97,7 +98,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -106,7 +107,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
         </template>
       </el-table-column>
 
@@ -115,7 +116,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.updata_time" class="nooverflow">{{scope.row.updata_time}}</p>
         </template>
       </el-table-column>
     
@@ -124,7 +125,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -133,7 +134,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -142,7 +143,7 @@
       width="150px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -151,20 +152,37 @@
       width="150px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="操作"
+      v-if="activeName == 'first'"
+      fixed="right"
+      width="430px" align="center">
+        <template slot-scope="scope">
+          <el-button v-if="!scope.row.is_hang_up" size="small" type="primary" @click="Pending(scope.row)" >挂起</el-button>
+          <el-button v-else size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button>
+          <el-button size="small" type="primary" @click="loadBtn(scope.row)" >下载</el-button>
+          <el-button size="small" type="primary" @click="examineBtn(scope.row)" >审核</el-button>
+          <el-button size="small" type="primary"  @click="exploration(scope.row)">外勘</el-button>
+          <el-button size="small" type="primary" @click="imageBtn(scope.row)" >材料</el-button>
+          <el-button size="small" type="primary" @click="Printing(scope.row)">打印</el-button>  
         </template>
       </el-table-column>
 
       <el-table-column
       label="操作"
       fixed="right"
+      v-else
       width="200px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="examineBtn(scope.row)" >提交审核</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="imageBtn(scope.row)" >获取资料</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'wait'" @click="receive(scope.row)">领取</el-button>
+          
           <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="examineBtn(scope.row)">审核提交</el-button>
           <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">上传附件</el-button>
-          <el-button size="small" type="info" v-if="activeName == 'last'" @click="uploadDetail(scope.row)">附近内容</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'last'" @click="uploadDetail(scope.row)">附近内容</el-button>
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
 
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
@@ -207,9 +225,26 @@
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
+          <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="挂起" :visible.sync="dialogFormVisible2">
+           
+            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
+              <div style="width:100%;position:relative;height:50px;">
+              <el-form-item label="挂起原因" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入挂起原因" v-model="admin_desc"></el-input>
+              </el-form-item>
+
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="PendingBtn()">确定</el-button>
+              </div>
+
+            </el-form>
+            
+          </el-dialog>
+          <!-- **************分配任务弹出框************** -->
+
 
           <!-- 二次审核弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="二次审核" :visible.sync="dialogFormVisible3">
+          <el-dialog style="" :append-to-body='true' title="提交审核" :visible.sync="dialogFormVisible3">
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
@@ -267,10 +302,8 @@
                 <el-input  v-model="item.value"></el-input>
             </el-form-item>
 
+              <el-button size="small" type="primary" style="" @click="save">确定</el-button>
              <el-button size="small" type="" style="" @click="dialogFormVisible1 = false">取消</el-button>
-             <el-button size="small" type="primary" style="" @click="save">确定</el-button>
-            
-              
             </el-form>
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
@@ -302,7 +335,7 @@ export default {
         ROW : {},
         checked:'',
         options:map.options,
-        activeName: 'first',
+        activeName: 'wait',
         outworkid:'',
         outworkid1:[
           {
@@ -325,6 +358,7 @@ export default {
         formData : new FormData(),
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
+        dialogFormVisible2 : false,//挂起弹出框
         dialogFormVisible3 : false,
         disa : true,
         shopId : '',//id存储
@@ -366,6 +400,51 @@ export default {
             }
         });
       },
+      Pending(row){//挂起
+        this.dialogFormVisible2=true;
+        console.log(row)
+        this.Pendingid = row.id;
+      },
+      PendingBtn(){//挂起确定
+        request.post("/admin/appraisal/hangUp",{
+          id : this.Pendingid,
+          hang_up_content : this.admin_desc,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '挂起成功'//提示挂起成功
+                });
+                this.handleClick();
+              }
+          });
+        this.dialogFormVisible2=false;
+        this.admin_desc = '';
+      },
+      unHangUp(row){
+        this.$confirm("您确定要解挂？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/unHangUp", {
+                        id:row.id
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '解挂成功！'
+                    });
+                    this.handleClick();
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "解挂失败!"
+                    });
+                });
+            });
+      },
       excelFileClass(param){//上传附件
           console.log(param);
             let formData = new FormData();
@@ -390,10 +469,16 @@ export default {
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
-          this.getAgentList();
-          console.log('1')
+          request.post("/admin/appraisal/query").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }else if(this.activeName == 'last'){
-          console.log('2')
           request.post("/admin/appraisal/finish").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -403,7 +488,40 @@ export default {
               this.size = res.data.page.size;
             }
         });
+        }else if(this.activeName == 'wait'){
+          request.post("/admin/Appraisal/unclaimed").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }
+      },
+      receive(row){
+        this.$confirm("您确定要领取？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/Appraisal/receive", {
+                        id:row.id
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '领取成功！'
+                    });
+                    this.getAgentList();
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "领取失败!"
+                    });
+                });
+            });
       },
       recovery(row){//回收
         this.$confirm("您确定要回收？", "提示", {
@@ -428,7 +546,7 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/appraisal/query").then(res => {
+        request.post("/admin/Appraisal/unclaimed").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -439,19 +557,15 @@ export default {
         });
 
 
-        request.post("/admin/appraisal/users").then(res => {//二次人员获取
+        request.post("/admin/values/query",{
+          type : 'second_instance',
+          name : '',
+        }).then(res => {//二次人员获取
             if (res.code == 200) {
               console.log(res)
               this.twoExamine1 = res.data;
             }
         });
-
-        // request.post("/admin/outwork/param").then(res => {
-        //     if (res.code == 200) {
-        //       console.log(res)
-        //       this.outworkid1 = res.data.admin_username;
-        //     }
-        // });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
@@ -495,7 +609,7 @@ export default {
         if(this.activeName == 'first'){
           request.post("/admin/appraisal/submit",{
             id : this.Id,
-            user_id : this.twoExamine,
+            username : this.twoExamine,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -591,6 +705,17 @@ export default {
         this.uploadId = row.id;
         this.dialogFormVisible1 = true;
       },
+      loadBtn(row){//下载页面
+        request.post("/admin/appraisal/info",{
+            id : row.id
+        }).then(res => {
+            if (res.code == 200) {
+              // console.log(res)
+              // this.loadUrl = ;
+              window.open(res.data.url, '_blank')
+            }
+        });
+      },
       imageBtn(row){//图片
         this.$router.push({path:'/imageWork',query:{id:row.id}})
       },
@@ -598,6 +723,12 @@ export default {
       console.log(row.id)
         this.Id = row.id;
         this.dialogFormVisible3 = true;
+      },
+      exploration(row){//外勘
+        window.open(row.donwload_print,'_blank')
+      },
+      Printing(row){//打印
+        window.open(row.donwload_image,'_blank')
       },
   }
 }

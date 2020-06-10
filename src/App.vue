@@ -54,6 +54,20 @@ import request from "./utils/request";
 </script>
 
 <style>
+
+.el-table td, .el-table th {
+    padding: 5px 0;
+    min-width: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    position: relative;
+    text-align: left;
+}
+.nooverflow{
+  overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+}
 .el-form-item__content {
     line-height: 40px;
     position: static;

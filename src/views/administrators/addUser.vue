@@ -4,15 +4,19 @@
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-form-item label="用户名" class="form-input"  prop="title" style="width:500px;">
-                <el-input  placeholder="请输入用户名"  v-model="form.username"></el-input>
-            </el-form-item>
-
-            <el-form-item label="昵称" class="form-input" prop="title" style="width:500px;">
-                <el-input  placeholder="请输入昵称" v-model="form.nickname"></el-input>
+                <el-input  placeholder="请输入"  v-model="form.username"></el-input>
             </el-form-item>
 
             <el-form-item label="密码" class="form-input" prop="title" style="width:500px;">
-                <el-input  placeholder="请输入密码" v-model="form.password"></el-input>
+                <el-input  placeholder="请输入" v-model="form.password"></el-input>
+            </el-form-item>
+
+            <el-form-item label="邮箱" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.email"></el-input>
+            </el-form-item>
+
+            <el-form-item label="编号" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.userno"></el-input>
             </el-form-item>
 
             <el-form-item label="状态" class="form-input" prop="title" style="width:500px;">
@@ -26,8 +30,8 @@
             <!-- <el-button type="primary" style="margin-left:60%;" plain @click="inquiryBtn()">
                 询价
             </el-button> -->
-            <el-button type="primary" style="" plain @click="addCommodity()">
-                保存并复制
+            <el-button type="primary" style="margin-left:45%;" plain @click="addCommodity()">
+                添加
             </el-button>
             <!-- <el-button type="primary" style="" plain @click="addProjectCommodity()">
                 转立项
@@ -55,7 +59,8 @@ export default {
             paramFile : '',
             form : {
                 username : '',
-                nickname : '',
+                userno : '',
+                email : '',
                 password:'',
                 status : '',
             },
@@ -90,8 +95,8 @@ export default {
     created(){
        quillEditor,
     //    console.log(map.options)
-       this.getAllInquiry(),
-       this.getSelect()
+       this.getAllInquiry()
+    //    this.getSelect()
     },
     activated(){
         this.inquiryBtn()
@@ -135,7 +140,8 @@ export default {
                 
                 request.post("/admin/admin/create", {//发送数据到后台
                     username : this.form.username,
-                    nickname : this.form.nickname,
+                    userno : this.form.userno,
+                    email : this.form.email,
                     password : this.form.password,
                     status : this.form.status,
                     }).then(res => {

@@ -125,6 +125,7 @@ export default {
     },
   methods: {
     hasOneShowingChildren(children) {
+      console.log(children)
       const showingChildren = children.filter(item => {
         return !item.hidden
       })
@@ -172,6 +173,7 @@ export default {
                     }
                 }
             }
+            console.log(data)
             return data;
         }
   }

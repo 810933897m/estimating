@@ -421,7 +421,18 @@ import userList from "@/views/administrators/userList";
                     icon: 'example',
                     // keepAlive: true
                 }
-            },{
+            },
+            {
+                path: 'FinalAudit',
+                name: 'FinalAudit',
+                component: () => import('@/views/AuditManagement/FinalAudit'),
+                meta: {
+                    title: '最终审核',
+                    icon: 'example',
+                    // keepAlive: true
+                }
+            },
+            {
                 path: 'FinancialCollection',
                 name: 'FinancialCollection',
                 component: () => import('@/views/AuditManagement/FinancialCollection'),

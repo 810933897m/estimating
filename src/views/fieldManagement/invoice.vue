@@ -191,9 +191,17 @@
             {{scope.row.id}}
           </template>
         </el-table-column>
+
+        <el-table-column
+        label="开票类型"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.invoice_type}}
+          </template>
+        </el-table-column>
         
         <el-table-column
-        label="单位名称"
+        label="名称"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_company}}
@@ -209,7 +217,7 @@
         </el-table-column>
 
         <el-table-column
-        label="开票人电话"
+        label="电话"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_telephone}}
@@ -217,23 +225,23 @@
         </el-table-column>
 
         <el-table-column
-        label="开票人地址"
+        label="地址"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_address}}
           </template>
         </el-table-column>
 
-        <el-table-column
+        <!-- <el-table-column
         label="开票人姓名"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_username}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
-        label="开票人开户行"
+        label="开户行"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_bank}}
@@ -241,7 +249,7 @@
         </el-table-column>
 
         <el-table-column
-        label="开票人银行账户"
+        label="开户账户"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.invoice_bank_card}}
@@ -257,35 +265,40 @@
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="新增记录" :visible.sync="dialogFormVisible">
-           
+            
             <el-form ref="form" label-width="120px" style="width:100%;">
               <!-- <div style="width:100%;position:relative;height:50px;"> -->
 
-              <el-form-item label="单位名称" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="开票类型" class="form-input" prop="title" style="width:500px;">
+                <el-radio v-model="form.invoice_type" label="普票">普票</el-radio>
+                <el-radio v-model="form.invoice_type" label="专票">专票</el-radio>
+              </el-form-item>
+
+              <el-form-item label="名称" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_company"></el-input>
               </el-form-item>
 
-              <el-form-item label="纳税人识别码" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="识别码" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.taxpayer_identification"></el-input>
               </el-form-item>
 
-              <el-form-item label="开票人电话" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="电话" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_telephone"></el-input>
               </el-form-item>
 
-              <el-form-item label="开票人地址" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="地址" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_address"></el-input>
               </el-form-item>
 
-              <el-form-item label="开票人姓名" class="form-input" prop="title" style="width:500px;">
+              <!-- <el-form-item label="开票人姓名" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_username"></el-input>
-              </el-form-item>
+              </el-form-item> -->
 
-              <el-form-item label="开票人开户行" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="开户行" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_bank"></el-input>
               </el-form-item>
 
-              <el-form-item label="开票人银行账户" class="form-input" prop="title" style="width:500px;">
+              <el-form-item label="开户账户" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="form.invoice_bank_card"></el-input>
               </el-form-item>
 
@@ -312,7 +325,7 @@
 <script>
 import request from "@/utils/request";
 // import check from "@/views/shopAdministration/checkClerk"
-import map from '@/utils/city';
+// import map from '@/utils/city';
 export default {
     data() {
       return {
@@ -341,7 +354,7 @@ export default {
         search : '',
         ROW : {},
         checked:'',
-        options:map.options,
+        // options:map.options,
         activeName: 'first',
         outworkid:'',
         outworkid1:[
@@ -364,10 +377,11 @@ export default {
           taxpayer_identification : '',
           invoice_telephone : '',
           invoice_address : '',
-          invoice_username : '',
+          // invoice_username : '',
           invoice_bank : '',
           invoice_bank_card : '',
           Invoice_examiner_id:'',
+          invoice_type : '普票',
         },
         invoice_examiner:[],
         recordDetailList :[],//发票记录
@@ -549,7 +563,8 @@ export default {
           taxpayer_identification : this.form.taxpayer_identification,
           invoice_telephone : this.form.invoice_telephone,
           invoice_address : this.form.invoice_address,
-          invoice_username : this.form.invoice_username,
+          // invoice_username : this.form.invoice_username,
+          invoice_type : this.form.invoice_type,
           invoice_bank : this.form.invoice_bank,
           invoice_bank_card : this.form.invoice_bank_card,
           }).then(res => {
@@ -564,7 +579,7 @@ export default {
                   taxpayer_identification : '',
                   invoice_telephone : '',
                   invoice_address : '',
-                  invoice_username : '',
+                  invoice_type : '普票',
                   invoice_bank : '',
                   invoice_bank_card : '',
                 };

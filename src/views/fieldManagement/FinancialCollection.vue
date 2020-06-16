@@ -175,15 +175,15 @@
         </el-table-column>
 
         <el-table-column
-        label="转账公司"
+        label="收款日期"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.transfer_company}}
+            {{scope.row.transfer_date}}
           </template>
         </el-table-column>
 
         <el-table-column
-        label="转账人员"
+        label="收款方"
         align="center">
           <template slot-scope="scope" >
             {{scope.row.transfer_personnel}}
@@ -220,12 +220,12 @@
                   <el-input placeholder="请输入收费金额" v-model="charge_amount"></el-input>
                 </el-form-item>
 
-              <el-form-item label="转账公司" class="select" >
-                  <el-input placeholder="请输入转账公司" v-model="transfer_company"></el-input>
+              <el-form-item label="收款日期" class="select" >
+                  <el-input placeholder="请输入收款日期" v-model="transfer_date"></el-input>
                 </el-form-item>
 
-              <el-form-item label="转账人员" class="select" >
-                  <el-input placeholder="请输入转账人员" v-model="transfer_personnel"></el-input>
+              <el-form-item label="收款方" class="select" >
+                  <el-input placeholder="请输入收款方" v-model="transfer_personnel"></el-input>
                 </el-form-item>
 
                 <el-form-item label="转账备注" class="select" >
@@ -263,7 +263,7 @@ export default {
       return {
         charge_way : '',
         charge_amount : '',
-        transfer_company : '',
+        transfer_date : '',
         transfer_personnel : '',
         charge_remark : '',
 
@@ -303,7 +303,7 @@ export default {
             project_id : this.generateReportId,
             charge_way : this.charge_way,
             charge_amount : this.charge_amount,
-            transfer_company : this.transfer_company,
+            transfer_date : this.transfer_date,
             transfer_personnel : this.transfer_personnel,
             charge_remark : this.charge_remark,
           }).then(res => {
@@ -317,7 +317,7 @@ export default {
               this.getAgentList();
               this.charge_way = '';
               this.charge_amount = '';
-              this.transfer_company = '';
+              this.transfer_date = '';
               this.transfer_personnel = '';
               this.charge_remark = '';
 

@@ -26,7 +26,6 @@
       class="table-picture"
       :data="agentList"
       border
-      @cell-dblclick="getInfo"
        max-height="550"
       style="width: 100%;">
 
@@ -44,7 +43,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -373,13 +372,7 @@ export default {
       },
       getInfo(row, event, column){//点击跳到综合页面
         console.log(row.id);
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+        window.open(row.project_info_url, '_blank')
       },
       outworkidBtn(){//同意确定
       if(this.activeName == 'first'){

@@ -65,11 +65,11 @@
             </el-form-item>
 
             <el-form-item label="小区名称" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入小区地址" disabled v-model="form.plot_name"></el-input>
+                <el-input  placeholder="请输入小区名称" v-model="form.plot_name"></el-input>
             </el-form-item>
 
             <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入小区地址" disabled v-model="form.plot_address"></el-input>
+                <el-input  placeholder="请输入小区地址" v-model="form.plot_address"></el-input>
             </el-form-item>
 
             <el-form-item label="楼栋单元号" class="form-input" prop="title" style="width:300px;float:left;">
@@ -100,12 +100,16 @@
                 <el-input placeholder="请输入总楼层" v-model="form.total_floor"></el-input>
             </el-form-item>
 
-            <el-form-item label="权力性质" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入权力性质" v-model="form.activate_time"></el-input>
+            <!-- <el-form-item label="权力性质" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入权力性质" v-model="form.right_nature"></el-input>
+            </el-form-item> -->
+            <el-form-item style="position:relative;width:300px;float:left;">
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('right_nature','')">权利性质*</span>
+                <el-input  style="width:180px;" placeholder="请输入询价银行"  v-model="form.right_nature"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank','')">询价银行*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank1','')">询价银行*</span>
                 <el-input  style="width:180px;" placeholder="请输入询价银行"  v-model="form.ask_bank"></el-input>
             </el-form-item>
 
@@ -128,11 +132,15 @@
             </el-form-item>
 
             <el-form-item  label="净值系数" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入净值系数" disabled v-model="form.facto"></el-input>
+                <el-input  placeholder="请输入净值系数" disabled v-model="form.factor"></el-input>
             </el-form-item>
 
             <el-form-item label="净值总价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入净值总价" disabled v-model="form.total_prices"></el-input>
+            </el-form-item>
+
+            <el-form-item label="土地出让金" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入土地出让金" disabled v-model="form.land_leasing"></el-input>
             </el-form-item>
 
             <el-form-item label="建成年代" class="form-input" prop="title" style="width:300px;float:left;">
@@ -220,22 +228,27 @@
                 <el-input v-model="form.total_prices"></el-input>
             </el-form-item> -->
 
-            <el-form-item label="贷款机构" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.subsidiary_organ"></el-input>
+            <!-- <el-form-item label="贷款机构" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input v-model="form.lending_agency"></el-input>
+            </el-form-item> -->
+            <el-form-item class="" style="position:relative;width:300px;float:left;">
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank2','')">贷款机构*</span>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.lending_agency"></el-input>
             </el-form-item>
 
-            <el-form-item label="贷款支行" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.affiliated_agency"></el-input>
+            <el-form-item class="" style="position:relative;width:300px;float:left;">
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank_children2','')">贷款支行*</span>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.lending_bank"></el-input>
             </el-form-item>
             
             <el-form-item class="" style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank','')">所属机构*</span>
-                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.lending_agency"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.subsidiary_organ"></el-input>
               </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank_children','')">分支机构*</span>
-                <el-input  style="width:180px;" placeholder="请输入行政区"  v-model="form.lending_bank"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入行政区"  v-model="form.affiliated_agency"></el-input>
             </el-form-item>
 
             <el-form-item label="估价委托方" class="form-input" prop="title" style="width:300px;float:left;">
@@ -308,7 +321,7 @@
                 <el-input v-model="form.costs_reserved"></el-input>
             </el-form-item>
 
-            <el-form-item label="操作人员" class="select" style="float:left;">
+            <el-form-item label="查勘人" class="select" style="float:left;">
                 <el-select v-model="outworker_relevance_name" filterable style="width:120px;">
                       <el-option
                       v-for="item in outworker_relevance_name1"
@@ -619,6 +632,7 @@ export default {
                 bank_clerk : '',
                 bank_phone : '',
                 subsidiary_department : '',
+                subsidiary_department_children : '',
                 send_num : '',
                 project_classify : '',
                 inquiry_purpose : '',
@@ -815,11 +829,11 @@ export default {
         },
         addProjectInitiation(){
             console.log(this.form)
-            // if(this.form.payment_order == '先付费'){
-            //     this.form.payment_order = 0;
-            // }else{
-            //     this.form.payment_order = 1;
-            // }
+            if(this.form.payment_order == '先付费'){
+                this.form.payment_order = 0;
+            }else{
+                this.form.payment_order = 1;
+            }
             request.post("/admin/project/create",{
                 outworker_relevance_name : this.outworker_relevance_name,
 
@@ -844,17 +858,18 @@ export default {
                 plot_special : this.form.plot_special,
                 total_prices : this.form.total_prices,
                 bazaar_crew : this.form.bazaar_crew,
-                factor : this.form.facto,
+                factor : this.form.factor,
                 bank_clerk : this.form.bank_clerk,
                 bank_phone : this.form.bank_phone,
                 subsidiary_department : this.form.subsidiary_department,
+                subsidiary_department_children : this.form.subsidiary_department_children,
                 send_num : this.form.send_num,
                 subsidiary_organ : this.form.subsidiary_organ,
                 affiliated_agency : this.form.affiliated_agency,
                 
                 project_contract_id :this.checko,
                 linkman : this.linkman,
-                ask_price_id : this.$route.query.id,
+                id : this.$route.query.id,
                 
                 project_classify : this.form.project_classify,
                 inquiry_purpose : this.form.inquiry_purpose,
@@ -927,6 +942,7 @@ export default {
             }
         },
         Select(type,name){
+            this.selectBox = [];
             if(type == 'city'){
                 this.dialogVisible = true;
                 request.post("/admin/values/query",{
@@ -986,10 +1002,21 @@ export default {
                 this.dialogVisible = true;
                 request.post("/admin/values/query",{
                     type : type,
-                    name : this.form.lending_agency,
+                    name : this.form.subsidiary_organ,
                 }).then(res => {
                     if (res.code == 200) {
                         this.values_type = 'ask_bank_children';
+                        this.selectBox = res.data;
+                    }
+                });
+            }else if(type == 'ask_bank_children2'){
+                this.dialogVisible = true;
+                request.post("/admin/values/query",{
+                    type : 'ask_bank_children',
+                    name : this.form.lending_agency,
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.values_type = 'ask_bank_children2';
                         this.selectBox = res.data;
                     }
                 });
@@ -1037,14 +1064,25 @@ export default {
                         this.selectBox = res.data;
                     }
                 });
-            }else if(type == 'ask_bank'){
+            }else if(type == 'ask_bank1'){
                 this.dialogVisible = true;
                 request.post("/admin/values/query",{
-                    type : type,
+                    type : 'ask_bank',
                     name : name,
                 }).then(res => {
                     if (res.code == 200) {
-                        this.values_type = 'ask_bank';
+                        this.values_type = 'ask_bank1';
+                        this.selectBox = res.data;
+                    }
+                });
+            }else if(type == 'ask_bank2'){
+                this.dialogVisible = true;
+                request.post("/admin/values/query",{
+                    type : 'ask_bank',
+                    name : name,
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.values_type = 'ask_bank2';
                         this.selectBox = res.data;
                     }
                 });
@@ -1067,6 +1105,39 @@ export default {
                 }).then(res => {
                     if (res.code == 200) {
                         this.values_type = 'ask_price';
+                        this.selectBox = res.data;
+                    }
+                });
+            }else if(type == 'subsidiary_department'){
+                this.dialogVisible = true;
+                request.post("/admin/values/query",{
+                    type : type,
+                    name : name,
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.values_type = 'subsidiary_department';
+                        this.selectBox = res.data;
+                    }
+                });
+            }else if(type == 'subsidiary_department_children'){
+                this.dialogVisible = true;
+                request.post("/admin/values/query",{
+                    type : type,
+                    name : this.form.subsidiary_department,
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.values_type = 'subsidiary_department_children';
+                        this.selectBox = res.data;
+                    }
+                });
+            }else if(type == 'right_nature'){
+                this.dialogVisible = true;
+                request.post("/admin/values/query",{
+                    type : type,
+                    name : name,
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.values_type = 'right_nature';
                         this.selectBox = res.data;
                     }
                 });
@@ -1096,8 +1167,15 @@ export default {
                 this.form.house_way = value;
             }else if(this.values_type == 'ask_bank'){
                 this.dialogVisible = false;
-                this.form.lending_agency = value;
+                this.form.subsidiary_organ = value;
             }else if(this.values_type == 'ask_bank_children'){
+                this.dialogVisible = false;
+                this.form.affiliated_agency = value;
+            }else if(this.values_type == 'ask_bank2'){
+                this.dialogVisible = false;
+                this.form.lending_agency = value;
+            }else if(this.values_type == 'ask_bank_children2'){
+                console.log('124124')
                 this.dialogVisible = false;
                 this.form.lending_bank = value;
             }else if(this.values_type == 'project_classify'){
@@ -1112,7 +1190,7 @@ export default {
             }else if(this.values_type == 'settlement_method'){
                 this.dialogVisible = false;
                 this.form.settlement_method = value;
-            }else if(this.values_type == 'ask_bank'){
+            }else if(this.values_type == 'ask_bank1'){
                 this.dialogVisible = false;
                 this.form.ask_bank = value;
             }else if(this.values_type == 'bazaar_crew'){
@@ -1121,6 +1199,15 @@ export default {
             }else if(this.values_type == 'ask_price'){
                 this.dialogVisible = false;
                 this.form.ask_price = value;
+            }else if(this.values_type == 'subsidiary_department'){
+                this.dialogVisible = false;
+                this.form.subsidiary_department = value;
+            }else if(this.values_type == 'subsidiary_department_children'){
+                this.dialogVisible = false;
+                this.form.subsidiary_department_children = value;
+            }else if(this.values_type == 'right_nature'){
+                this.dialogVisible = false;
+                this.form.right_nature = value;
             }
         },
     }

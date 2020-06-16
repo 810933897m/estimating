@@ -1,8 +1,8 @@
 <template>
   <div class="menu-wrapper">
-    <div>
+    <!-- <div>
       1213
-    </div>
+    </div> -->
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
 
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
@@ -127,6 +127,7 @@ export default {
     hasOneShowingChildren(children) {
       console.log(children)
       const showingChildren = children.filter(item => {
+        console.log()
         return !item.hidden
       })
       if (showingChildren.length === 1) {
@@ -138,9 +139,8 @@ export default {
       // request.post("/admin/access/menu").then(res => {
       //       // console.log(res)
       //       if (res.code == 200) {
-      //         // console.log(res1)
-      //         localStorage.setItem('user_id',res.data.user.id)
-              
+      //         console.log(res)
+      //         // localStorage.setItem('user_id',res.data.user.id)
       //       }
       //   });
     },

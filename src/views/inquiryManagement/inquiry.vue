@@ -39,6 +39,15 @@
       </el-table-column>
 
       <el-table-column
+      label="流水号"
+      width="200px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="小区名称"
       width="120px"
       align="center">
@@ -254,7 +263,6 @@
 
       <el-table-column
       label="小区特殊情况"
-      width="150px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_special" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_special}}</p>
@@ -264,10 +272,10 @@
       <el-table-column
       label="操作"
       fixed="right"
-      width="250px" align="center">
+      width="200px" align="center">
         <template slot-scope="scope">
             <p style="display:none;">{{scope.row}}</p>
-            <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button>
+            <!-- <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button> -->
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
@@ -383,13 +391,13 @@ export default {
     },
     created() {
      this.getAgentList();//渲染列表
-     console.log(this.project_status)
+    //  console.log(this.project_status)
     },
     methods: {
       getAgentList() {//初始渲染列表方法封装
         this.dialogFormVisible = false;
         request.post("/admin/askPrice/query").then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -404,7 +412,7 @@ export default {
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -415,13 +423,13 @@ export default {
         });
       },
       radioChange(row){
-        console.log(row)
+        // console.log(row)
         this.ROW = row;
         this.project_status = row.project_status;
       },
       updateAgent(row) {//修改按钮
       // v-if="!scope.row.project_status"
-      console.log(row)
+      // console.log(row)
           this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
         
         
@@ -430,7 +438,7 @@ export default {
         this.center = value[2];
       },
       confirmDetail(row) {//点击查看询价详情
-      console.log(row)
+      // console.log(row)
         //  this.shopId = row.id;
           this.$router.push({path:'/detailInquiry',query:{id:row.id}})
       },
@@ -440,13 +448,13 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
           request.post("/admin/askPrice/query",{
           page : currentPage,
           keyword : this.search,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
@@ -459,8 +467,9 @@ export default {
         this.$router.push({path:'/publicAddInquiry'})
       },
       getInfo(row, event, column){
-        console.log(row.id);
-        this.dialogFormVisible = true;
+        // console.log(row.id);
+        // this.dialogFormVisible = true;
+        window.open(row.project_info_url, '_blank')
       }
   }
 }

@@ -1,23 +1,25 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <!-- <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane label="未审核" name="first"></el-tab-pane>
     <el-tab-pane label="审核成功" name="success"></el-tab-pane>
-    <el-tab-pane label="审核收回" name="last"></el-tab-pane>
+    <el-tab-pane label="审核收回" name="last"></el-tab-pane> -->
 
     <el-form ref="form" >
-        <el-form-item style="width:300px;float:left;">
-            <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+        <el-form-item>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">等待审核</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">审核通过</el-radio>
+            <el-radio v-model="activeName" label="last" @change="handleClick()">审核失败</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
-        <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
     </el-form>
 
     <el-table 
       class="table-picture"
       :data="agentList"
       border
-      @cell-dblclick="getInfo"
        max-height="550"
       style="width: 100%;">
 
@@ -31,11 +33,24 @@
       </el-table-column>
 
       <el-table-column
-      label="紧急程度"
+      v-if="activeName == 'success'"
+      label="备注"
       width="120px"
+      key="1" 
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      v-else-if="activeName == 'last'"
+      label="原因"
+      width="120px"
+      key="2" 
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
         </template>
       </el-table-column>
 
@@ -44,16 +59,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.serial_number}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告编号"
-      width="150px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_number}}
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -64,6 +70,15 @@
         <!-- <template slot-scope="scope">
           {{scope.row.city}}
         </template> -->
+      </el-table-column>
+
+      <el-table-column
+      label="报告编号"
+      width="150px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -79,9 +94,9 @@
       label="项目状态"
       width="100px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -89,7 +104,7 @@
       width="130px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_name}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -98,7 +113,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
         </template>
       </el-table-column>
 
@@ -107,7 +122,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -116,7 +131,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -125,27 +140,20 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
         </template>
-      </el-table-column>
-
-      <el-table-column
-      label="撰写人员"
-      width="100px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.approval_status}}
-        </template> -->
       </el-table-column>
     
       <el-table-column
       label="操作"
       fixed="right"
       v-if="activeName == 'first'"
-      width="200px" align="center">
+      width="100px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >拒绝</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >审核</el-button>
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >拒绝</el-button> -->
+
           <!-- <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">审核历史</el-button>
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="submitBtn(scope.row)" >提交</el-button>
           <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">查看详细</el-button> -->
@@ -168,19 +176,29 @@
     </el-pagination>
     <!-- *************分页************* -->
     
-  </el-tabs>
-    
+    <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="提示" :visible.sync="dialogFormVisibleTips">
+           
+            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
+              <div style="width:100%;position:relative;height:50px;">
+              </div>
+
+            </el-form>
+            
+          </el-dialog>
+          <!-- **************分配任务弹出框************** -->
+
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="操作" :visible.sync="dialogFormVisible">
-           
+           <p v-html="title" style="margin-left:20px;"></p>
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
               <el-form-item label="审核" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入审核建议" v-model="admin_desc"></el-input>
               </el-form-item>
 
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-if="tongyi" @click="outworkidBtn()">同意</el-button>
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-else @click="outworkidBtn1()">拒绝</el-button>
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">同意</el-button>
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn1()">拒绝</el-button>
               </div>
 
             </el-form>
@@ -254,9 +272,11 @@ export default {
         form:{
           user : '',
         },
+        title : '',
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
+        dialogFormVisibleTips : false,//报告审核人弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -290,8 +310,8 @@ export default {
       handleClick(tab, event){//改变状态
         console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/changeAudit/query",{
-            seal_status : 0,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -302,8 +322,8 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/changeAudit/query",{
-            seal_status : 1,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 1,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -315,8 +335,8 @@ export default {
         });
         }
         else if(this.activeName == 'last'){
-          request.post("/admin/ProjectSeal/query",{
-            seal_status : 2,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 2,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -351,8 +371,8 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/changeAudit/query",{
-            seal_status : 0,
+        request.post("/admin/projectChangeCheck/query",{
+            type : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -426,6 +446,10 @@ export default {
         }
         
       },
+      Tips(row){
+        this.dialogFormVisibleTips = true;
+        this.Id = row.id;
+      },
       AssignTasks(row){//分配任务
         this.tongyi = true;
         console.log(row)
@@ -433,21 +457,26 @@ export default {
         this.Id = row.id;
       },
       refuse(row){
+        request.post("/admin/projectChangeCheck/messgae",{
+          id : row.id,
+          }).then(res => {
+            this.title = res.data;
+          })
         this.tongyi = false;
         console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
       outworkidBtn(){//分配任务确定
-          request.post("/admin/changeAudit/submit",{
+          request.post("/admin/projectChangeCheck/submit",{
           id : this.Id,
-          change_desc : this.admin_desc,
+          admin_desc : this.admin_desc,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
                     // type: res.errno === 0 ? "success" : "warning",
                     type: "success",
-                    message: '变成成功'//提示变成成功
+                    message: '通过成功'//提示变成成功
                 });
                 this.handleClick();
               }
@@ -458,9 +487,9 @@ export default {
         console.log(this.outworkid);
       },
       outworkidBtn1(){//分配任务确定
-          request.post("/admin/changeAudit/refuse",{
+          request.post("/admin/projectChangeCheck/refuse",{
           id : this.Id,
-          change_desc : this.admin_desc,
+          admin_desc : this.admin_desc,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -532,13 +561,7 @@ export default {
       },
       getInfo(row, event, column){//点击跳到综合页面
         console.log(row.id);
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+        window.open(row.project_info_url, '_blank')
       },
       submit(){
         request.post("/admin/Auditing/affirm",{

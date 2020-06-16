@@ -1,46 +1,23 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="未分配" name="first">
-      
-    </el-tab-pane>
-
-    <el-tab-pane label="已分配" name="two">
-    </el-tab-pane>
 
     <el-form ref="form" >
-        <el-form-item style="width:300px;float:left;">
-            <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+        <el-form-item>
+            <el-radio v-model="distribution" label="0" @change="distributionBtn1()">未分配</el-radio>
+            <el-radio v-model="distribution" label="1" @change="distributionBtn1()">已分配</el-radio>
+            <el-radio v-model="distribution" label="2" @change="distributionBtn1()">已挂起</el-radio>
+            <el-radio v-model="distribution" label="3" @change="distributionBtn1()">审核中</el-radio>
+            <el-radio v-model="distribution" label="4" @change="distributionBtn1()">已完成</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
-            <!-- <el-form-item label="是否需要外业" class="select" style="width:300px;float:left;">
-                <el-select v-model="outworkid" filterable style="width:180px;float:left;">
-                    <el-option
-                    v-for="item in outworkid1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="外业是否完成" class="select" style="width:300px;float:left;">
-                <el-select v-model="outworkid" filterable style="width:180px;float:left;">
-                    <el-option
-                    v-for="item in outworkid1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item> -->
-              <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
     </el-form>
 
     <el-table 
       class="table-picture"
       :data="agentList"
       border
-      @cell-dblclick="getInfo"
        max-height="550"
       style="width: 100%;">
 
@@ -54,17 +31,30 @@
       </el-table-column>
 
       <el-table-column
+       label="挂起原因"
+      width="100px"
+      key="1" 
+      v-if="distribution == '2'"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.hang_up_content" class="nooverflow">{{scope.row.hang_up_content}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="流水号"
       width="200px"
+      key="22" 
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="报告类型"
       width="120px"
+      key="3" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -74,6 +64,7 @@
       <el-table-column
       label="估价目的"
       width="120px"
+      key="4" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
@@ -83,6 +74,7 @@
       <el-table-column
       label="报告号"
       width="200px"
+      key="5" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -91,7 +83,7 @@
 
       <el-table-column
       label="报告地址"
-      width="300px"
+      key="6" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
@@ -101,6 +93,7 @@
       <el-table-column
       label="受理时间"
       width="150px"
+      key="7" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -110,6 +103,7 @@
       <el-table-column
       label="分配时间"
       width="100px"
+      key="8" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -119,7 +113,8 @@
       <el-table-column
       label="内业人员"
       width="100px"
-      v-if="activeName == 'two'"
+      key="2" 
+      v-if="distribution == '1' ||distribution == '2' ||distribution == '3' ||distribution == '4' "
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.admin_username" class="nooverflow">{{scope.row.admin_username}}</p>
@@ -129,10 +124,11 @@
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="distribution == '0' ||distribution == '1'"
       width="150px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >任务分配</el-button>
-          <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="AssignTasks1(scope.row)">重新分配</el-button>
+          <el-button size="small" type="primary" v-if="distribution == '0'" @click="AssignTasks(scope.row)" >任务分配</el-button>
+          <el-button size="small" type="primary" v-if="distribution == '1'" @click="AssignTasks1(scope.row)">重新分配</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,13 +143,11 @@
     </el-pagination>
     <!-- *************分页************* -->
     
-  </el-tabs>
-    
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
+          <el-dialog style="" :append-to-body='true' title="分配" :visible.sync="dialogFormVisible">
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
-                  <el-form-item label="外采用户" class="select" style="float:left;">
+                  <el-form-item label="撰写人" class="select" style="float:left;">
                   <el-select v-model="outworkid" filterable style="width:120px;">
                       <el-option
                       v-for="item in outworkid1"
@@ -170,10 +164,10 @@
           <!-- **************分配任务弹出框************** -->
 
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible1">
+          <el-dialog style="" :append-to-body='true' title="分配" :visible.sync="dialogFormVisible1">
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
-                  <el-form-item label="外采用户" class="select" style="float:left;">
+                  <el-form-item label="撰写人" class="select" style="float:left;">
                   <el-select v-model="outworkid2" filterable style="width:120px;">
                       <el-option
                       v-for="item in outworkid22"
@@ -197,12 +191,11 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
-        distribution:'1',
+        distribution:'0',
         search : '',
         ROW : {},
         checked:'',
         options:map.options,
-        activeName: 'first',
         outworkid2 : '',
         outworkid22 : [],
         outworkid:'',
@@ -235,11 +228,15 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
-      handleClick(tab, event){//改变状态
-        if(this.activeName == 'first'){
-          this.getAgentList();//渲染列表
-        }else if(this.activeName == 'two'){
-          request.post("/admin/Secretary/assigned").then(res => {
+      distributionBtn1(){//切换单选框改变数据
+      this.dialogFormVisible = false;
+      this.agentList =[];
+        if(this.distribution == 0){
+          // console.log('未分配')
+          // this.getAgentList();//渲染列表
+          request.post("/admin/secretary/query",{
+            type : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -247,19 +244,63 @@ export default {
               this.page = res.data.page.page;
               this.size = res.data.page.size;
             }
-        });
-        request.post("/admin/values/query",{
-          type : 'secretary_relevance_user',
-          name :'',
-        }).then(res => {
+          });
+        }else if(this.distribution == 1){
+          // console.log('已分配')
+          request.post("/admin/secretary/query",{
+            type : 1,
+          }).then(res => {
             if (res.code == 200) {
-              this.outworkid1 = res.data;
-              this.outworkid22 = res.data;
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-        
+          });
+        }else if(this.distribution == 2){
+          // console.log('已回收')
+          request.post("/admin/secretary/query",{
+            type : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          // console.log('已完成')
+          request.post("/admin/secretary/query",{
+            type : 3,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          // console.log('已完成')
+          request.post("/admin/secretary/query",{
+            type : 4,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
         }
       },
+
+
       recovery(row){//回收
         this.$confirm("您确定要回收？", "提示", {
                 confirmButtonText: "确定",
@@ -283,7 +324,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/Secretary/undistributed").then(res => {
+        request.post("/admin/secretary/query",{
+            type : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -303,34 +346,72 @@ export default {
         });
 
     },serachBtn(){ // 搜索功能
-      if(this.activeName == 'first'){
-          request.post("/admin/Secretary/undistributed",{
+    if(this.distribution == 0){
+          request.post("/admin/secretary/query",{
+            type : 0,
             keyword : this.search,
-          // page : this.currentPage,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
-        }else if(this.activeName == 'two'){
-          request.post("/admin/Secretary/assigned",{
+        }else if(this.distribution == 1){
+          request.post("/admin/secretary/query",{
+            type : 1,
             keyword : this.search,
-          // page : this.currentPage,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/secretary/query",{
+            type : 2,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/secretary/query",{
+            type : 3,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/secretary/query",{
+            type : 4,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }
-        
       },
       AssignTasks(row){//分配任务
         request.post("/admin/values/query",{
@@ -359,7 +440,7 @@ export default {
         this.ROW = row;
       },
       outworkidBtn(){//分配任务确定
-        if(this.activeName == 'first'){
+        if(this.distribution == '0'){
           request.post("/admin/Secretary/create",{
           id : this.ROW.id,
           secretary_relevance_name : this.outworkid,
@@ -371,11 +452,11 @@ export default {
                     type: "success",
                     message: '分配成功'//提示修改成功
                 });
-                this.handleClick();
+                this.distributionBtn1();
               }
           });
         this.dialogFormVisible=false;
-        }else if(this.activeName == 'two'){
+        }else if(this.distribution == '1'){
           request.post("/admin/Secretary/update",{
           id : this.ROW.id,
           secretary_relevance_name : this.outworkid2,
@@ -387,22 +468,17 @@ export default {
                     type: "success",
                     message: '重新分配成功'//提示修改成功
                 });
-                this.handleClick();
+                this.dialogFormVisible1=false;
+                this.distributionBtn1();
               }
           });
-        this.dialogFormVisible=false;
+        // this.dialogFormVisible=false;
         }
 
         
       },
       getInfo(row, event, column){//点击跳到综合页面
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+      window.open(row.project_info_url, '_blank')
       },
       updateAgent(row) {//修改按钮
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
@@ -417,25 +493,77 @@ export default {
       //分页
       handleCurrentChange: function(currentPage){//换页
           this.currentPage = currentPage;
-          if(this.activeName == 'first'){
-            request.post("/admin/Secretary/undistributed",{
-            page : currentPage,
+          if(this.distribution == 0){
+          request.post("/admin/secretary/query",{
+            type : 0,
             keyword : this.search,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/Secretary/assigned",{
             page : currentPage,
-            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
-          }
+        }else if(this.distribution == 1){
+          request.post("/admin/secretary/query",{
+            type : 1,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/secretary/query",{
+            type : 2,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/secretary/query",{
+            type : 3,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/secretary/query",{
+            type : 4,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})

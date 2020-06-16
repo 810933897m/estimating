@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同信息</span></div>
+        <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">用户信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-form-item label="用户名" class="form-input"  prop="title" style="width:500px;">
@@ -138,7 +138,7 @@ export default {
         addCommodity(){//点击提交按钮
             console.log(this.form)
                 
-                request.post("/admin/admin/create", {//发送数据到后台
+                request.post("/admin//admin/create", {//发送数据到后台
                     username : this.form.username,
                     userno : this.form.userno,
                     email : this.form.email,

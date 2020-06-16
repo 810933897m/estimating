@@ -1,15 +1,18 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card">
-    <el-tab-pane label="外业跟进" name="first">
+    <!-- <el-tabs v-model="activeName" type="card">
+    <el-tab-pane label="外业跟进" name="first"> -->
       <el-form ref="form" >
         <el-form-item>
-            <el-radio v-model="distribution" label="1" @change="distributionBtn()">未分配</el-radio>
-            <el-radio v-model="distribution" label="2" @change="distributionBtn()">已分配</el-radio>
-            <el-radio v-model="distribution" label="3" @change="distributionBtn()">已回收</el-radio>
-            <el-radio v-model="distribution" label="4" @change="distributionBtn()">已完成</el-radio>
-            <el-input v-model="search" style="width:300px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-radio v-model="distribution" label="0" @change="distributionBtn1()">未分配</el-radio>
+            <el-radio v-model="distribution" label="1" @change="distributionBtn1()">待领取</el-radio>
+            <el-radio v-model="distribution" label="2" @change="distributionBtn1()">已领取</el-radio>
+            <el-radio v-model="distribution" label="3" @change="distributionBtn1()">已挂起</el-radio>
+            <el-radio v-model="distribution" label="4" @change="distributionBtn1()">已完成</el-radio>
+            <el-radio v-model="distribution" label="5" @change="distributionBtn1()">已回收</el-radio>
+            <el-radio v-model="distribution" label="6" @change="distributionBtn1()">无需外业</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
     </el-form>
@@ -17,7 +20,6 @@
     <el-table 
       class="table-picture"
       :data="agentList"
-      @cell-dblclick="getInfo"
       border
        max-height="550"
       style="width: 100%;">
@@ -25,6 +27,7 @@
       <el-table-column
        label="id"
       width="50px"
+      key="11"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -32,17 +35,30 @@
       </el-table-column>
 
       <el-table-column
+       label="挂起原因"
+      width="100px"
+      key="1" 
+      v-if="distribution == '3'"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.hang_up_content" class="nooverflow">{{scope.row.hang_up_content}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="流水号"
       width="200px"
+      key="12"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="报告类型"
       width="120px"
+      key="13"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -52,6 +68,7 @@
       <el-table-column
       label="估价目的"
       width="120px"
+      key="14"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
@@ -61,6 +78,7 @@
       <el-table-column
       label="报告号"
       width="200px"
+      key="15"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -69,7 +87,7 @@
 
       <el-table-column
       label="报告地址"
-      width="300px"
+      key="16"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
@@ -79,50 +97,54 @@
       <el-table-column
       label="受理时间"
       width="150px"
+      key="17"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="分配时间"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="查勘人员"
-      v-if="distribution == '2'||distribution == '4' "
+      v-if="distribution == '1'||distribution == '2'||distribution == '3'||distribution == '4'||distribution == '6' "
       width="100px"
+      key="18"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.admin_username" class="nooverflow">{{scope.row.admin_username}}</p>
         </template>
       </el-table-column>
 
-      <el-table-column
+       <el-table-column
       label="操作"
-      v-if="distribution == '2'"
+      v-if="distribution == '1'||distribution == '2'"
       fixed="right"
       width="200px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="distribution == 2" @click="AssignTasks(scope.row)" >重新分配</el-button>
-          <el-button size="small" type="primary" v-if="distribution == 2" @click="recovery(scope.row)" >回收</el-button>
+          <el-button size="small" type="primary"  @click="AssignTasks(scope.row)" >重新分配</el-button>
+          <el-button size="small" type="primary" @click="recovery(scope.row)" >回收</el-button>
         </template>
       </el-table-column>
 
       <el-table-column
       label="操作"
-      v-if="distribution == '1'||distribution == '3'||distribution == '4'"
+      v-else-if="distribution == '0'||distribution == '4'||distribution == '5'"
       fixed="right"
       width="130px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="distribution == 1" @click="AssignTasks(scope.row)" >分配任务</el-button>
-          <el-button size="small" type="primary" v-if="distribution == 3" @click="AssignTasks(scope.row)" >重新分配</el-button>
-          <el-button size="small" type="primary" v-if="distribution == 4" @click="generateReport(scope.row)" >生成报告</el-button>
+          <el-button size="small" type="primary" v-if="distribution == 0" @click="AssignTasks(scope.row)" >分配任务</el-button>
+          <!-- <el-button size="small" type="primary" v-if="distribution == 1" @click="AssignTasks(scope.row)" >重新分配</el-button> -->
+          <el-button size="small" type="primary" v-if="distribution == 5" @click="AssignTasks(scope.row)" >重新分配</el-button>
+          <el-button size="small" type="primary" v-if="distribution == 4" @click="generateReport(scope.row)" >生成报告号</el-button>
+          
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
 
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
@@ -141,12 +163,11 @@
     :total="count">
     </el-pagination>
     <!-- *************分页************* -->
-    </el-tab-pane>
-  </el-tabs>
+    <!-- </el-tab-pane>
+  </el-tabs> -->
     
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
-           
+          <el-dialog style="" :append-to-body='true' title="分配" :visible.sync="dialogFormVisible">
             <el-form ref="form" label-width="120px" :model="form" style="">
               <div style="width:100%;position:relative;height:50px;">
                   <el-form-item label="外采用户" class="select" style="float:left;">
@@ -172,7 +193,6 @@
         width="50%">
         <!-- :before-close="handleClose" -->
             <el-form label-width="90px">
-
                 <el-form-item label="公司简称" class="select" >
                 <el-select v-model="company" filterable placeholder="请选择" style="width:250px;">
                     <el-option
@@ -245,7 +265,7 @@ export default {
         Alphabetic : '',
         Alphabetic1 : [],
 
-        distribution:'1',
+        distribution:'0',
         search : '',
         ROW : {},
         checked:'',
@@ -276,6 +296,8 @@ export default {
         page : 1,
         size :1,
        //*************分页变量*************
+
+       hang_up_contentShow:false,
       }
     },
     created() {
@@ -290,7 +312,7 @@ export default {
                 request.post("/admin/Outwork/recycle", {
                         id:row.id
                 }).then(res => {
-                    this.distributionBtn()
+                    this.distributionBtn1()
                     // res.errno === 0 && this.getList();
                     this.$message({
                         // type: res.errno === 0 ? "success" : "warning",
@@ -305,14 +327,41 @@ export default {
                 });
             });
       },
-      distributionBtn(){//切换单选框改变数据
+      distributionBtn1(){//切换单选框改变数据
       this.dialogFormVisible = false;
-        if(this.distribution == 1){
+      this.agentList =[];
+        if(this.distribution == 0){
           // console.log('未分配')
-          this.getAgentList();//渲染列表
-        }else if(this.distribution == 2){
+          // this.getAgentList();//渲染列表
+          request.post("/admin/outwork/query",{
+            type : 0,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 1){
           // console.log('已分配')
-          request.post("/admin/Outwork/assigned").then(res => {
+          request.post("/admin/outwork/query",{
+            type : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          // console.log('已回收')
+          request.post("/admin/outwork/query",{
+            type : 2,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -322,8 +371,10 @@ export default {
             }
           });
         }else if(this.distribution == 3){
-          // console.log('已回收')
-          request.post("/admin/Outwork/recycled").then(res => {
+          // console.log('已完成')
+          request.post("/admin/outwork/query",{
+            type : 3,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -334,7 +385,35 @@ export default {
           });
         }else if(this.distribution == 4){
           // console.log('已完成')
-          request.post("/admin/Outwork/finished").then(res => {
+          request.post("/admin/outwork/query",{
+            type : 4,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 5){
+          // console.log('已完成')
+          request.post("/admin/outwork/query",{
+            type : 5,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 6){
+          // console.log('已完成')
+          request.post("/admin/outwork/query",{
+            type : 6,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -346,15 +425,19 @@ export default {
         }
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/Outwork/undistributed").then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-              this.count = res.data.page.count;
-              this.max = res.data.page.max;
-              this.page = res.data.page.page;
-              this.size = res.data.page.size;
-            }
-        });
+      this.distributionBtn1();
+        // request.post("/admin/outwork/query",{
+        //     type : 0,
+        //   }).then(res => {
+        //     if (res.code == 200) {
+        //       this.agentList = res.data.list;
+        //       this.count = res.data.page.count;
+        //       this.max = res.data.page.max;
+        //       this.page = res.data.page.page;
+        //       this.size = res.data.page.size;
+        //     }
+        //   });
+        
 
         request.post("/admin/values/query",{
           type : 'report_number_children',
@@ -399,8 +482,23 @@ export default {
         });
 
     },serachBtn(){ // 搜索功能
-      if(this.distribution == 1){
-          request.post("/admin/Outwork/undistributed",{
+      if(this.distribution == 0){
+          request.post("/admin/outwork/query",{
+          type : 0,
+          keyword : this.search,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.distribution == 1){
+          request.post("/admin/outwork/query",{
+          type : 1,
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -413,7 +511,8 @@ export default {
               }
           });
         }else if(this.distribution == 2){
-          request.post("/admin/Outwork/assigned",{
+         request.post("/admin/outwork/query",{
+          type : 2,
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -426,7 +525,8 @@ export default {
               }
           });
         }else if(this.distribution == 3){
-          request.post("/admin/Outwork/recycled",{
+          request.post("/admin/outwork/query",{
+          type : 3,
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -439,7 +539,36 @@ export default {
               }
           });
         }else if(this.distribution == 4){
-          request.post("/admin/Outwork/finished",{
+          request.post("/admin/outwork/query",{
+          type : 4,
+          keyword : this.search,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.distribution == 5){
+          request.post("/admin/outwork/query",{
+          type : 5,
+          keyword : this.search,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.distribution == 6){
+          request.post("/admin/outwork/query",{
+          type : 6,
           keyword : this.search,
           // page : this.currentPage,
           }).then(res => {
@@ -460,7 +589,7 @@ export default {
         this.ROW = row;
       },
       outworkidBtn(){//分配任务确定
-        if(this.distribution == 1){
+        if(this.distribution == 0){
           request.post("/admin/Outwork/create",{
           id : this.ROW.id,
           outworker_relevance_name : this.outworkid,
@@ -472,11 +601,11 @@ export default {
                     type: "success",
                     message: '分配成功'//提示修改成功
                 });
-                this.distributionBtn();
+                this.distributionBtn1();
               }
           });
         this.dialogFormVisible=false;
-        }else if(this.distribution == 2){
+        }else if(this.distribution == 5){
           request.post("/admin/Outwork/update",{
           id : this.ROW.id,
           outworker_relevance_name : this.outworkid,
@@ -488,11 +617,11 @@ export default {
                     type: "success",
                     message: '重新分配成功'//提示修改成功
                 });
-                this.distributionBtn();
+                this.distributionBtn1();
               }
           });
         this.dialogFormVisible=false;
-        }else if(this.distribution == 3){
+        }else if(this.distribution == 1 || this.distribution == 2){
           request.post("/admin/Outwork/update",{
           id : this.ROW.id,
           outworker_relevance_name : this.outworkid,
@@ -505,7 +634,7 @@ export default {
                     message: '重新分配成功'//提示重新分配成功
                 });
                 this.dialogFormVisible = false;
-                this.distributionBtn();
+                this.distributionBtn1();
               }
           });
         }else if(this.distribution == 4){
@@ -531,7 +660,7 @@ export default {
                 type: "success",
                 message: '生成成功'//提示修改成功
               });
-              this.getAgentList();
+              this.distributionBtn1();
               this.company = '';
               this.project_classify = '';
               this.report_tale = '';
@@ -541,13 +670,7 @@ export default {
         });
       },
       getInfo(row, event, column){//点击跳到综合页面
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+        window.open(row.project_info_url, '_blank')
       },
       updateAgent(row) {//修改按钮
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
@@ -563,37 +686,71 @@ export default {
       handleCurrentChange: function(currentPage){//换页
       // /admin/Outwork/assigned
       this.currentPage = currentPage;
-      if(this.distribution == 1){
-        request.post("/admin/Outwork/undistributed",{
+      if(this.distribution == 0){
+        request.post("/admin/outwork/query",{
           page : currentPage,
           keyword : this.search,
+          type : 0
+        }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+            }
+        });
+      }else if(this.distribution == 1){
+        request.post("/admin/outwork/query",{
+          page : currentPage,
+          keyword : this.search,
+          type : 1
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
       }else if(this.distribution == 2){
-        request.post("/admin/Outwork/assigned",{
+        request.post("/admin/outwork/query",{
           page : currentPage,
           keyword : this.search,
+          type : 2
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
       }else if(this.distribution == 3){
-        request.post("/admin/Outwork/recycled",{
+        request.post("/admin/outwork/query",{
           page : currentPage,
           keyword : this.search,
+          type : 3
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
       }else if(this.distribution == 4){
-        request.post("/admin/Outwork/finished",{
+        request.post("/admin/outwork/query",{
           page : currentPage,
           keyword : this.search,
+          type : 4
+        }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+            }
+        });
+      }else if(this.distribution == 5){
+        request.post("/admin/outwork/query",{
+          page : currentPage,
+          keyword : this.search,
+          type : 5
+        }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+            }
+        });
+      }else if(this.distribution == 6){
+        request.post("/admin/outwork/query",{
+          page : currentPage,
+          keyword : this.search,
+          type : 6
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;

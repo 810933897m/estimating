@@ -1,7 +1,7 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <!-- <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane label="等待发送" name="first"></el-tab-pane>
     <el-tab-pane label="已发送" name="success"></el-tab-pane>
 
@@ -10,13 +10,20 @@
             <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+    </el-form> -->
+    <el-form ref="form" >
+        <el-form-item>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">等待发送</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">已发送</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+        </el-form-item>
     </el-form>
 
     <el-table 
       class="table-picture"
       :data="agentList"
       border
-      @cell-dblclick="getInfo"
        max-height="550"
       style="width: 100%;">
 
@@ -29,14 +36,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="紧急程度"
       width="120px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="项目报告份数"
@@ -61,7 +68,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -103,7 +110,6 @@
 
       <el-table-column
       label="项目地址"
-      width="130px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -142,29 +148,32 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.price_status" class="nooverflow">{{scope.row.price_status}}</p>
+          <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
         </template>
-      </el-table-column>
-
-      <el-table-column
-      label="撰写人员"
-      width="100px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.approval_status}}
-          <p :title="scope.row.create_username" class="nooverflow">{{scope.row.price_status}}</p>
-        </template> -->
       </el-table-column>
     
       <el-table-column
       label="操作"
       fixed="right"
       v-if="activeName == 'first'"
-      width="200px" align="center">
+      width="300px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送快递</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="recordDetail(scope.row)" >查看记录</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >确认发送</el-button>
           </template>
       </el-table-column>
+
+      <el-table-column
+      label="操作"
+      fixed="right"
+      v-if="activeName == 'success'"
+      width="100px" align="center">
+        <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="recordDetail(scope.row)" >查看记录</el-button>
+          </template>
+      </el-table-column>
+      
       
     </el-table>
     <!-- *************分页************* -->
@@ -178,25 +187,135 @@
     </el-pagination>
     <!-- *************分页************* -->
     
-  </el-tabs>
+  <!-- </el-tabs> -->
+
+        <!--*************发送记录模态框*************-->
+        <el-dialog
+        title="发送记录"
+        :visible.sync="dialogVisibleRecordDetail"
+        width="50%">
+
+        <el-table 
+        class="table-picture"
+        :data="recordDetailList"
+        border
+        style="width: 100%;">
+
+        <el-table-column
+        label="id"
+        width="50px"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.id}}
+          </template>
+        </el-table-column>
+        
+        <el-table-column
+        label="发送分数"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="类型"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.send_type" class="nooverflow">{{scope.row.send_type}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="物品类型"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.type" class="nooverflow">{{scope.row.type}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="快递公司类型"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.express_type" class="nooverflow">{{scope.row.express_type}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="快递单号"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.express_num" class="nooverflow">{{scope.row.express_num}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="公司名字"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.company" class="nooverflow">{{scope.row.company}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="公司地址"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.company_addr" class="nooverflow">{{scope.row.company_addr}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="联系人名字"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.name" class="nooverflow">{{scope.row.name}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="联系电话"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.telephone" class="nooverflow">{{scope.row.telephone}}</p>
+          </template>
+        </el-table-column>
+
+        </el-table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************发送记录模态框*************-->
+
+        <!-- 确认发送弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="发送" :visible.sync="dialogFormVisibleBtn">
+           
+            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
+              <div style="width:100%;position:relative;height:50px;">
+              <el-form-item label="提示信息" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入提示信息" v-model="admin_desc"></el-input>
+              </el-form-item>
+
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn2()">确认</el-button>
+              </div>
+
+            </el-form>
+            
+          </el-dialog>
+          <!-- **************确认发送弹出框************** -->
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="发送报告" :visible.sync="dialogFormVisible">
            
             <el-form ref="form" label-width="120px" style="width:100%;">
               <!-- <div style="width:100%;position:relative;height:50px;"> -->
-              <el-form-item label="快递公司" class="select" style="width:300px;float:left;">
-                <el-select v-model="express_type" filterable style="">
-                      <el-option
-                      v-for="item in express_type1"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                      </el-option>
-                </el-select>
+              <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入" v-model="form.send_num"></el-input>
               </el-form-item>
 
-              <el-form-item label="发送方式" class="select" style="width:300px;float:left;">
+              <el-form-item label="类型" class="select" style="width:300px;float:left;">
                 <el-select v-model="send_type" filterable style="">
                       <el-option
                       v-for="item in send_type1"
@@ -218,32 +337,35 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="邮政编码" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.post_code"></el-input>
-              </el-form-item>
-
-              <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.send_num"></el-input>
-              </el-form-item>
-
-              <el-form-item label="公司" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.company"></el-input>
-              </el-form-item>
-
-              <el-form-item label="接收人" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.name"></el-input>
-              </el-form-item>
-
-              <el-form-item label="接收人电话" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.telephone"></el-input>
-              </el-form-item>
-
-              <el-form-item label="接收地址" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入" v-model="form.company_addr"></el-input>
+              <el-form-item label="快递公司类型" class="select" style="width:300px;float:left;">
+                <el-select v-model="form.express_type" filterable style="">
+                      <el-option
+                      v-for="item in express_type1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                </el-select>
               </el-form-item>
 
               <el-form-item label="快递单号" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.express_num"></el-input>
+              </el-form-item>
+
+              <el-form-item label="公司名字" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入" v-model="form.company"></el-input>
+              </el-form-item>
+
+              <el-form-item label="公司地址" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入" v-model="form.company_addr"></el-input>
+              </el-form-item>
+
+              <el-form-item label="联系人名字" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入" v-model="form.name"></el-input>
+              </el-form-item>
+
+              <el-form-item label="联系电话" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入" v-model="form.telephone"></el-input>
               </el-form-item>
 
               <el-button size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;margin-bottom:20px;" @click="outworkidBtn1()">报告发送</el-button>
@@ -314,9 +436,29 @@ export default {
       return {
         type:'',
         listAdd:[],
-        type1:[],
+        type1:[
+          {
+            label:'报告',
+            value : '报告'
+          },{
+            label:'发票',
+            value : '发票'
+          },
+        ],
         send_type:'',
-        send_type1:[],
+        send_type1:[
+          {
+            label:'快递',
+            value : '快递'
+          },{
+            label:'自取',
+            value : '自取'
+          },{
+            label:'市场派送',
+            value : '市场派送'
+          },
+        ],
+        recordDetailList:[],
         express_type:'',
         express_type1:[],
         tongyi : '',
@@ -356,17 +498,19 @@ export default {
             
         },],//列表绑定
         form:{
-          telephone : '',
-          post_code : '',
-          company_addr : '',
-          company : '',
-          name : '',
           send_num : '',
+          express_type : '',
           express_num : '',
+          company : '',
+          company_addr : '',
+          name : '',
+          telephone : '',
         },
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
+        dialogFormVisibleBtn : false,//确认发送弹出框
+        dialogVisibleRecordDetail: false,//确认发送弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -388,7 +532,7 @@ export default {
     },
     methods: {
       excelFileClass(param){//修改题目
-          console.log(param);
+          // console.log(param);
             // let formData = new FormData();
             // formData.append('Excelfile', param.file);
             // request.post("/api/classroom/questions/add", formData).then(res => {
@@ -398,7 +542,8 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+      this.agentList =[];
+        // console.log(this.activeName)
         if(this.activeName == 'first'){
           request.post("/admin/projectExpress/query").then(res => {
             if (res.code == 200) {
@@ -410,9 +555,7 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/projectMake/query",{
-            make_status : 2,
-          }).then(res => {
+          request.post("/admin/projectExpress/finish").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -424,14 +567,8 @@ export default {
         }
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+        // console.log(row.id);
+        window.open(row.project_info_url, '_blank')
       },
       recovery(row){//回收
         this.$confirm("您确定要回收？", "提示", {
@@ -465,11 +602,13 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        request.post("/admin/Auditing/param").then(res => {
+
+        request.post("/admin/values/query",{
+          type : 'express_type',
+          name : '',
+        }).then(res => {
             if (res.code == 200) {
-              console.log(res)
-              this.ask_univalence1 = res.data.check_user;
-              // this.agentList = res.data.list;
+              this.express_type1 = res.data;
             }
         });
 
@@ -482,9 +621,8 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/projectMake/query",{
+          request.post("/admin/projectExpress/query",{
           keyword : this.search,
-          make_status : 1,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -496,9 +634,8 @@ export default {
               }
           });
         }else if(this.activeName == 'success'){
-          request.post("/admin/projectMake/query",{
+          request.post("/admin/projectExpress/finish",{
           keyword : this.search,
-          make_status : 2,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -513,42 +650,32 @@ export default {
       },
       AssignTasks(row){//分配任务
         this.tongyi = true;
-        console.log(row)
+        // console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
       Report(row){
         this.tongyi = false;
-        console.log(row)
+        // console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
-
-        request.post("/admin/projectExpress/param",{
-          id : this.Id,
-          }).then(res => {
-              if (res.code == 200) {
-                  this.express_type1 = res.data.express_type;
-                  this.send_type1 = res.data.send_type;
-                  this.type1 = res.data.type;
-                  this.listAdd = res.data.addr;
-                  console.log(this.listAdd)
-                // this.handleClick();
-              }
-          });
       },
-      outworkidBtn1(){//报告装订
-          request.post("/admin/projectExpress/submit",{
-          id : this.Id,
-          send_num : this.form.send_num,
-          company : this.form.company,
-          company_addr : this.form.company_addr,
-          post_code : this.form.post_code,
-          name : this.form.name,
-          telephone : this.form.telephone,
-          send_type : this.send_type,
-          type : this.type,
-          express_type : this.express_type,
-          express_num : this.form.express_num,
+      refuse(row){
+        this.dialogFormVisibleBtn = true;
+        this.Id = row.id;
+      },
+      outworkidBtn1(){//发送快递
+          request.post("/admin/projectExpress/create",{
+            id : this.Id,
+            send_num : this.form.send_num,
+            send_type : this.send_type,
+            type : this.type,
+            express_type : this.form.express_type,
+            company : this.form.company,
+            company_addr : this.form.company_addr,
+            name : this.form.name,
+            telephone : this.form.telephone,
+            express_num : this.form.express_num,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -558,7 +685,6 @@ export default {
                 });
                 this.form = {
                   telephone : '',
-                  post_code : '',
                   company_addr : '',
                   company : '',
                   name : '',
@@ -572,35 +698,61 @@ export default {
               }
           });
         this.dialogFormVisible=false;
-        
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-          console.log(currentPage)  
+          // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/projectMake/query",{
-              make_status : 1,
+            request.post("/admin/projectExpress/query",{
               page : currentPage,
               keyword : this.search,
           }).then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
           });
           }else if(this.activeName == 'success'){
-            request.post("/admin/projectMake/query",{
-              make_status : 2,
+            request.post("/admin/projectExpress/finish",{
               page : currentPage,
               keyword : this.search,
           }).then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
           });
           }
+      },
+      outworkidBtn2(){
+         request.post("/admin/projectExpress/submit",{
+          id : this.Id,
+          admin_desc : this.admin_desc,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '发送成功'//提示发送成功
+                });
+                this.handleClick();
+              }
+          });
+        this.dialogFormVisibleBtn=false;
+        this.admin_desc = '';
+      },
+      recordDetail(row){//详情
+        this.dialogVisibleRecordDetail = true;
+        request.post("/admin/projectExpress/info",{
+            id : row.id,
+          }).then(res => {
+            if (res.code == 200) {
+              // console.log(res)
+              this.recordDetailList =res.data;
+
+            }
+        });
       },
   }
 }

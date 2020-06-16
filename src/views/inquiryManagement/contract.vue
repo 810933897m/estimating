@@ -108,6 +108,43 @@
     </el-pagination>
     <!-- *************分页************* -->
 
+    <!--*************添加模态框*************-->
+        <el-dialog
+        title="添加"
+        :visible.sync="dialogVisible1"
+        width="50%">
+        <!-- :before-close="handleClose" -->
+            <el-form ref="updata" :model="add" label-width="90px">
+                <el-form-item label="合同编号">
+                    <el-input v-model="add.contract_no"></el-input>
+                </el-form-item>
+
+                <el-form-item label="甲方">
+                    <el-input v-model="add.first_party"></el-input>
+                </el-form-item>
+
+                <el-form-item label="乙方">
+                    <el-input v-model="add.second_party"></el-input>
+                </el-form-item>
+
+                <el-form-item label="合同内容">
+                    <!-- <el-input v-model="updata.content"></el-input> -->
+                    <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 10}"
+                    v-model="add.content">
+                    </el-input>
+                </el-form-item>
+
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevision1(),dialogVisible1 = false">保 存</el-button>
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************添加模态框结束*************-->
+
     <!--*************修改模态框*************-->
         <el-dialog
         title="修改"
@@ -139,8 +176,8 @@
             </el-form>
         
             <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">保 存</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="confirmRevision(),dialogVisible = false">修 改</el-button>
             </span>
         </el-dialog>
         <!--*************修改模态框结束*************-->
@@ -155,9 +192,16 @@ export default {
     data() {
       return {
         dialogVisible: false,
+        dialogVisible1: false,
         timestamp : [
         ],
         updata:{
+          contract_no : '',
+          first_party : '',
+          second_party : '',
+          content : '',
+        },
+        add:{
           contract_no : '',
           first_party : '',
           second_party : '',
@@ -193,7 +237,7 @@ export default {
       getAgentList() {//初始渲染列表方法封装
         this.dialogFormVisible = false;
         request.post("/admin/contractManagement/query").then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -208,7 +252,7 @@ export default {
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -224,12 +268,36 @@ export default {
         request.post("/admin/contractManagement/get",{//获取修改原数据
           id : row.id,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.updata = res.data;
             }
         });
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
+      },
+      confirmRevision1(){//合同添加
+            request.post("/admin/contractManagement/create", {//发送数据到后台
+              contract_no : this.add.contract_no,
+              first_party : this.add.first_party,
+              // construct_area : this.add.construct_area,
+              second_party : this.add.second_party,
+              content : this.add.content,
+            }).then(res => {
+                  // console.log(res)
+              if(res.code == 200){
+                    this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '添加成功'//提示添加成功
+              });
+            this.getAgentList();
+            this.dialogVisible1 = false;
+            this.add.contract_no ='';
+            this.add.first_party ='';
+            this.add.second_party ='';
+            this.add.content ='';
+          }
+        });
       },
       confirmRevision(){//确认修改
         request.post("/admin/contractManagement/update",{
@@ -239,7 +307,7 @@ export default {
           second_party : this.updata.second_party,
           content : this.updata.content,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.$message({
                   // type: res.errno === 0 ? "success" : "warning",
@@ -262,23 +330,24 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
           request.post("/admin/contractManagement/query",{
           page : currentPage,
           keyword : this.search,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
       },
       addCommodity(){//添加询价
-        this.$router.push({path:'/addContract'})
+        // this.$router.push({path:'/addContract'})
+        this.dialogVisible1 = true;
       },
       getInfo(row, event, column){
-        console.log(row.id);
+        // console.log(row.id);
         this.dialogFormVisible = true;
       }
   }

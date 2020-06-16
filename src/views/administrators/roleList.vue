@@ -98,8 +98,8 @@
             </el-form>
         
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="confirmRevision(),dialogVisible = false">修 改</el-button>
+                <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
         </el-dialog>
         <!--*************修改模态框结束*************-->
@@ -138,8 +138,8 @@
             </el-form>
         
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible1 = false">取 消</el-button>
                 <el-button type="primary" @click="updataRoles(),dialogVisible1 = false">保存</el-button>
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
             </span>
         </el-dialog>
         <!--*************查看模态框结束*************-->
@@ -195,7 +195,7 @@ export default {
     },
     methods: {
       allCheck(row){//多选框全选反选
-        console.log(row)
+        // console.log(row)
         if(row.used == true){
           row.children.forEach(element => {
             element.used = true;
@@ -257,7 +257,7 @@ export default {
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -270,10 +270,10 @@ export default {
       updateAgent(row) {//修改按钮
       this.UpId =row.id;
         this.dialogVisible = true;
-        request.post("/admin/admin/get",{//获取修改原数据
+        request.post("/admin//admin/get",{//获取修改原数据
           id : row.id,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.updata = res.data;
               this.updata.status = res.data.status+'';
@@ -283,13 +283,13 @@ export default {
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
       confirmRevision(){//确认修改
-        request.post("/admin/admin/update",{
+        request.post("/admin//admin/update",{
           id : this.UpId,
           nickname : this.updata.nickname,
           password : this.updata.password,
           status : Number(this.updata.status),
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.$message({
                   // type: res.errno === 0 ? "success" : "warning",
@@ -336,13 +336,13 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
-          request.post("/admin/admin/query",{
+          request.post("/admin//admin/query",{
           page : currentPage,
           keyword : this.search,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
             }

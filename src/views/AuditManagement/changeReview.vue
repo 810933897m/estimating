@@ -2,19 +2,15 @@
 
   <div class="app-container">
     <!-- <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="待打印" name="first"></el-tab-pane>
-    <el-tab-pane label="已打印" name="success"></el-tab-pane>
+    <el-tab-pane label="未审核" name="first"></el-tab-pane>
+    <el-tab-pane label="审核成功" name="success"></el-tab-pane>
+    <el-tab-pane label="审核收回" name="last"></el-tab-pane> -->
 
     <el-form ref="form" >
-        <el-form-item style="width:300px;float:left;">
-            <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
-        </el-form-item>
-        <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
-    </el-form> -->
-    <el-form ref="form" >
         <el-form-item>
-            <el-radio v-model="activeName" label="first" @change="handleClick()">待打印</el-radio>
-            <el-radio v-model="activeName" label="success" @change="handleClick()">已打印</el-radio>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">等待审核</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">审核通过</el-radio>
+            <el-radio v-model="activeName" label="last" @change="handleClick()">审核失败</el-radio>
             <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
@@ -37,26 +33,42 @@
       </el-table-column>
 
       <el-table-column
-      label="估价师"
+      v-if="activeName == 'success'"
+      label="备注"
       width="120px"
+      key="1" 
       align="center">
         <template slot-scope="scope">
-          {{scope.row.valuer}}
+          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      v-if="activeName == 'last'"
+      label="原因"
+      width="120px"
+      key="2" 
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="流水号"
       width="120px"
+      key="3" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
+      
       <el-table-column
       label="报告编号"
       width="150px"
+      key="4" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -64,26 +76,9 @@
       </el-table-column>
 
       <el-table-column
-      label="旧流水号"
-      width="150px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="旧报告编号"
-      width="200px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
       label="项目状态"
       width="100px"
+      key="5" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
@@ -92,15 +87,18 @@
 
       <el-table-column
       label="项目地址"
+      width="130px"
+      key="6" 
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="小区名称"
       width="100px"
+      key="7" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
@@ -110,6 +108,7 @@
       <el-table-column
       label="受理时间"
       width="100px"
+      key="8" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -119,6 +118,7 @@
       <el-table-column
       label="报告类型"
       width="100px"
+      key="9" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -128,22 +128,31 @@
       <el-table-column
       label="流程状态"
       width="100px"
+      key="10" 
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
-
+    
       <el-table-column
       label="操作"
       fixed="right"
       v-if="activeName == 'first'"
-      width="320px" align="center">
+      width="100px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="PrintFlow(scope.row)" >打印流程单</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="setValuer(scope.row)" >设置估价师</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >确认打印</el-button>
-          </template>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >审核</el-button>
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)" >拒绝</el-button> -->
+
+          <!-- <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">审核历史</el-button>
+          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="submitBtn(scope.row)" >提交</el-button>
+          <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">查看详细</el-button> -->
+          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
+
+          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
+          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
+        </template>
       </el-table-column>
       
     </el-table>
@@ -158,18 +167,11 @@
     </el-pagination>
     <!-- *************分页************* -->
     
-  <!-- </el-tabs> -->
-    
-          <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="打印" :visible.sync="dialogFormVisible">
+    <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="提示" :visible.sync="dialogFormVisibleTips">
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
-              <el-form-item label="提示信息" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入提示信息" v-model="admin_desc"></el-input>
-              </el-form-item>
-
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn1()">确认</el-button>
               </div>
 
             </el-form>
@@ -178,23 +180,20 @@
           <!-- **************分配任务弹出框************** -->
 
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="设置" :visible.sync="dialogFormVisibleValuer">
-           
-            <el-form ref="form" label-width="120px" :model="form" style="">
+          <el-dialog style="" :append-to-body='true' title="操作" :visible.sync="dialogFormVisible">
+           <p v-html="title" style="margin-left:20px;"></p>
+            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
-                  <el-form-item label="估价师" class="select" style="float:left;">
-                  <el-select v-model="valuer" filterable style="">
-                      <el-option
-                      v-for="item in valuer1"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                      </el-option>
-                  </el-select>
-                </el-form-item>
-              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
+              <el-form-item label="审核" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input  placeholder="请输入审核建议" v-model="admin_desc"></el-input>
+              </el-form-item>
+
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">同意</el-button>
+              <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn1()">拒绝</el-button>
               </div>
+
             </el-form>
+            
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
@@ -239,7 +238,7 @@ export default {
             value:'1'
           }
         ],
-        distribution:'0',
+        distribution:'1',
         search : '',
         ROW : {},
         checked:'',
@@ -264,12 +263,11 @@ export default {
         form:{
           user : '',
         },
+        title : '',
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
-        dialogFormVisibleValuer : false,//打印师弹出框
-        valuer:'',
-        valuer1:[],
+        dialogFormVisibleTips : false,//报告审核人弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -304,7 +302,9 @@ export default {
       this.agentList =[];
         // console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/projectPrint/query").then(res => {
+          request.post("/admin/projectChangeCheck/query",{
+            type : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -314,7 +314,22 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/projectPrint/finish").then(res => {
+          request.post("/admin/projectChangeCheck/query",{
+            type : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if(this.activeName == 'last'){
+          request.post("/admin/projectChangeCheck/query",{
+            type : 2,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -348,7 +363,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/projectPrint/query").then(res => {
+        request.post("/admin/projectChangeCheck/query",{
+            type : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -358,18 +375,28 @@ export default {
             }
         });
         request.post("/admin/values/query",{
-          type : 'valuer_user',
-          name : '',
+          type : 'change_auditor',
+          name:'',
         }).then(res => {
             if (res.code == 200) {
-              this.valuer1 = res.data;
+              // console.log(res)
+              this.ask_univalence1 = res.data.check_user;
+              // this.agentList = res.data.list;
             }
         });
 
+        // request.post("/admin/outwork/param").then(res => {
+        //     if (res.code == 200) {
+        //       console.log(res)
+        //       this.outworkid1 = res.data.admin_username;
+        //     }
+        // });
+
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/projectPrint/query",{
+          request.post("/admin/changeAudit/query",{
           keyword : this.search,
+          seal_status : 0,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -381,8 +408,23 @@ export default {
               }
           });
         }else if(this.activeName == 'success'){
-          request.post("/admin/projectPrint/finish",{
+          request.post("/admin/changeAudit/query",{
           keyword : this.search,
+          seal_status : 1,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'last'){
+          request.post("/admin/changeAudit/query",{
+          keyword : this.search,
+          seal_status : 2,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -394,10 +436,11 @@ export default {
               }
           });
         }
+        
       },
-      getInfo(row, event, column){//点击跳到综合页面
-        // console.log(row.id);
-        window.open(row.project_info_url, '_blank')
+      Tips(row){
+        this.dialogFormVisibleTips = true;
+        this.Id = row.id;
       },
       AssignTasks(row){//分配任务
         this.tongyi = true;
@@ -406,34 +449,18 @@ export default {
         this.Id = row.id;
       },
       refuse(row){
+        request.post("/admin/projectChangeCheck/messgae",{
+          id : row.id,
+          }).then(res => {
+            this.title = res.data;
+          })
         this.tongyi = false;
         // console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
-      setValuer(row){//打印师
-          this.dialogFormVisibleValuer = true;
-          this.Id = row.id;
-      },
-      outworkidBtn(){//打印师确认
-        request.post("/admin/projectPrint/valuer",{
-          id : this.Id,
-          username : this.valuer ,
-          }).then(res => {
-              if (res.code == 200) {
-                this.$message({
-                    // type: res.errno === 0 ? "success" : "warning",
-                    type: "success",
-                    message: '设置成功'//提示设置成功
-                });
-                this.handleClick();
-              }
-          });
-        this.dialogFormVisibleValuer=false;
-        this.valuer = '';
-      },
-      outworkidBtn1(){//打印报告
-          request.post("/admin/projectPrint/submit",{
+      outworkidBtn(){//分配任务确定
+          request.post("/admin/projectChangeCheck/submit",{
           id : this.Id,
           admin_desc : this.admin_desc,
           }).then(res => {
@@ -441,7 +468,7 @@ export default {
                 this.$message({
                     // type: res.errno === 0 ? "success" : "warning",
                     type: "success",
-                    message: '打印成功'//提示打印成功
+                    message: '通过成功'//提示变成成功
                 });
                 this.handleClick();
               }
@@ -451,12 +478,33 @@ export default {
         // console.log(this.ROW.id);
         // console.log(this.outworkid);
       },
+      outworkidBtn1(){//分配任务确定
+          request.post("/admin/projectChangeCheck/refuse",{
+          id : this.Id,
+          admin_desc : this.admin_desc,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '拒绝成功'//提示拒绝成功
+                });
+                this.handleClick();
+              }
+          });
+        this.dialogFormVisible=false;
+        this.admin_desc = '';
+        
+        // console.log(this.ROW.id);
+        // console.log(this.outworkid);
+      },
       //分页
       handleCurrentChange: function(currentPage){//换页
           // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/projectPrint/query",{
+            request.post("/admin/changeAudit/query",{
+              seal_status : 0,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -465,8 +513,20 @@ export default {
                 this.agentList = res.data.list;
               }
           });
-          }else if(this.activeName == 'success'){
-            request.post("/admin/projectPrint/finish",{
+          }else if(this.activeName == 'two'){
+            request.post("/admin/changeAudit/query",{
+              seal_status : 1,
+              page : currentPage,
+              keyword : this.search,
+          }).then(res => {
+              // console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'two'){
+            request.post("/admin/changeAudit/query",{
+              seal_status : 2,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -476,9 +536,42 @@ export default {
               }
           });
           }
+          
       },
-      PrintFlow(row){//打印流程单
-        window.open(row.donwload_excel, '_blank')
+      addCommodity(){//添加询价
+        this.$router.push({path:'/addInquiry'})
+      },
+      uploadBtn(row){
+        // console.log(row);
+        this.dialogFormVisible1 = true;
+      },
+      submitBtn(row){//提交
+        this.ReportReviewerId = row.id;
+        this.price_status = row.price_status;
+        this.dialogFormVisible2 = true;
+        // console.log(this.ReportReviewerId,this.price_status)
+      },
+      getInfo(row, event, column){//点击跳到综合页面
+        // console.log(row.id);
+        window.open(row.project_info_url, '_blank')
+      },
+      submit(){
+        request.post("/admin/Auditing/affirm",{
+          id : this.ReportReviewerId,
+          price_status : this.price_status,
+          ask_univalence : this.ask_univalence,
+        }).then(res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '提交成功'//提交成功
+                });
+              this.getAgentList();//渲染列表
+              // this.agentList = res.data.list;
+            }
+        });
       },
   }
 }

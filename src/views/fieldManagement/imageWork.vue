@@ -111,6 +111,10 @@
                         </el-form>
                 </el-tab-pane>
         </el-tabs>
+
+        <div v-show="showText">
+            <p>{{offsetX}}{{offsetY}}</p>
+        </div>
     </div>
 </template>
 
@@ -130,6 +134,9 @@ export default {
     },
     data() {
         return {
+            showText : false,
+            offsetX : '',
+            offsetY : '',
             loader : 'all',
             showImg : false,
             suolueImg : '',
@@ -211,6 +218,16 @@ export default {
                 type: "success",
                 message: '图片保存成功'//图片保存成功
             });
+            // setTimeout()
+            // setTimeout(location.reload(), 10000);
+            //   let _this=this
+                setTimeout(function()  {
+                
+                    location.reload()
+                
+                }, 2000);
+
+            
         },
         preview(row){
             this.suolueImg = row;
@@ -242,6 +259,10 @@ export default {
             map.addOverlay(circle)
         },
         getClickInfo (e) {
+            this.showText =true;
+            this.offsetX = event.offsetX;
+            this.offsetY = event.offsetY;
+            console.log(event.offsetX,event.offsetY)
             var point = new BMap.Point(e.point.lng, e.point.lat);
                 var gc = new BMap.Geocoder();
                 let _this = this;
@@ -321,7 +342,7 @@ export default {
                     if(this.showImg == false){
                         this.getlist();
                     }else{
-                        this.last();
+                        location.reload();
                     }
                     
                 }).catch(res => {
@@ -398,7 +419,7 @@ export default {
                     if(this.loader == 'all'){
                         this.getlist();
                     }else{
-                        this.last();
+                        location.reload();
                     }
                 }
             })

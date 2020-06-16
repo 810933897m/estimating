@@ -54,7 +54,11 @@ import request from "./utils/request";
 </script>
 
 <style>
-
+.el-radio {
+    color: #606266;
+    cursor: pointer;
+    margin-right: 10px;
+}
 .el-table td, .el-table th {
     padding: 5px 0;
     min-width: 0;

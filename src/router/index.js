@@ -23,7 +23,9 @@ import {getRoute} from '@/utils/route.js'
  **/
 // import home from "@/views/home/index";
 
+import userList from "@/views/administrators/userList";
 // import userList from "@/views/administrators/userList";
+
  var constantRouterMap = [
     {//登录页
         path: '/login',
@@ -60,8 +62,8 @@ import {getRoute} from '@/utils/route.js'
         children: [{//用户列表
             path: 'userList',
             name: 'userList',
-            // component : userList,
-            component: () => import('@/views/administrators/userList'),
+            component : userList,
+            // component: () => import('@/views/administrators/userList'),
             meta: {
                 title: '用户列表',
                 icon: 'order'
@@ -246,15 +248,7 @@ import {getRoute} from '@/utils/route.js'
             //         // keepAlive: true
             //     }
             // }
-            ,{//合同管理
-                path: 'contract',
-                name: 'contract',
-                component: () => import('@/views/inquiryManagement/contract'),
-                meta: {
-                    title: '合同管理',
-                    icon: 'sms-subject'
-                }
-            }
+            
             // ,{
             //     path: 'seal',
             //     name: 'seal',
@@ -270,20 +264,22 @@ import {getRoute} from '@/utils/route.js'
                 name: 'printing',
                 component: () => import('@/views/fieldManagement/printing'),
                 meta: {
-                    title: '报告打印',
+                    title: '打印装订',
                     icon: 'sms',
                     // keepAlive: true
                 }
-            },{
-                path: 'binding',
-                name: 'binding',
-                component: () => import('@/views/fieldManagement/binding'),
-                meta: {
-                    title: '报告装订',
-                    icon: 'product-comment',
-                    // keepAlive: true
-                }
-            },{
+            }
+            // ,{
+            //     path: 'binding',
+            //     name: 'binding',
+            //     component: () => import('@/views/fieldManagement/binding'),
+            //     meta: {
+            //         title: '报告装订',
+            //         icon: 'product-comment',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{
                 path: 'SendReport',
                 name: 'SendReport',
                 component: () => import('@/views/fieldManagement/SendReport'),
@@ -291,6 +287,25 @@ import {getRoute} from '@/utils/route.js'
                     title: '报告发送',
                     icon: 'product-comment',
                     // keepAlive: true
+                }
+            }
+            ,{
+                path: 'ProjectArchive',
+                name: 'ProjectArchive',
+                component: () => import('@/views/fieldManagement/ProjectArchive'),
+                meta: {
+                    title: '项目归档',
+                    icon: 'product-comment',
+                    // keepAlive: true
+                }
+            }
+            ,{//合同管理
+                path: 'contract',
+                name: 'contract',
+                component: () => import('@/views/inquiryManagement/contract'),
+                meta: {
+                    title: '合同管理',
+                    icon: 'sms-subject'
                 }
             }
             // ,{
@@ -303,16 +318,27 @@ import {getRoute} from '@/utils/route.js'
             //         // keepAlive: true
             //     }
             // }
+            // ,{
+            //     path: 'Refund',
+            //     name: 'Refund',
+            //     component: () => import('@/views/fieldManagement/Refund'),
+            //     meta: {
+            //         title: '退单撤单',
+            //         icon: 'product-list',
+            //         // keepAlive: true
+            //     }
+            // }
             ,{
-                path: 'Refund',
-                name: 'Refund',
-                component: () => import('@/views/fieldManagement/Refund'),
+                path: 'FinancialCollection',
+                name: 'FinancialCollection',
+                component: () => import('@/views/fieldManagement/FinancialCollection'),
                 meta: {
-                    title: '退单撤单',
+                    title: '财务收款',
                     icon: 'product-list',
                     // keepAlive: true
                 }
-            },{
+            }
+            ,{
                 path: 'invoice',
                 name: 'invoice',
                 component: () => import('@/views/fieldManagement/invoice'),
@@ -336,15 +362,6 @@ import {getRoute} from '@/utils/route.js'
                 component: () => import('@/views/fieldManagement/projectChange'),
                 meta: {
                     title: '项目变更',
-                    icon: 'order',
-                    // keepAlive: true
-                }
-            },{
-                path: 'changeReview',
-                name: 'changeReview',
-                component: () => import('@/views/fieldManagement/changeReview'),
-                meta: {
-                    title: '变更审核',
                     icon: 'order',
                     // keepAlive: true
                 }
@@ -414,24 +431,35 @@ import {getRoute} from '@/utils/route.js'
                     // keepAlive: true
                 }
             },{
-                path: 'RefundReview',
-                name: 'RefundReview',
-                component: () => import('@/views/AuditManagement/RefundReview'),
+                path: 'changeReview',
+                name: 'changeReview',
+                component: () => import('@/views/AuditManagement/changeReview'),
                 meta: {
-                    title: '退费退单审核',
+                    title: '变更审核',
                     icon: 'order',
                     // keepAlive: true
                 }
-            },{
-                path: 'InvoiceReview',
-                name: 'InvoiceReview',
-                component: () => import('@/views/AuditManagement/InvoiceReview'),
-                meta: {
-                    title: '发票审核',
-                    icon: 'order',
-                    // keepAlive: true
-                }
-            },{
+            }
+            // ,{
+            //     path: 'RefundReview',
+            //     name: 'RefundReview',
+            //     component: () => import('@/views/AuditManagement/RefundReview'),
+            //     meta: {
+            //         title: '退费退单审核',
+            //         icon: 'order',
+            //         // keepAlive: true
+            //     }
+            // },{
+            //     path: 'InvoiceReview',
+            //     name: 'InvoiceReview',
+            //     component: () => import('@/views/AuditManagement/InvoiceReview'),
+            //     meta: {
+            //         title: '发票审核',
+            //         icon: 'order',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{
                 path: '/FinancialCollectionDetail',
                 name: 'FinancialCollectionDetail',
                 component: () => import('@/views/AuditManagement/FinancialCollectionDetail'),
@@ -469,14 +497,10 @@ getRoute()
 
 console.log('1')
 console.log('1')
-// console.log(JSON.parse(sessionStorage.getItem('route1')))
-console.log(JSON.parse(sessionStorage.getItem('route1')))
-// constantRouterMap = JSON.parse(sessionStorage.getItem('route1'))
-// console.log(constantRouterMap)
 
-// constantRouterMap = JSON.parse(sessionStorage.getItem('route1'))
-// const router = JSON.parse(sessionStorage.getItem('route1'))
-// console.log(router)
+console.log(JSON.parse(sessionStorage.getItem('route1')))
+var routers =  JSON.parse(sessionStorage.getItem('route1'));
+console.log(routers)
 export default new Router({
     
     // mode: 'history', //后端支持可开

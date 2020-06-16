@@ -105,25 +105,22 @@ export default {
         },
         getSelect() {//初始渲染列表方法封装
             this.dialogFormVisible = false;
-            request.post("/admin/askPrice/param").then(res => {
-                
-                // console.log(res.data)
-                if (res.code == 200) {
-                    console.log(res)
-                    this.city=res.data.param.city;//城市
-                    this.bank=res.data.param.bank;//询价银行
-                    this.factor=res.data.param.factor;//特殊因素
-                    this.factor_value=res.data.param.factor_value;//净值系数
-                    this.house_way=res.data.param.house_way;//房屋用途
-                    this.type=res.data.param.type;//房屋类型
-                    
-                    this.bazaar_crew=res.data.bazaar_crew;//市场人员
-                    this.ask_price=res.data.ask_price;//询值人员
-                    this.price_check=res.data.price_check;//价格变更审核人员
-                    console.log(this.ask_price)
-                }
-                
-            });
+            // request.post("/admin/askPrice/param").then(res => {
+            //     // console.log(res.data)
+            //     if (res.code == 200) {
+            //         console.log(res)
+            //         this.city=res.data.param.city;//城市
+            //         this.bank=res.data.param.bank;//询价银行
+            //         this.factor=res.data.param.factor;//特殊因素
+            //         this.factor_value=res.data.param.factor_value;//净值系数
+            //         this.house_way=res.data.param.house_way;//房屋用途
+            //         this.type=res.data.param.type;//房屋类型
+            //         this.bazaar_crew=res.data.bazaar_crew;//市场人员
+            //         this.ask_price=res.data.ask_price;//询值人员
+            //         this.price_check=res.data.price_check;//价格变更审核人员
+            //         console.log(this.ask_price)
+            //     }
+            // });
         },
         inquiryBtn(){
             request.post("/admin/askPrice/query",{

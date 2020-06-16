@@ -572,7 +572,7 @@ export default {
                 project_contract_id:this.checko,
                 linkman : this.linkman,
                 id : this.$route.query.id,
-                ask_price_id : this.form.ask_price_id,
+                // ask_price_id : this.form.ask_price_id,
                 subsidiary_organ : this.form.subsidiary_organ,
                 affiliated_agency : this.form.affiliated_agency,
                 bank_clerk : this.form.bank_clerk,

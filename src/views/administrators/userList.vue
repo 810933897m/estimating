@@ -217,7 +217,7 @@ export default {
             
           }
         });
-        request.post("/admin/admin/save",{
+        request.post("/admin//admin/save",{
           id : this.shopId,
           roles : this.role,
         }).then(res => {
@@ -233,8 +233,8 @@ export default {
       },
       getAgentList() {//初始渲染列表方法封装
         this.dialogFormVisible = false;
-        request.post("/admin/admin/query").then(res => {
-            console.log(res)
+        request.post("/admin//admin/query").then(res => {
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -245,11 +245,11 @@ export default {
             
         });
     },serachBtn(){ // 搜索功能
-        request.post("/admin/admin/query",{
+        request.post("/admin//admin/query",{
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -262,10 +262,10 @@ export default {
       updateAgent(row) {//修改按钮
       this.UpId =row.id;
         this.dialogVisible = true;
-        request.post("/admin/admin/get",{//获取修改原数据
+        request.post("/admin//admin/get",{//获取修改原数据
           id : row.id,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.updata = res.data;
               this.updata.status = res.data.status+'';
@@ -274,13 +274,13 @@ export default {
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
       confirmRevision(){//确认修改
-        request.post("/admin/admin/update",{
+        request.post("/admin//admin/update",{
           id : this.UpId,
           userno : this.updata.userno,
           email : this.updata.email,
           status : Number(this.updata.status),
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.$message({
                   // type: res.errno === 0 ? "success" : "warning",
@@ -299,23 +299,23 @@ export default {
           // this.$router.push({path:'/detailUser',query:{id:row.id}})
           this.dialogVisible1 = true;
 
-          request.post("/admin/admin/get",{
+          request.post("/admin//admin/get",{
           id : row.id,
           }).then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.code == 200) {
                 this.form1 = res.data;
                 this.form1.status = res.data.status+'';
               }
           });
-          request.post("/admin/admin/roles",{
+          request.post("/admin//admin/roles",{
           id : row.id,
           }).then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.code == 200) {
                 this.roles = res.data;
                 this.roles.forEach(element => {
-                  console.log(element.used)
+                  // console.log(element.used)
                   if(element.used == 1){
                     element.used = true;
                   }else{
@@ -330,13 +330,13 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
-          request.post("/admin/admin/query",{
+          request.post("/admin//admin/query",{
           page : currentPage,
           keyword : this.search,
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
             }

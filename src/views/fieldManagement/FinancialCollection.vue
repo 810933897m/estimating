@@ -29,7 +29,7 @@
 
       <el-table-column
       label="流水号"
-      width="200px"
+      width="120px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -37,25 +37,8 @@
       </el-table-column>
 
       <el-table-column
-      label="报告类型"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="估价目的"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告号"
+      label="报告编号"
+      width="150px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -63,29 +46,73 @@
       </el-table-column>
 
       <el-table-column
-      label="报告地址"
-      width="300px"
+      label="应收金额"
+      width="130px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
+          <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="立项时间"
-      width="200px"
+      label="实收金额"
+      width="130px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+          <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="旧报告号"
-      width="120px"
+      label="项目地址"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.source" class="nooverflow">{{scope.row.source}}</p>
+          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="小区名称"
+      width="130px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column
+      label="紧急程度"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+        </template>
+      </el-table-column> -->
+
+      <el-table-column
+      label="报告类型"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="物业类型"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="项目状态"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
 
@@ -95,11 +122,8 @@
       
       width="200px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
-          <div v-show="dialogFormVisible" class="dialog-box"></div>
-          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button> -->
-          <el-button size="small" type="primary" @click="generateReport(scope.row)">生成报告号</el-button>
-          <!-- <el-button size="small" type="info" v-else disabled >生成报告</el-button> -->
+          <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button>
+          <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
         </template>
       </el-table-column>
 
@@ -113,58 +137,100 @@
       </el-table-column> -->
       
     </el-table>
-
-    <!--*************修改模态框*************-->
+    <!--*************收款记录模态框*************-->
         <el-dialog
-        title="生成报告号"
+        title="收款记录"
+        :visible.sync="dialogVisibleRecordDetail"
+        width="50%">
+
+        <el-table 
+        class="table-picture"
+        :data="recordDetailList"
+        border
+        style="width: 100%;">
+
+        <el-table-column
+        label="id"
+        width="50px"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.id}}
+          </template>
+        </el-table-column>
+        
+        <el-table-column
+        label="收款方式"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.charge_way}}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收费金额"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.charge_amount}}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="转账公司"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.transfer_company}}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="转账人员"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.transfer_personnel}}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="转账备注"
+        align="center">
+          <template slot-scope="scope" >
+            {{scope.row.charge_remark}}
+          </template>
+        </el-table-column>
+        </el-table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************收款记录模态框*************-->
+
+    <!--*************添加收款模态框*************-->
+        <el-dialog
+        title="添加"
         :visible.sync="dialogVisible"
         width="50%">
         <!-- :before-close="handleClose" -->
             <el-form label-width="90px">
 
-                <el-form-item label="公司简称" class="select" >
-                <el-select v-model="company" @change="reportChange" filterable placeholder="请选择" style="width:250px;">
-                    <el-option
-                    v-for="item in company1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
+                <el-form-item label="收款方式" class="select" >
+                  <el-input placeholder="请输入收款方式" v-model="charge_way"></el-input>
+                </el-form-item>
 
-              <el-form-item label="项目分类" class="select" >
-                <el-select v-model="project_classify" filterable placeholder="请选择" style="width:250px;">
-                    <el-option
-                    v-for="item in project_classify1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
+              <el-form-item label="收费金额" class="select" >
+                  <el-input placeholder="请输入收费金额" v-model="charge_amount"></el-input>
+                </el-form-item>
 
-              <el-form-item label="报告类型" class="select" >
-                <el-select v-model="report_tale" filterable placeholder="请选择评估类型2" style="width:250px;">
-                    <el-option
-                    v-for="item in report_tale1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
+              <el-form-item label="转账公司" class="select" >
+                  <el-input placeholder="请输入转账公司" v-model="transfer_company"></el-input>
+                </el-form-item>
 
-              <el-form-item label="字母分类" class="select" >
-                <el-select v-model="Alphabetic" filterable placeholder="请选择字母类型" style="width:250px;">
-                    <el-option
-                    v-for="item in Alphabetic1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
+              <el-form-item label="转账人员" class="select" >
+                  <el-input placeholder="请输入转账人员" v-model="transfer_personnel"></el-input>
+                </el-form-item>
+
+                <el-form-item label="转账备注" class="select" >
+                  <el-input placeholder="请输入转账备注" v-model="charge_remark"></el-input>
+                </el-form-item>
 
             </el-form>
         
@@ -173,7 +239,7 @@
                 <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-        <!--*************修改模态框结束*************-->
+        <!--*************添加收款模态框*************-->
 
     <!-- *************分页************* -->
     <el-pagination
@@ -195,25 +261,24 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
-        company : '',
-        company1 : [],
-        project_classify : '',
-        project_classify1 : [],
-        report_tale : '',
-        report_tale1 : [],
-        Alphabetic : '',
-        Alphabetic1 : [],
+        charge_way : '',
+        charge_amount : '',
+        transfer_company : '',
+        transfer_personnel : '',
+        charge_remark : '',
+
         search : '',
         options:map.options,
         agentList : [],//列表 绑定
         dialogFormVisible : false,//弹出框
         dialogVisible : false,//弹出框
+        dialogVisibleRecordDetail : false,//弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
         Id : '',
         generateReportId:'',
-
+        recordDetailList : [],
         report_number :'',
         report_number1 : [],
         report_number_children : '',
@@ -233,44 +298,50 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
-      confirmRevision(){//生成确定
-          request.post("/admin/project/projectReport",{
-            id : this.generateReportId,
-            company : this.company,
-            assess_type1 : this.project_classify,
-            assess_type2 : this.report_tale,
-            assess_type3 : this.Alphabetic,
-
+      confirmRevision(){//添加确定
+          request.post("/admin/financial/create",{
+            project_id : this.generateReportId,
+            charge_way : this.charge_way,
+            charge_amount : this.charge_amount,
+            transfer_company : this.transfer_company,
+            transfer_personnel : this.transfer_personnel,
+            charge_remark : this.charge_remark,
           }).then(res => {
             if (res.code == 200) {
               // console.log(res)
               this.$message({
                 // type: res.errno === 0 ? "success" : "warning",
                 type: "success",
-                message: '生成成功'//提示修改成功
+                message: '添加成功'//提示添加成功
               });
               this.getAgentList();
-              this.company = '';
-              this.project_classify = '';
-              this.report_tale = '';
-              this.Alphabetic = '';
+              this.charge_way = '';
+              this.charge_amount = '';
+              this.transfer_company = '';
+              this.transfer_personnel = '';
+              this.charge_remark = '';
+
+            }
+        });
+      },
+      recordDetail(row){//详情
+        this.dialogVisibleRecordDetail = true;
+        request.post("/admin/financial/info",{
+            id : row.id,
+          }).then(res => {
+            if (res.code == 200) {
+              // console.log(res)
+              this.recordDetailList =res.data;
 
             }
         });
       },
       getAgentList() {//初始渲染列表方法封装
         // this.dialogFormVisible = false;
-        request.post("/admin/project/query").then(res => {
+        request.post("/admin/financial/query").then(res => {
             if (res.code == 200) {
               // console.log(res)
               this.agentList = res.data.list;
-              this.agentList.forEach(item => {
-                if(item.approval_status == 1){
-                  item.approval_status = '不正常'
-                }else if(item.approval_status == 0){
-                  item.approval_status = '正常'
-                }
-              });
               this.count = res.data.page.count;
               this.max = res.data.page.max;
               this.page = res.data.page.page;
@@ -280,51 +351,14 @@ export default {
         
         // request.post("/admin/projectExpress/param").then(res => {
         //     if (res.code == 200) {
-              // console.log(res)
+        //       console.log(res)
         //     }
         // });
 
-        
-        request.post("/admin/values/query",{
-          type : 'report_number_children',
-          name : '公司简称',
-        }).then(res => {
-            if (res.code == 200) {
-              // console.log(res)
-              this.company1 = res.data;
-            }
-        });
-        request.post("/admin/values/query",{
-          type : 'report_number_children',
-          name : '项目分类',
-        }).then(res => {
-            if (res.code == 200) {
-              // console.log(res)
-              this.project_classify1 = res.data;
-            }
-        });
-        request.post("/admin/values/query",{
-          type : 'report_number_children',
-          name : '报告类型',
-        }).then(res => {
-            if (res.code == 200) {
-              // console.log(res)
-              this.report_tale1 = res.data;
-            }
-        });
-        request.post("/admin/values/query",{
-          type : 'report_number_children',
-          name : '字母分类',
-        }).then(res => {
-            if (res.code == 200) {
-              // console.log(res)
-              this.Alphabetic1 = res.data;
-            }
-        });
-
-    },updateAgent(row) {//修改按钮
-       this.$router.push({path:'/updateprojectInitiation',query:{row:row,id:row.id}})
-       
+    },
+      addRecord(row) {//添加记录
+        this.dialogVisible = true;
+        this.generateReportId = row.id;
       },
       reportChange(){//报告改变
         request.post("/admin/values/query",{
@@ -340,14 +374,14 @@ export default {
       generateReport(row){//生成报告
         // console.log(row.id)
         this.generateReportId = row.id;
-        this.dialogVisible = true;
+        
       },
       getInfo(row, event, column){
         // console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       searchBtn(){//搜索
-        request.post("/admin/project/query",{
+        request.post("/admin/financial/query",{
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
@@ -371,8 +405,9 @@ export default {
           this.$router.push({path:'/detaiPprojectInitiation',query:{id:row.id}})
       },
       handleCurrentChange: function(currentPage){//换页
-          request.post("/admin/project/query",{
-          page : currentPage 
+          request.post("/admin/financial/query",{
+          page : currentPage,
+          keyword : this.search,
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;

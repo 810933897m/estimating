@@ -1,23 +1,37 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <!-- <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane label="待领取" name="wait"></el-tab-pane>
     <el-tab-pane label="估价中" name="first"></el-tab-pane>
-    <el-tab-pane label="已完成" name="last"></el-tab-pane>
+    <el-tab-pane label="已完成" name="last"></el-tab-pane> -->
 
-    <el-form ref="form" >
+    <!-- <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
             <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+    </el-form> -->
+    <el-form ref="form">
+    <el-form-item>
+      <el-radio v-model="distribution" label="0" @change="distributionBtn1()">待领取</el-radio>
+      <el-radio v-model="distribution" label="1" @change="distributionBtn1()">估价中</el-radio>
+      <el-radio v-model="distribution" label="2" @change="distributionBtn1()">已挂起</el-radio>
+      <el-radio v-model="distribution" label="3" @change="distributionBtn1()">审核中</el-radio>
+      <el-radio v-model="distribution" label="4" @change="distributionBtn1()">已完成</el-radio>
+      
+      <!-- <el-radio v-model="distribution" label="0" @change="distributionBtn1()">待领取</el-radio>
+      <el-radio v-model="distribution" label="1" @change="distributionBtn1()">估价中</el-radio>
+      <el-radio v-model="distribution" label="2" @change="distributionBtn1()">已完成</el-radio> -->
+      <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+      <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+    </el-form-item>
     </el-form>
 
     <el-table 
       class="table-picture"
       :data="agentList"
       border
-      @cell-dblclick="getInfo"
        max-height="550"
       style="width: 100%;">
 
@@ -31,11 +45,22 @@
       </el-table-column>
 
       <el-table-column
+       label="挂起原因"
+      width="100px"
+      key="1" 
+      v-if="distribution == '2'"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.hang_up_content" class="nooverflow">{{scope.row.hang_up_content}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="流水号"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column>
 
@@ -129,14 +154,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="紧急程度"
       width="100px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="报告状态"
@@ -158,13 +183,13 @@
 
       <el-table-column
       label="操作"
-      v-if="activeName == 'first'"
+      v-if="distribution == '1'"
       fixed="right"
-      width="430px" align="center">
+      width="400px" align="center">
         <template slot-scope="scope">
-          <el-button v-if="!scope.row.is_hang_up" size="small" type="primary" @click="Pending(scope.row)" >挂起</el-button>
-          <el-button v-else size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button>
-          <el-button size="small" type="primary" @click="loadBtn(scope.row)" >下载</el-button>
+          <el-button size="small" type="primary" @click="Pending(scope.row)" >挂起</el-button>
+          <!-- <el-button size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button> -->
+          <!-- <el-button size="small" type="primary" @click="loadBtn(scope.row)" >下载</el-button> -->
           <el-button size="small" type="primary" @click="examineBtn(scope.row)" >审核</el-button>
           <el-button size="small" type="primary"  @click="exploration(scope.row)">外勘</el-button>
           <el-button size="small" type="primary" @click="imageBtn(scope.row)" >材料</el-button>
@@ -175,18 +200,31 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-else
+      v-if="distribution == '0'"
+      width="100px" align="center">
+        <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="receive(scope.row)">领取</el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="操作"
+      fixed="right"
+      v-if="distribution == '2'"
+      width="100px" align="center">
+        <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="操作"
+      fixed="right"
+      v-if="distribution == '4'"
       width="200px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'wait'" @click="receive(scope.row)">领取</el-button>
-          
-          <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="examineBtn(scope.row)">审核提交</el-button>
-          <el-button size="small" type="primary" v-else-if="activeName == 'last'" @click="uploadBtn(scope.row)">上传附件</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'last'" @click="uploadDetail(scope.row)">附近内容</el-button>
-          <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
-
-          <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
-          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
+          <el-button size="small" type="primary" @click="uploadBtn(scope.row)">上传附件</el-button>
+          <el-button size="small" type="primary" @click="uploadDetail(scope.row)">附近内容</el-button>
         </template>
       </el-table-column>
       
@@ -202,7 +240,7 @@
     </el-pagination>
     <!-- *************分页************* -->
     
-  </el-tabs>
+  <!-- </el-tabs> -->
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="任务分配" :visible.sync="dialogFormVisible">
@@ -268,16 +306,6 @@
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="上传报告文件" :visible.sync="dialogFormVisible1">
             <el-form ref="form" label-width="150px" :model="form" style="width:100%;">
-              <!-- <el-form-item label="文件类型" class="select" style="">
-                <el-select v-model="fileType" filterable style="width:120px;">
-                      <el-option
-                      v-for="item in fileType1"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                      </el-option>
-                </el-select>
-              </el-form-item> -->
 
               <!-- *************文件上传************* -->
             <el-form-item label="文件" prop="coverFile">
@@ -330,7 +358,7 @@ export default {
             value:'1'
           }
         ],
-        distribution:'1',
+        distribution:'0',
         search : '',
         ROW : {},
         checked:'',
@@ -402,13 +430,13 @@ export default {
       },
       Pending(row){//挂起
         this.dialogFormVisible2=true;
-        console.log(row)
+        // console.log(row)
         this.Pendingid = row.id;
       },
       PendingBtn(){//挂起确定
         request.post("/admin/appraisal/hangUp",{
-          id : this.Pendingid,
           hang_up_content : this.admin_desc,
+          id : this.Pendingid,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -416,7 +444,7 @@ export default {
                     type: "success",
                     message: '挂起成功'//提示挂起成功
                 });
-                this.handleClick();
+                this.distributionBtn1();
               }
           });
         this.dialogFormVisible2=false;
@@ -436,7 +464,7 @@ export default {
                         type: "success",
                         message: '解挂成功！'
                     });
-                    this.handleClick();
+                    this.distributionBtn1();
                 }).catch(res => {
                     this.$message({
                         type: "warning",
@@ -446,11 +474,11 @@ export default {
             });
       },
       excelFileClass(param){//上传附件
-          console.log(param);
+          // console.log(param);
             let formData = new FormData();
             formData.append('id', this.uploadId);
             formData.append('excel', param.file);
-            console.log(formData)
+            // console.log(formData)
             request.post("/admin/excel/upload",
               formData
               ).then(res => {
@@ -462,12 +490,12 @@ export default {
                 });
                 this.$refs.uploadExcel.clearFiles();
                 this.uploadListBack = res.data.data;
-                    console.log(this.uploadListBack)
+                    // console.log(this.uploadListBack)
                 }
             });
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+        // console.log(this.activeName)
         if(this.activeName == 'first'){
           request.post("/admin/appraisal/query").then(res => {
             if (res.code == 200) {
@@ -500,6 +528,71 @@ export default {
         });
         }
       },
+      distributionBtn1(){//切换单选框改变数据
+      this.dialogFormVisible = false;
+      this.agentList =[];
+        if(this.distribution == 0){
+          request.post("/admin/appraisal/query",{
+            type : 0,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 1){
+          request.post("/admin/appraisal/query",{
+            type : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/appraisal/query",{
+            type : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/appraisal/query",{
+            type : 3,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/appraisal/query",{
+            type : 4,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }
+      },
       receive(row){
         this.$confirm("您确定要领取？", "提示", {
                 confirmButtonText: "确定",
@@ -514,7 +607,7 @@ export default {
                         type: "success",
                         message: '领取成功！'
                     });
-                    this.getAgentList();
+                    this.distributionBtn1();
                 }).catch(res => {
                     this.$message({
                         type: "warning",
@@ -546,7 +639,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/Appraisal/unclaimed").then(res => {
+        request.post("/admin/appraisal/query",{
+          type : 0,
+        }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -562,51 +657,87 @@ export default {
           name : '',
         }).then(res => {//二次人员获取
             if (res.code == 200) {
-              console.log(res)
+              // console.log(res)
               this.twoExamine1 = res.data;
             }
         });
 
     },serachBtn(){ // 搜索功能
-      if(this.activeName == 'first'){
-          console.log('未分配')
+        if(this.distribution == 0){
           request.post("/admin/appraisal/query",{
-          keyword : this.search,
-          // page : this.currentPage,
+            type : 0,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
-        }else if(this.distribution == 'last'){
-          console.log('已完成')
-          request.post("/admin/appraisal/finish",{
-          keyword : this.search,
-          // page : this.currentPage,
+        }else if(this.distribution == 1){
+          request.post("/admin/appraisal/query",{
+            type : 1,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/appraisal/query",{
+            type : 2,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/appraisal/query",{
+            type : 3,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/appraisal/query",{
+            type : 4,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }
-        
       },
       AssignTasks(row){//分配任务
         this.dialogFormVisible=true;
-        console.log(row)
+        // console.log(row)
         this.outworkid = row.admin_id;
         this.ROW = row;
       },
       outworkidBtn(){//分配任务确定
-        if(this.activeName == 'first'){
+        if(this.distribution == '1'){
           request.post("/admin/appraisal/submit",{
             id : this.Id,
             username : this.twoExamine,
@@ -617,11 +748,11 @@ export default {
                     type: "success",
                     message: '二审成功'//提示二审成功
                 });
-                this.getAgentList();
+                this.distributionBtn1();
               }
           });
         this.dialogFormVisible3=false;
-        }else if(this.activeName == 'two'){
+        }else if(this.distribution == '4'){
           request.post("/admin/appraisal/submit").then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -632,28 +763,17 @@ export default {
               }
           });
         this.dialogFormVisible=false;
-        }else if(this.distribution == 3){
-          
-        }else if(this.distribution == 4){
-          
         }
-
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
+        // console.log(this.ROW.id);
+        // console.log(this.outworkid);
         
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
-        const {href} = this.$router.resolve({
-        path: '/comprehensiveList',
-        query: {
-          id: row.id
-        }
-      })
-      window.open(href, '_blank')
+        // console.log(row.id);
+        window.open(row.project_info_url, '_blank')
       },
       updateAgent(row) {//修改按钮
-        console.log(row);
+        // console.log(row);
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
       confirmDetail(row) {//点击查看询价详情
@@ -665,35 +785,77 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
+      // console.log(currentPage)  
           this.currentPage = currentPage;
-          if(this.activeName == 'first'){
-          console.log('未分配')
+        if(this.distribution == 0){
           request.post("/admin/appraisal/query",{
-          keyword : this.search,
-          page : this.currentPage,
+            type : 0,
+            keyword : this.search,
+            page : this.currentPage,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
-        }else if(this.distribution == 'last'){
-          console.log('已完成')
-          request.post("/admin/appraisal/finish",{
-          keyword : this.search,
-          page : this.currentPage,
+        }else if(this.distribution == 1){
+          request.post("/admin/appraisal/query",{
+            type : 1,
+            keyword : this.search,
+            page : this.currentPage,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/appraisal/query",{
+            type : 2,
+            keyword : this.search,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/appraisal/query",{
+            type : 3,
+            keyword : this.search,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/appraisal/query",{
+            type : 4,
+            keyword : this.search,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }
       },
@@ -701,7 +863,7 @@ export default {
         this.$router.push({path:'/addInquiry'})
       },
       uploadBtn(row){
-        console.log(row);
+        // console.log(row);
         this.uploadId = row.id;
         this.dialogFormVisible1 = true;
       },
@@ -720,7 +882,7 @@ export default {
         this.$router.push({path:'/imageWork',query:{id:row.id}})
       },
       examineBtn(row){//二审提交
-      console.log(row.id)
+      // console.log(row.id)
         this.Id = row.id;
         this.dialogFormVisible3 = true;
       },

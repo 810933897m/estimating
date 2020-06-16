@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同详情数据</span></div>
-        <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
+        <!-- <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
             <el-form-item label="合同编号" class="form-input" prop="title" style="width:500px;">
                 <el-input  disabled v-model="form.contract_no"></el-input>
             </el-form-item>
@@ -18,7 +18,11 @@
                 <el-input  disabled v-model="form.content"></el-input>
             </el-form-item>
             
-        </el-form>
+        </el-form> -->
+        <p class="disab">合同编号 : {{form.contract_no}}</p>
+        <p class="disab">甲方 : {{form.first_party}}</p>
+        <p class="disab">乙方 : {{form.second_party}}</p>
+        <p class="disab">合同内容 : {{form.content}}</p>
     </div>
 </template>
 
@@ -154,5 +158,11 @@ export default {
     }
     .select{
         float:left;
+    }
+    .disab{
+        margin-top:15px;
+        float:left;
+        margin-left:20px;
+        min-width: 300px;
     }
 </style>

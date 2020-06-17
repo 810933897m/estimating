@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "awe-dnd": "^0.3.4",
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
     "el-tree-transfer": "^2.2.0",

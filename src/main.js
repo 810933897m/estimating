@@ -56,6 +56,9 @@ Vue.use(VuePreview);
 import VuePreviewer from 'vue-preview-deleter'
 Vue.use(VuePreviewer)
 
+import VueDND from 'awe-dnd'
+Vue.use(VueDND)
+
 // import vuePicturePreview from 'vue-picture-preview'
 // Vue.use(vuePicturePreview)
 

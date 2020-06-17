@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价信息</span></div>
+        <div style="margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价基本信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
             <el-form-item class="" style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('enquiry_department','')">所属部门*</span>
@@ -131,6 +131,7 @@
             </el-form-item>
 
         </el-form>
+        
         <div style="width:100%;float:left;">
             <el-button type="primary" style="margin-left:30%;" plain @click="showInput()">
                 询价
@@ -145,7 +146,26 @@
                 查看历史记录
             </el-button>
         </div>
-        
+        <!-- <el-form v-for="(item,index) in publickList" :key="index" ref="form" label-width="120px" style="width:100%;padding-right:50px;">
+        <div style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价{{index+1}}</span></div>
+
+            <el-form-item label="建成年代" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入建成年代" v-model="form.activate_time"></el-input>
+            </el-form-item>
+
+            <el-form-item label="备注" class="form-input" prop="title" style="width:100%;float:left;">
+                <el-input  placeholder="请输入备注" v-model="form.remark"></el-input>
+            </el-form-item>
+
+            <el-form-item label="小区特殊情况" class="form-input" prop="title" style="width:100%;float:left;">
+                <el-input  placeholder="请输入小区特殊情况" v-model="form.plot_special"></el-input>
+            </el-form-item>
+            </el-form>
+
+            <el-button type="primary" style="float:left;" plain @click="addAddress()">
+                添加地址
+            </el-button> -->
+
         <div v-show="showDiv" style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价记录</span></div>
 
         <!-- <div style="width:90%;float:left;margin-top:20px;">
@@ -294,6 +314,13 @@ export default {
     },
     data() {
         return {
+            publickList : [
+                {
+                    priceyears : '',
+                },{
+                    priceyears : '',
+                }
+            ],
             house_type : '',
             selecter :'',
             selecter1:[
@@ -374,28 +401,47 @@ export default {
                     this.form.tudi = '0';
 
                     this.form.ask_price_total =parseFloat(this.form.construct_area * this.form.ask_univalence).toFixed(2) 
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '成本价'){
                     this.tudiMoney =parseFloat(15.6*this.form.construct_area/10000).toFixed(2) 
                     this.form.tudi = parseFloat(15.6*this.form.construct_area/10000).toFixed(2)
                     // console.log(15.6*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2)
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '优惠价标准价'){
                     this.tudiMoney = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     this.form.tudi = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     // console.log(109.2*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '按经适管理'){
                     this.tudiMoney = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     // console.log(this.form.ask_price_total*0.03)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '经济适用房'){
                     this.tudiMoney =parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     // console.log(this.form.ask_price_total*0.1)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }
                 this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                console.log(this.form.total_prices)
+                if(this.form.total_prices == 'NaN'){
+                    this.form.total_prices = 0;
+                }
             },
             'factor' : function(){//监听房屋类型值改变做算法
                 console.log('14142')
@@ -403,28 +449,46 @@ export default {
                 if(this.house_type == '商品房'){
                     this.form.tudi = '0';
                     this.form.ask_price_total =parseFloat(this.form.construct_area * this.form.ask_univalence).toFixed(2) 
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '成本价'){
                     this.tudiMoney =parseFloat(15.6*this.form.construct_area/10000).toFixed(2) 
                     this.form.tudi = parseFloat(15.6*this.form.construct_area/10000).toFixed(2)
                     // console.log(15.6*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2)
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '优惠价标准价'){
                     this.tudiMoney = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     this.form.tudi = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     // console.log(109.2*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '按经适管理'){
                     this.tudiMoney = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     // console.log(this.form.ask_price_total*0.03)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '经济适用房'){
                     this.tudiMoney =parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     // console.log(this.form.ask_price_total*0.1)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }
                 this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                if(this.form.total_prices == 'NaN'){
+                    this.form.total_prices = 0;
+                }
             },
     },
     computed: {
@@ -441,32 +505,55 @@ export default {
         this.inquiryBtn()
     },
     methods: {
+        addAddress(){//添加地址
+            this.publickList.push({
+                priceyears :'',
+            })
+        },
         sumComputed(){
                 if(this.house_type == '商品房'){
                     this.form.tudi = '0';
                     this.form.ask_price_total = this.tudiMoney =parseFloat(this.form.construct_area * this.form.ask_univalence).toFixed(2) 
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '成本价'){
                     this.tudiMoney =parseFloat(15.6*this.form.construct_area/10000).toFixed(2) 
                     this.form.tudi = parseFloat(15.6*this.form.construct_area/10000).toFixed(2)
                     // console.log(15.6*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2)
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '优惠价标准价'){
                     this.tudiMoney = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     this.form.tudi = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     // console.log(109.2*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '按经适管理'){
                     this.tudiMoney = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     // console.log(this.form.ask_price_total*0.03)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '经济适用房'){
                     this.tudiMoney =parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     // console.log(this.form.ask_price_total*0.1)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }
                 this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                if(this.form.total_prices == 'NaN'){
+                    this.form.total_prices = 0;
+                }
         },
         showInput(){
             if(this.factor == 1){
@@ -479,28 +566,46 @@ export default {
             if(this.house_type == '商品房'){
                     this.form.tudi = '0';
                     this.form.ask_price_total = this.tudiMoney =parseFloat(this.form.construct_area * this.form.ask_univalence).toFixed(2) 
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '成本价'){
                     this.tudiMoney =parseFloat(15.6*this.form.construct_area/10000).toFixed(2) 
                     this.form.tudi = parseFloat(15.6*this.form.construct_area/10000).toFixed(2)
                     // console.log(15.6*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2)
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '优惠价标准价'){
                     this.tudiMoney = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     this.form.tudi = parseFloat(109.2*this.form.construct_area/10000).toFixed(2);
                     // console.log(109.2*this.form.construct_area/10000)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '按经适管理'){
                     this.tudiMoney = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.03).toFixed(2);
                     // console.log(this.form.ask_price_total*0.03)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }else if(this.house_type == '经济适用房'){
                     this.tudiMoney =parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     this.form.tudi = parseFloat(this.form.ask_price_total*0.1).toFixed(2);
                     // console.log(this.form.ask_price_total*0.1)
                     this.form.ask_price_total = parseFloat(this.form.construct_area * this.form.ask_univalence /10000 - Number(this.form.tudi)).toFixed(2);
+                    if(this.form.ask_price_total == 'NaN'){
+                        this.form.ask_price_total = 0;
+                    }
                 }
                 this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                if(this.form.total_prices == 'NaN'){
+                    this.form.total_prices = 0;
+                }
         },
         getSelect() {//初始渲染列表方法封装
             this.dialogFormVisible = false;

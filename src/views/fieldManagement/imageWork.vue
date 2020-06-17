@@ -2,28 +2,17 @@
     <div class="app-container" style="">
         
         <el-tabs v-model="activeName" type="card" style="position:relative;">
-            <el-tab-pane label="图片信息" name="img">
-                <div style="width:100%;float:left;margin-top:10px;">
-                <el-button v-for="(item,index) in list" :key="index" @click="first(index)">
-                    {{item.title}}({{item.count}})
-                </el-button>
-
-                
-                <!-- <div v-for="(item,index) in list" :key="index" style="width:300px;height:30px;float:left;line-height:30px;" @click="first(index)">
-                    {{item.title}}
+            <el-tab-pane label="图片信息" name="img" style="display:flex;width:100%;">
+                <!-- <div style="width:100%;float:left;margin-top:10px;">
+                    <el-button type="success" style="float:left;margin-top:5px;margin-left:10px;" circle icon="el-icon-check"></el-button>
                 </div> -->
-            </div>
             
             
-            <div style="width:100%;float:left;margin-top:30px;">
+            <!-- <div style="width:100%;float:left;margin-top:30px;">
                 <el-button v-for="(item1,index1) in list1" :key="index1+'B'" @click="last(index1)">
                     {{item1.title}}({{item1.count}})
                 </el-button>
-            <!-- <div v-for="(item1,index1) in list1" :key="index1+'B'" style="width:300px;height:30px;float:left;" @click="last(index1)">
-                    {{item1.title}}
-                    {{index1}}
                 </div> -->
-                </div>
                 <!-- <section>
                 <img v-for="(item,index) in slide1"
                 v-preview="item.src" class="preview"  :key="index" :src="item.src" alt="">
@@ -41,26 +30,49 @@
                 <template slot="scope"></template>
                 </vue-preview> -->
                 <!-- </div> -->
-                <div style="width:100%;float:left;margin-top:10px;">
-                    <div v-for="(item,index) in slide1" :key="index" style="width:230px;float:left;margin-top:10px;">
-                        <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
-                        <!-- <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;"> -->
-                        <!-- <el-form-item label="应收金额" class="form-input" prop="title" style="width:300px;float:left;"> -->
-                            <el-input v-model="item.order" style="margin-left:20px;width:70px;"></el-input>
-                            <!-- <el-button type="primary" style="margin-left:10px;width:60px;" @click="sortBtn(item.order)" plain>
-                                保存
-                            </el-button> -->
-                            <el-button type="success"  style="margin-left:15px;" icon="el-icon-check" circle  @click="sortBtn(item.guid,item.order)"></el-button>
-                        <!-- </el-form-item> -->
-                        <el-button type="danger" circle icon="el-icon-delete" @click="del(item.guid)"></el-button>
-                        
+                
+                <div style="width:690px;float:left;margin-top:10px;">
+                    <!-- <el-button type="success" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-check" @click="del(item.guid)"></el-button> -->
+                    <div style="width:100%;float:left;">
+                        <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="sortBtn()">保存排序</el-button>
+                        <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()">下载PDF</el-button>
                     </div>
-
+                    <div v-for="(item,index) in slide1" v-dragging="{ list: slide1, item: item, group: 'src' }" :key="index" style="width:230px;float:left;margin-top:10px;">
+                <!-- 　　　　<img :src=" item.src " alt=""> -->
+                        <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
+                        <p style="margin-left:30px;float:left;width:150px;">{{item.title}}</p>
+                        <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button>
+                　　    
+                    </div>
+                    
+                    
                     <!-- 查看报告任务弹出框 -->
                         <el-dialog style="" :append-to-body='true' title="查看大图" :visible.sync="dialogFormVisible">
                             <img class="preview1" :src="suolueImg" alt="">
                         </el-dialog>
                         <!-- **************查看报告任务弹出框************** -->
+                </div>
+                
+                <div style="width:570px;float:left;">
+                    <!-- <p>回收站</p> -->
+                    <div style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
+                        <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
+                    </div>
+
+                    <!-- <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
+                    <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
+                <!-- 　　　　<img :src=" item.src " alt=""> -->
+                        <img :src="item.src" alt="" class="preview">
+                        <p style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
+                        <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
+                        <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
+                        <el-button type="primary" style="float:left;margin-top:5px;" plain @click="reduction(item.id)">还原</el-button>
+                    </div>
                 </div>
 
             </el-tab-pane>
@@ -187,11 +199,22 @@ export default {
             list11:[],
             slide1: [],
             slide11 : [],
+            recovery : [],
         };
     },
     computed: {
        
     },
+    mounted() {
+　　　　this.$dragging.$on('dragged', (value) => {
+        this.slide1.forEach((element,index) => {
+            // console.log(index)
+        });
+　　　　//因为我这在排序的时候不需要做处理，所以空着就行
+            // console.log(value)
+            // console.log(this.slide1)
+　　　　})
+　　},
     created(){
        quillEditor,
        this.getlist()
@@ -280,10 +303,10 @@ export default {
         //this.center.lng = e.point.lng
         //this.center.lat = e.point.lat
         },
-        // loadBtn(){//下载材料跳转链接
-        //     // console.log(this.$route.query.id)
-        //     window.open(this.loadUrl, '_blank')
-        // },
+        loadBtn(){//下载材料跳转链接
+            // console.log(this.$route.query.id)
+            window.open(this.loadUrl, '_blank')
+        },
         first(ind){
             // console.log(ind)
             this.index11= ind;
@@ -324,6 +347,35 @@ export default {
                 // this.list1.push(element)
             });
         },
+        reduction(row){//删除图片
+            console.log(row)
+            this.$confirm("您确定要还原？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/reduction", {
+                        id:row
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '还原成功！'
+                    });
+                    if(this.showImg == false){
+                        this.getlist();
+                    }else{
+                        location.reload();
+                    }
+                    
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "还原失败!"
+                    });
+                });
+            });
+        },
         del(row){//删除图片
             console.log(row)
             this.$confirm("您确定要删除？", "提示", {
@@ -331,7 +383,7 @@ export default {
                 cancelButtonText: "取消"
             }).then(() => {
                 request.post("/admin/appraisal/delete", {
-                        guid:row
+                        id:row
                 }).then(res => {
                     // res.errno === 0 && this.getList();
                     this.$message({
@@ -360,22 +412,23 @@ export default {
                 id : this.$route.query.id
             }).then(res => {
                 if (res.code == 200) {
+                    this.slide11 = res.data.images
                     // console.log(slide11)
                     this.position = res.data.baidu.query;
                     this.bigImg = res.data.baidu.big_image;
                     this.smallImg = res.data.baidu.small_image;
-                    this.list = res.data.images;
-                    for(let i=0;i<this.list.length;i++){
-                        this.list[i].category.forEach(element => {
-                            // console.log('12412')
-                            this.list11.push(element)
-                        });
-                    }
-                    this.slide11 = [];
-                    this.imgs = [];
+                    // this.list = res.data.images;
+                    // for(let i=0;i<this.list.length;i++){
+                    //     this.list[i].category.forEach(element => {
+                    //         // console.log('12412')
+                    //         this.list11.push(element)
+                    //     });
+                    // }
+                    // this.slide11 = [];
+                    // this.imgs = [];
 
-                    for(let j=0;j<this.list11.length;j++){
-                        this.list11[j].files.forEach(element => {
+                    // for(let j=0;j<this.slide11.length;j++){
+                        this.slide11.forEach(element => {
                             var ss={};
                             ss.src = element.src;
                             ss.msrc = element.thumb;
@@ -384,15 +437,16 @@ export default {
                             ss.title = element.title;
                             ss.w = 800;
                             ss.h = 800;
-                            ss.order = element.order;
+                            // ss.order = element.order;
                             this.slide1.push(ss)
                             // this.imgs.push(ss)
                             // element.thumb
                             // this.list1.push(element)
                         });
-                    }
+                    // }
+                    this.recovery = res.data.recovery;
                     
-                    this.loadUrl = res.data.url;
+                    this.loadUrl = res.data.download;
                 }
             });
         },
@@ -404,10 +458,16 @@ export default {
             this.imgs = fileList
             
         },
-        sortBtn(guid,order){//排序
+        sortBtn(){//排序
+            let sort = [];
+            this.slide1.forEach(element => {
+                // console.log(element.id)
+                sort.push(element.id)
+            });
+            console.log(sort)
             request.post("/admin/appraisal/order",{
-                guid : guid,
-                order : order,
+                data : sort,
+                // order : order,
             }).then(res => {
                 if(res.code == 200){
                         this.$message({
@@ -418,9 +478,10 @@ export default {
                     // console.log(this.loader)
                     if(this.loader == 'all'){
                         this.getlist();
-                    }else{
-                        location.reload();
                     }
+                    // else{
+                    //     location.reload();
+                    // }
                 }
             })
         },
@@ -436,8 +497,8 @@ export default {
         cursor: pointer;
     }
     .preview1{
-        width:500px;
-        margin-left:20px;
+        width:90%;
+        margin-left:5%;
         height: 500px;
     }
 </style>

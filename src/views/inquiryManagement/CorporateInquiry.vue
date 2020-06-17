@@ -38,6 +38,15 @@
         </template>
       </el-table-column>
 
+      <!-- <el-table-column
+      label="序列号"
+      width="200px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
+        </template>
+      </el-table-column> -->
+
       <el-table-column
       label="流水号"
       width="200px"
@@ -48,20 +57,29 @@
       </el-table-column>
 
       <el-table-column
-      label="小区名称"
+      label="询值人员"
       width="120px"
       align="center">
         <template slot-scope="scope" >
-          <p :title="scope.row.plot_name" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_name}}</p>
+          <p :title="scope.row.ask_price" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="询价地址"
+      label="金融机构"
+      width="120px"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.ask_bank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_bank}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="项目名称"
       width="300px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.show_merge_addr" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_merge_addr}}</p>
+          <p :title="scope.row.project_name" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.project_name}}</p>
         </template>
       </el-table-column>
 
@@ -93,7 +111,16 @@
       </el-table-column> -->
 
       <el-table-column
-      label="房屋用途"
+      label="测算人员"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.test_user" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.test_user}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="用途"
       width="120px"
       align="center">
         <template slot-scope="scope">
@@ -111,7 +138,25 @@
       </el-table-column>
 
       <el-table-column
-      label="询值单价"
+      label="土地面积"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.ask_price_total" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price_total}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="估价总价(万)"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.ask_price_total" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price_total}}</p>
+        </template>
+      </el-table-column>
+  
+      <el-table-column
+      label="估价单价"
       width="120px"
       align="center">
         <template slot-scope="scope">
@@ -120,38 +165,11 @@
       </el-table-column>
 
       <el-table-column
-      label="备注"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.remark" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.remark}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="市场人员"
+      label="净值(万元)"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.bazaar_crew" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.bazaar_crew}}</p>
-        </template>
-      </el-table-column>
-  
-      <el-table-column
-      label="询价银行"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.ask_bank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_bank}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="市场人员"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.ask_bank" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.bazaar_crew}}</p>
+          <p :title="scope.row.total_prices" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.total_prices}}</p>
         </template>
       </el-table-column>
 
@@ -167,11 +185,11 @@
       
 
       <el-table-column
-      label="建成年代"
+      label="审核人员"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.activate_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.activate_time}}</p>
+          <p :title="scope.row.check_user" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.check_user}}</p>
         </template>
       </el-table-column>
 
@@ -185,87 +203,11 @@
       </el-table-column> -->
 
       <el-table-column
-      label="询值价格"
+      label="项目特殊情况"
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.ask_price_total" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price_total}}</p>
-        </template>
-      </el-table-column>
-
-      
-
-      <el-table-column
-      label="询价人"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.ask_price" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="询价时间"
-      width="200px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.create_time" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_time}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="创建人"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.create_username" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_username}}</p>
-        </template>
-      </el-table-column>
-
-      
-
-      <el-table-column
-      label="已立项"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.show_project_status" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_project_status}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="已审核"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-           <!-- 0 未审核 1待审核 -->
-          <p :title="scope.row.show_price_status" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.show_price_status}}</p>
-        </template>
-      </el-table-column>
-
-      <!-- <el-table-column
-      label="楼栋号和单元号"
-      width="180px"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.unit_number}}
-        </template>
-      </el-table-column> -->
-
-      <el-table-column
-      label="净值系数"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.factor" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.factor}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="小区特殊情况"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.plot_special" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_special}}</p>
+          <p :title="scope.row.remark" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.remark}}</p>
         </template>
       </el-table-column>
 
@@ -396,7 +338,7 @@ export default {
     methods: {
       getAgentList() {//初始渲染列表方法封装
         this.dialogFormVisible = false;
-        request.post("/admin/askPrice/query").then(res => {
+        request.post("/admin/askPricePublic/query").then(res => {
             // console.log(res)
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -408,7 +350,7 @@ export default {
             
         });
     },serachBtn(){ // 搜索功能
-        request.post("/admin/askPrice/query",{
+        request.post("/admin/askPricePublic/query",{
           keyword : this.search,
           // page : this.currentPage,
         }).then(res => {
@@ -450,7 +392,7 @@ export default {
       handleCurrentChange: function(currentPage){//换页
       // console.log(currentPage)  
           this.currentPage = currentPage;
-          request.post("/admin/askPrice/query",{
+          request.post("/admin/askPricePublic/query",{
           page : currentPage,
           keyword : this.search,
         }).then(res => {
@@ -461,7 +403,7 @@ export default {
         });
       },
       addCommodity(){//添加询价
-        this.$router.push({path:'/addInquiry'})
+        this.$router.push({path:'/addPublicInquiry'})
       },
       publicAddCommodity(){//添加对公询价
         this.$router.push({path:'/publicAddInquiry'})

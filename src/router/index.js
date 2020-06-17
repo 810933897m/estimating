@@ -103,15 +103,25 @@ import userList from "@/views/administrators/userList";
             title: '询价立项管理',
             icon: 'sms'
         },
-        children: [{//询价
+        children: [{//对私询价
             path: 'inquiry',
             name: 'inquiry',
             component: () => import('@/views/inquiryManagement/inquiry'),
             meta: {
-                title: '询价',
+                title: '对私询价',
                 icon: 'order'
             }
-        },{//报告立项
+        },
+        {//对公询价
+            path: 'CorporateInquiry',
+            name: 'CorporateInquiry',
+            component: () => import('@/views/inquiryManagement/CorporateInquiry'),
+            meta: {
+                title: '对公询价',
+                icon: 'order'
+            }
+        },
+        {//报告立项
             path: 'projectInitiation',
             name: 'projectInitiation',
             component: () => import('@/views/inquiryManagement/projectInitiation'),
@@ -136,7 +146,17 @@ import userList from "@/views/administrators/userList";
                 title:'添加对公询价',
             },
             hidden: true
-        },{//添加合同
+        }
+        ,{//添加询价
+            path: '/addPublicInquiry',
+            component: () => import('@/views/inquiryManagement/addPublicInquiry'),
+            name:'addPublicInquiry',
+            meta:{
+                title:'添加询价',
+            },
+            hidden: true
+        }
+        ,{//添加合同
             path: '/addContract',
             component: () => import('@/views/inquiryManagement/addContract'),
             name:'addContract',

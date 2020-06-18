@@ -19,8 +19,7 @@
     <el-form ref="form" >
         <el-form-item>
             <el-radio v-model="activeName" label="first" @change="handleClick()">未审核</el-radio>
-            <el-radio v-model="activeName" label="two" @change="handleClick()">已审核</el-radio>
-            <el-radio v-model="activeName" label="pass" @change="handleClick()">已通过</el-radio>
+            <el-radio v-model="activeName" label="two" @change="handleClick()">已通过</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">已拒绝</el-radio>
             <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
@@ -36,6 +35,7 @@
 
       <el-table-column
        label="id"
+       key="1"
       width="50px"
       align="center">
         <template slot-scope="scope" >
@@ -46,6 +46,7 @@
       <el-table-column
       label="流水号"
       width="120px"
+      key="2"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -53,8 +54,31 @@
       </el-table-column>
 
       <el-table-column
+      label="通过原因"
+      width="120px"
+      key="3"
+      v-if="activeName == 'two'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.admin_desc" style="" class="nooverflow">{{scope.row.admin_desc}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="拒绝原因"
+      width="120px"
+      key="4"
+      v-if="activeName == 'no'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.admin_desc" style="" class="nooverflow">{{scope.row.admin_desc}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="报告编号"
       width="150px"
+      key="5"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -64,6 +88,7 @@
       <el-table-column
       label="项目地址"
       width="200px"
+      key="6"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
@@ -73,6 +98,7 @@
       <el-table-column
       label="小区名称"
       width="130px"
+      key="7"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
@@ -82,6 +108,7 @@
       <el-table-column
       label="紧急程度"
       width="100px"
+      key="8"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -91,6 +118,7 @@
       <el-table-column
       label="报告类型"
       width="100px"
+      key="9"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -100,6 +128,7 @@
       <el-table-column
       label="物业类型"
       width="100px"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
@@ -109,6 +138,7 @@
       <el-table-column
       label="项目状态"
       width="100px"
+      key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.approval_status}}</p>
@@ -129,6 +159,7 @@
       <el-table-column
       label="流程状态"
       width="100px"
+      key="12"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
@@ -139,7 +170,7 @@
       label="立项时间"
       v-if="activeName == 'first'"
       width="150px"
-      key="1" 
+     key="13"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -148,7 +179,7 @@
 
       <el-table-column
       label="审核状态"
-      key="2" 
+      key="14"
       v-if="activeName == 'two'"
       width="150px"
       align="center">
@@ -160,7 +191,7 @@
       <el-table-column
       label="审核结果"
       width="150px"
-      key="3" 
+      key="15"
       v-if="activeName == 'two'"
       align="center">
         <template slot-scope="scope">
@@ -174,7 +205,7 @@
       v-if="activeName == 'first'"
       width="250px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="advancedAudit(scope.row)" >转让</el-button>
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="advancedAudit(scope.row)" >转让</el-button> -->
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="submit(scope.row)" >同意</el-button>
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="refuse(scope.row)">拒绝</el-button>
         </template>
@@ -319,7 +350,9 @@ export default {
         // console.log(this.activeName)
         if(this.activeName == 'first'){
           // this.getAgentList();//渲染列表
-          request.post("/admin/projectReview/query").then(res => {
+          request.post("/admin/FinalAudit/query",{
+            status : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -330,7 +363,22 @@ export default {
         });
         }else if(this.activeName == 'two'){
           // console.log('2')
-          request.post("/admin/projectReview/finish").then(res => {
+          request.post("/admin/FinalAudit/query",{
+            status : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'no'){
+          // console.log('2')
+          request.post("/admin/FinalAudit/query",{
+            status : 2,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -444,7 +492,7 @@ export default {
         this.audit = '';
       },
       outworkidBtn(){//同意确定
-          request.post("/admin/projectReview/submit",{
+          request.post("/admin/FinalAudit/AuditFinalPassOperation",{
           id : this.Id,
           admin_desc : this.admin_desc,
           // page : this.currentPage,
@@ -462,7 +510,7 @@ export default {
         this.admin_desc = '';
       },
       outworkidBtn1(){//拒绝确定
-          request.post("/admin/projectReview/refuse",{
+          request.post("/admin/FinalAudit/AuditFinalRejectOperation",{
           id : this.Id,
           admin_desc : this.admin_desc,
           // page : this.currentPage,

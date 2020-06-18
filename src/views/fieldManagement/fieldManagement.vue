@@ -170,7 +170,7 @@
           <el-dialog style="" :append-to-body='true' title="分配" :visible.sync="dialogFormVisible">
             <el-form ref="form" label-width="120px" :model="form" style="">
               <div style="width:100%;position:relative;height:50px;">
-                  <el-form-item label="外采用户" class="select" style="float:left;">
+                  <el-form-item label="撰写人" class="select" style="float:left;">
                   <el-select v-model="outworkid" filterable style="">
                       <el-option
                       v-for="item in outworkid1"

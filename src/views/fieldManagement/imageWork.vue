@@ -67,7 +67,7 @@
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
-                        <img :src="item.src" alt="" class="preview">
+                        <img :src="item.src" alt="" class="preview2">
                         <p style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
@@ -500,5 +500,11 @@ export default {
         width:90%;
         margin-left:5%;
         height: 500px;
+    }
+    .preview2{
+        width:200px;
+        margin-left:20px;
+        height: 200px;
+        float:left;
     }
 </style>

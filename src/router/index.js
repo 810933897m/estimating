@@ -188,6 +188,14 @@ import userList from "@/views/administrators/userList";
                 title:'修改询价',
             },
             hidden: true
+        },{//修改对公询价
+            path: '/updataInquiry2',
+            component: () => import('@/views/inquiryManagement/updataInquiry2'),
+            name:'updataInquiry2',
+            meta:{
+                title:'修改对公询价',
+            },
+            hidden: true
         },{//询价详情
             path: '/detailInquiry',
             component: () => import('@/views/inquiryManagement/detailInquiry'),

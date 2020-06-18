@@ -40,7 +40,7 @@
                 <el-input  placeholder="请输入" v-model="form.check_user"></el-input>
             </el-form-item>
 
-            <el-form-item label="项目特殊情况注意事项" class="form-input1" prop="title" style="">
+            <el-form-item label="项目特殊情况" class="form-input1" prop="title" style="">
             <el-input
             type="textarea"
             :rows="2"

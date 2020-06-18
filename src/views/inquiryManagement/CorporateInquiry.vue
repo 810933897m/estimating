@@ -142,7 +142,7 @@
       width="100px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.ask_price_total" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.ask_price_total}}</p>
+          <p :title="scope.row.land_area" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.land_area}}</p>
         </template>
       </el-table-column>
 
@@ -219,9 +219,9 @@
             <p style="display:none;">{{scope.row}}</p>
             <!-- <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button> -->
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
-            <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
+            <!-- <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
-            <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button>
+            <!-- <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button> -->
 
           
           
@@ -372,7 +372,7 @@ export default {
       updateAgent(row) {//修改按钮
       // v-if="!scope.row.project_status"
       // console.log(row)
-          this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
+          this.$router.push({path:'/updataInquiry2',query:{id:row.id}})
         
         
       },

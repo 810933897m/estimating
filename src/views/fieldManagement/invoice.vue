@@ -5,11 +5,23 @@
     <el-tab-pane label="发票对私" name="first"></el-tab-pane>
     <el-tab-pane label="发票对公" name="success"></el-tab-pane> -->
 
-    <el-form ref="form" >
+    <!-- <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
             <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+    </el-form> -->
+
+    <el-form ref="form" >
+        <el-form-item>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">申请发票</el-radio>
+            <el-radio v-model="activeName" label="two" @change="handleClick()">待审核</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">开票成功</el-radio>
+            <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+            <el-button type="primary" style="" plain @click="BillingBtn()">添加发票</el-button>
+        </el-form-item>
     </el-form>
 
     <el-table 
@@ -18,6 +30,15 @@
       border
        max-height="550"
       style="width: 100%;">
+
+      <el-table-column
+      v-if="activeName == 'first'"
+          width="40px"
+          align="left">
+            <template slot-scope="scope" >
+              <el-checkbox v-model="scope.row.checked"></el-checkbox>
+            </template>
+      </el-table-column>
 
       <el-table-column
        label="id"
@@ -40,6 +61,8 @@
       <el-table-column
       label="项目报告份数"
       width="120px"
+      v-if="activeName == 'first'"
+      key="97"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
@@ -49,6 +72,8 @@
       <el-table-column
       label="已发报告份数"
       width="120px"
+      v-if="activeName == 'first'"
+      key="87"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
@@ -67,6 +92,8 @@
       <el-table-column
       label="报告编号"
       width="150px"
+      v-if="activeName == 'first'"
+      key="57"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -76,6 +103,8 @@
       <el-table-column
       label="旧流水号"
       width="120px"
+      v-if="activeName == 'first'"
+      key="47"
       align="center">
         <!-- <template slot-scope="scope">
           {{scope.row.city}}
@@ -84,6 +113,8 @@
 
       <el-table-column
       label="旧报告编号"
+      v-if="activeName == 'first'"
+      key="37"
       width="120px"
       align="center">
         <!-- <template slot-scope="scope">
@@ -94,6 +125,8 @@
       <el-table-column
       label="项目状态"
       width="100px"
+      v-if="activeName == 'first'"
+      key="27"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
@@ -103,6 +136,8 @@
       <el-table-column
       label="项目地址"
       width="130px"
+      v-if="activeName == 'first'"
+      key="17"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -112,6 +147,8 @@
       <el-table-column
       label="小区名称"
       width="100px"
+      v-if="activeName == 'first'"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
@@ -120,6 +157,8 @@
 
       <el-table-column
       label="受理时间"
+      v-if="activeName == 'first'"
+      key="9"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -129,6 +168,8 @@
 
       <el-table-column
       label="报告类型"
+      v-if="activeName == 'first'"
+      key="8"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -139,11 +180,93 @@
       <el-table-column
       label="流程状态"
       width="100px"
+      v-if="activeName == 'first'"
+      key="7"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
+
+      
+
+      <el-table-column
+          label="开票类型"
+          v-if="activeName != 'first'"
+          key="7"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_type}}
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+          v-if="activeName != 'first'"
+          key="6"
+          label="名称"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_company}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="纳税人识别码"
+          v-if="activeName != 'first'"
+          key="5"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.taxpayer_identification}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="电话"
+          v-if="activeName != 'first'"
+          key="4"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_telephone}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="地址"
+          v-if="activeName != 'first'"
+          key="3"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_address}}
+            </template>
+          </el-table-column>
+
+          <!-- <el-table-column
+          label="开票人姓名"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_username}}
+            </template>
+          </el-table-column> -->
+
+          <el-table-column
+          label="开户行"
+          v-if="activeName != 'first'"
+          key="2"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          v-if="activeName != 'first'"
+          key="1"
+          label="开户账户"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank_card}}
+            </template>
+          </el-table-column>
     
       <el-table-column
       label="操作"
@@ -151,7 +274,7 @@
       width="200px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
-          <el-button size="small" type="primary" @click="Report(scope.row)" >新增记录</el-button>
+          <!-- <el-button size="small" type="primary" @click="Report(scope.row)" >新增记录</el-button> -->
           <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
           </template>
       </el-table-column>
@@ -177,91 +300,91 @@
         :visible.sync="dialogVisibleRecordDetail"
         width="50%">
 
-        <el-table 
-        class="table-picture"
-        :data="recordDetailList"
-        border
-        style="width: 100%;">
+          <el-table 
+          class="table-picture"
+          :data="recordDetailList"
+          border
+          style="width: 100%;">
 
-        <el-table-column
-        label="id"
-        width="50px"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.id}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="id"
+          width="50px"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.id}}
+            </template>
+          </el-table-column>
 
-        <el-table-column
-        label="开票类型"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_type}}
-          </template>
-        </el-table-column>
-        
-        <el-table-column
-        label="名称"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_company}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="开票类型"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_type}}
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+          label="名称"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_company}}
+            </template>
+          </el-table-column>
 
-        <el-table-column
-        label="纳税人识别码"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.taxpayer_identification}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="纳税人识别码"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.taxpayer_identification}}
+            </template>
+          </el-table-column>
 
-        <el-table-column
-        label="电话"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_telephone}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="电话"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_telephone}}
+            </template>
+          </el-table-column>
 
-        <el-table-column
-        label="地址"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_address}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="地址"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_address}}
+            </template>
+          </el-table-column>
 
-        <!-- <el-table-column
-        label="开票人姓名"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_username}}
-          </template>
-        </el-table-column> -->
+          <!-- <el-table-column
+          label="开票人姓名"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_username}}
+            </template>
+          </el-table-column> -->
 
-        <el-table-column
-        label="开户行"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_bank}}
-          </template>
-        </el-table-column>
+          <el-table-column
+          label="开户行"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank}}
+            </template>
+          </el-table-column>
 
-        <el-table-column
-        label="开户账户"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.invoice_bank_card}}
-          </template>
-        </el-table-column>
-        </el-table>
+          <el-table-column
+          label="开户账户"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank_card}}
+            </template>
+          </el-table-column>
+          </el-table>
 
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
             </span>
         </el-dialog>
-        <!--*************收款记录模态框*************-->
+      <!--*************收款记录模态框*************-->
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="新增记录" :visible.sync="dialogFormVisible">
@@ -320,6 +443,109 @@
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
+          <!--*************添加收款模态框*************-->
+        <el-dialog
+        title="添加"
+        :visible.sync="dialogVisibleAdd"
+        width="60%">
+        <!-- :before-close="handleClose" -->
+            <el-form label-width="90px" style="float:left;">
+
+                <el-form-item label="开票类型" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-radio v-model="add.invoice_type" label="普票">普票</el-radio>
+                <el-radio v-model="add.invoice_type" label="专票">专票</el-radio>
+              </el-form-item>
+
+              <el-form-item label="名称" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.invoice_company"></el-input>
+              </el-form-item>
+
+              <el-form-item label="识别码" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.taxpayer_identification"></el-input>
+              </el-form-item>
+
+              <el-form-item label="电话" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.invoice_telephone"></el-input>
+              </el-form-item>
+
+              <el-form-item label="地址" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.invoice_address"></el-input>
+              </el-form-item>
+
+              <!-- <el-form-item label="开票人姓名" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_username"></el-input>
+              </el-form-item> -->
+
+              <el-form-item label="开户行" class="form-input" prop="title" style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.invoice_bank"></el-input>
+              </el-form-item>
+
+              <el-form-item label="开户账户" class="form-input" prop="title"  style="width:250px;float:left;">
+                <el-input  placeholder="请输入" v-model="add.invoice_bank_card"></el-input>
+              </el-form-item>
+
+              <el-form-item label="收费总金额" style="width:250px;float:left;" >
+                  <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount"></el-input>
+                </el-form-item>
+
+                <el-table 
+                class="table-picture"
+                :data="billingList"
+                border
+                max-height="200"
+                style="width: 100%;">
+
+                <el-table-column
+                label="id"
+                align="center">
+                  <template slot-scope="scope" >
+                    {{scope.row.id}}
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="流水号"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="报告编号"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="项目地址"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="收款金额"
+                align="center">
+                  <template slot-scope="scope">
+                    <el-input @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
+                  </template>
+                </el-table-column>
+
+                </el-table>
+
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevisionAdd(),dialogVisibleAdd = false">保 存</el-button>
+                <el-button @click="dialogVisibleAdd = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************添加收款模态框*************-->
+
   </div>
 </template>
 <script>
@@ -344,6 +570,7 @@ export default {
         ask_univalence1 : [],
         fileList:[],
         fileType:'',
+        billingList : [],
         fileType1:[
           {
             label:'其它',
@@ -383,12 +610,24 @@ export default {
           Invoice_examiner_id:'',
           invoice_type : '普票',
         },
+        add:{
+          charge_amount : 0,
+          invoice_company : '',
+          taxpayer_identification : '',
+          invoice_telephone : '',
+          invoice_address : '',
+          invoice_bank : '',
+          invoice_bank_card : '',
+          Invoice_examiner_id:'',
+          invoice_type : '普票',
+        },
         invoice_examiner:[],
         recordDetailList :[],//发票记录
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
         dialogVisibleRecordDetail : false,//发票记录弹出框
+        dialogVisibleAdd : false,//发票记录弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -423,7 +662,19 @@ export default {
       handleClick(tab, event){//改变状态
         // console.log(this.activeName)
         if(this.activeName == 'first'){
-          request.post("/admin/projectInvoice/query").then(res => {
+          request.post("/admin/ProjectInvoice/query").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            type : 1,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -433,7 +684,21 @@ export default {
             }
         });
         }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectInvoice/ProjectPublicList").then(res => {
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            type : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'no'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            type : 3,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -471,7 +736,9 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/projectInvoice/query").then(res => {
+        request.post("/admin/ProjectInvoice/query",{
+            type : 0,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -531,7 +798,7 @@ export default {
         this.Id = row.id;
       },
       recordDetail(row){//详情
-        request.post("/admin/projectInvoice/info",{
+        request.post("/admin/ProjectInvoice/getInvoiceList",{
             id : row.id,
           }).then(res => {
             if (res.code == 200) {
@@ -558,7 +825,7 @@ export default {
       outworkidBtn1(){//报告装订
           request.post("/admin/ProjectInvoice/create",{
           project_id : this.Id,
-          invoice_examiner_id : this.form.Invoice_examiner_id,
+          // invoice_examiner_id : this.form.Invoice_examiner_id,
           invoice_company : this.form.invoice_company,
           taxpayer_identification : this.form.taxpayer_identification,
           invoice_telephone : this.form.invoice_telephone,
@@ -574,7 +841,7 @@ export default {
                     type: "success",
                     message: '发送成功'//提示发送成功
                 });
-                this.form = {
+                this.add = {
                   invoice_bank_card : '',
                   taxpayer_identification : '',
                   invoice_telephone : '',
@@ -619,6 +886,77 @@ export default {
           });
           }
       },
+      BillingBtn(){//开票
+        this.billingList = [];
+          this.agentList.forEach(element => {
+            if(element.checked){
+              this.billingList.push(element)
+            }
+          });
+          console.log(this.billingList)
+          this.dialogVisibleAdd = true;
+        },
+        countMoney(money){
+          // console.log()
+          let sum = 0;
+          this.billingList.forEach(element => {
+            sum += Number(element.charge_amount)
+          });
+          // console.log(sum)
+          this.add.charge_amount = sum;
+        },
+        confirmRevisionAdd(){
+          console.log(this.add)
+          let list1={}
+          let list2 = [];
+          this.billingList.forEach(element => {
+            list1 = {
+              project_id:element.id,
+              invoice_money : element.charge_amount
+            }
+            list2.push(list1)
+          });
+          console.log(list2)
+
+          request.post("/admin/ProjectInvoice/create",{
+            // project_id : this.Id,
+              // invoice_examiner_id : this.add.Invoice_examiner_id,
+              invoice_company : this.add.invoice_company,
+              taxpayer_identification : this.add.taxpayer_identification,
+              invoice_telephone : this.add.invoice_telephone,
+              invoice_address : this.add.invoice_address,
+              // invoice_username : this.form.invoice_username,
+              invoice_type : this.add.invoice_type,
+              invoice_bank : this.add.invoice_bank,
+              invoice_bank_card : this.add.invoice_bank_card,
+              invoice_money_total : this.add.charge_amount,
+              child : list2,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '添加成功'//提示添加成功
+                });
+                this.form = {
+                  invoice_bank_card : '',
+                  taxpayer_identification : '',
+                  invoice_telephone : '',
+                  invoice_address : '',
+                  invoice_type : '普票',
+                  invoice_bank : '',
+                  invoice_bank_card : '',
+                  charge_amount : '',
+                };
+                this.express_type = '';
+                this.type = '';
+                this.send_type = '';
+                this.handleClick();
+              }
+          });
+        this.dialogVisibleAdd=false;
+        },
+
   }
 }
 </script>

@@ -171,7 +171,7 @@
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('house_type','')">房屋类型*</span>
-                <el-input style="width:180px;" placeholder="请输入房屋类型"  v-model="house_type"></el-input>
+                <el-input style="width:180px;" placeholder="请输入房屋类型" disabled v-model="house_type"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
@@ -180,7 +180,7 @@
             </el-form-item>
 
             <el-form-item label="建筑面积" class="form-input" prop="title" style="width:300px;float:left;position:relative;">
-                <el-input @change="totalPrices();sumComputed()" placeholder="请输入建筑面积" v-model="form.construct_area"></el-input>
+                <el-input @change="totalPrices();sumComputed()" disabled placeholder="请输入建筑面积" v-model="form.construct_area"></el-input>
             </el-form-item>
             
             <span style="margin-top:10px;margin-left:2px;float:left;"> </span>
@@ -241,16 +241,16 @@
             </el-form-item>
 
             <el-form-item label="询值单价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  @change="totalPrices();sumComputed()" placeholder="请输入询值单价" v-model="form.ask_univalence"></el-input>
+                <el-input  @change="totalPrices();sumComputed()" disabled placeholder="请输入询值单价" v-model="form.ask_univalence"></el-input>
             </el-form-item>
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入询值总价" v-model="form.ask_price_total" @change="totalPrices();sumComputed()"></el-input>
+                <el-input  placeholder="请输入询值总价" disabled v-model="form.ask_price_total" @change="totalPrices();sumComputed()"></el-input>
             </el-form-item>
       
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('factor','')">净值系数*</span>
-                <el-input  style="width:180px;" placeholder="请输入净值系数"  v-model="factor" @change="totalPrices();sumComputed()"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入净值系数" disabled v-model="factor" @change="totalPrices();sumComputed()"></el-input>
             </el-form-item>
 
             <!-- <el-form-item  label="净值系数" class="form-input" prop="title" style="width:300px;float:left;">
@@ -258,14 +258,14 @@
             </el-form-item> -->
 
             <el-form-item label="净值总价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入净值总价"  v-model="form.total_prices"></el-input>
+                <el-input placeholder="请输入净值总价" disabled v-model="form.total_prices"></el-input>
             </el-form-item>
               <!-- <el-form-item label="净值总价" class="form-input" prop="title" style="width:250px;float:left;">
                 <el-input  placeholder="请输入净值总价" v-model="form.total_prices"></el-input>
             </el-form-item> -->
 
             <el-form-item label="补交土地出让金" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  @change="totalPrices();sumComputed()"  placeholder="请输入补交土地出让金" v-model="tudiMoney"></el-input>
+                <el-input  @change="totalPrices();sumComputed()" disabled placeholder="请输入补交土地出让金" v-model="tudiMoney"></el-input>
             </el-form-item>
 
             <el-form-item label="建成年代" class="form-input" prop="title" style="width:300px;float:left;">

@@ -430,16 +430,26 @@ import userList from "@/views/administrators/userList";
             icon: 'marker'
         },
         children: [
-            // {
-            //     path: 'InquiryApproval',
-            //     name: 'InquiryApproval',
-            //     component: () => import('@/views/AuditManagement/InquiryApproval'),
-            //     meta: {
-            //         title: '询值单价审核',
-            //         icon: 'sms-subject',
-            //         // keepAlive: true
-            //     }
-            // },
+            {
+                path: 'InquiryApproval',
+                name: 'InquiryApproval',
+                component: () => import('@/views/AuditManagement/InquiryApproval'),
+                meta: {
+                    title: '询值单价审核',
+                    icon: 'sms-subject',
+                    // keepAlive: true
+                }
+            },
+            {
+                path: 'InvoiceAudit',
+                name: 'InvoiceAudit',
+                component: () => import('@/views/AuditManagement/InvoiceAudit'),
+                meta: {
+                    title: '发票审核',
+                    icon: 'sms-subject',
+                    // keepAlive: true
+                }
+            },
             {
                 path: 'SecondProject',
                 name: 'SecondProject',

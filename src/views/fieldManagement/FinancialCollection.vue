@@ -8,15 +8,25 @@
                     <el-button type="info" style="margin-left:0px;" plain >高级</el-button>
                     <el-button type="primary" style="" plain @click="searchBtn()">查询</el-button>
                     <!-- <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button> -->
+                    <el-button type="primary" style="" plain @click="BillingBtn()">添加收款</el-button>
+
                 </el-form-item>
             </el-form>
 
-    <el-table 
+      <el-table 
       class="table-picture"
       :data="agentList"
       border
        max-height="550"
       style="width: 100%;">
+
+      <el-table-column
+      width="40px"
+      align="left">
+        <template slot-scope="scope" >
+          <el-checkbox v-model="scope.row.checked"></el-checkbox>
+        </template>
+      </el-table-column>
 
       <el-table-column
        label="id"
@@ -198,7 +208,7 @@
           </template>
         </el-table-column>
         </el-table>
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
                 <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
             </span>
         </el-dialog>
@@ -234,9 +244,96 @@
 
             </el-form>
         
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
                 <el-button type="primary" @click="confirmRevision(),dialogVisible = false">保 存</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************添加收款模态框*************-->
+
+        <!--*************添加收款模态框*************-->
+        <el-dialog
+        title="添加"
+        :visible.sync="dialogVisibleAdd"
+        width="60%">
+        <!-- :before-close="handleClose" -->
+            <el-form label-width="90px" style="float:left;">
+
+                <el-form-item label="收款方式" style="width:250px;float:left;">
+                  <el-input placeholder="请输入收款方式" v-model="add.charge_way"></el-input>
+                </el-form-item>
+
+              <el-form-item label="收费总金额" style="width:250px;float:left;" >
+                  <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount"></el-input>
+                </el-form-item>
+
+              <el-form-item label="收款日期" style="width:250px;float:left;">
+                  <el-input placeholder="请输入收款日期" v-model="add.transfer_date"></el-input>
+                </el-form-item>
+
+              <el-form-item label="收款方" style="width:250px;float:left;">
+                  <el-input placeholder="请输入收款方" v-model="add.transfer_personnel"></el-input>
+                </el-form-item>
+
+                <el-form-item label="转账备注" style="width:250px;float:left;">
+                  <el-input placeholder="请输入转账备注" v-model="add.charge_remark"></el-input>
+                </el-form-item>
+
+                <el-table 
+                class="table-picture"
+                :data="billingList"
+                border
+                max-height="200"
+                style="width: 100%;">
+
+                <el-table-column
+                label="id"
+                align="center">
+                  <template slot-scope="scope" >
+                    {{scope.row.id}}
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="流水号"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="报告编号"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="项目地址"
+                align="center">
+                  <template slot-scope="scope">
+                    <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+                  </template>
+                </el-table-column>
+
+                <el-table-column
+                label="收款金额"
+                align="center">
+                  <template slot-scope="scope">
+                    <el-input @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
+                    <!-- <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p> -->
+                  </template>
+                </el-table-column>
+
+                </el-table>
+
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+                <el-button type="primary" @click="confirmRevisionAdd(),dialogVisibleAdd = false">保 存</el-button>
+                <el-button @click="dialogVisibleAdd = false">取 消</el-button>
             </span>
         </el-dialog>
         <!--*************添加收款模态框*************-->
@@ -245,7 +342,8 @@
     <el-pagination
     style="margin-top:20px;"
     @current-change="handleCurrentChange"
-    :page-sizes="[20]" 
+    @size-change="handleSizeChange"
+    :page-sizes="[20,50,100,150]" 
     :page-size="page"
     layout="total, sizes, prev, pager, next, jumper"
     :total="count">
@@ -261,6 +359,15 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
+        
+        add:{
+          charge_way : '',
+          charge_amount : 0,
+          transfer_date : '',
+          transfer_personnel : '',
+          charge_remark : '',
+        },
+
         charge_way : '',
         charge_amount : '',
         transfer_date : '',
@@ -270,9 +377,11 @@ export default {
         search : '',
         options:map.options,
         agentList : [],//列表 绑定
+        billingList : [],//开票列表 绑定
         dialogFormVisible : false,//弹出框
         dialogVisible : false,//弹出框
         dialogVisibleRecordDetail : false,//弹出框
+        dialogVisibleAdd : false,//弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -285,8 +394,8 @@ export default {
         report_number_children1 : [],
 
         //*************分页变量*************
-        // currentPage : 1, //初始页
-        // pagesize : 5,   //每页的数据
+        currentPage : 1, //初始页
+        pagesize : 20,   //每页的数据
         count : 0,
         max : 1,
         page : 1,
@@ -405,15 +514,66 @@ export default {
           this.$router.push({path:'/detaiPprojectInitiation',query:{id:row.id}})
       },
       handleCurrentChange: function(currentPage){//换页
+          this.currentPage =currentPage;
           request.post("/admin/financial/query",{
-          page : currentPage,
-          keyword : this.search,
+            page : currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
       },
+      handleSizeChange: function (size) {
+            this.pagesize = size;
+            // console.log(this.pagesize)  //每页下拉显示数据
+            request.post("/admin/financial/query",{
+                page : this.currentPage,
+                keyword : this.search,
+                pageSize : this.pagesize,
+            }).then(res => {
+                if (res.code == 200) {
+                  this.agentList = res.data.list;
+                }
+            })
+        },
+
+        changeAdd(id){
+          console.log(id)
+        },
+        BillingBtn(){//开票
+        this.billingList = [];
+          this.agentList.forEach(element => {
+            if(element.checked){
+              this.billingList.push(element)
+            }
+          });
+          console.log(this.billingList)
+          this.dialogVisibleAdd = true;
+        },
+        countMoney(money){
+          // console.log()
+          let sum = 0;
+          this.billingList.forEach(element => {
+            sum += Number(element.charge_amount)
+          });
+          // console.log(sum)
+          this.add.charge_amount = sum;
+        },
+        confirmRevisionAdd(){
+          console.log(this.add)
+          let list1={}
+          let list2 = [];
+          this.billingList.forEach(element => {
+            list1 = {
+              id:element.id,
+              money : element.charge_amount
+            }
+            list2.push(list1)
+          });
+          console.log(list2)
+        },
   }
 }
 </script>

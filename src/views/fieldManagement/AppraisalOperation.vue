@@ -185,7 +185,7 @@
       label="操作"
       v-if="distribution == '1'"
       fixed="right"
-      width="400px" align="center">
+      width="330px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" @click="Pending(scope.row)" >挂起</el-button>
           <!-- <el-button size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button> -->
@@ -193,7 +193,7 @@
           <el-button size="small" type="primary" @click="examineBtn(scope.row)" >审核</el-button>
           <el-button size="small" type="primary"  @click="exploration(scope.row)">外勘</el-button>
           <el-button size="small" type="primary" @click="imageBtn(scope.row)" >材料</el-button>
-          <el-button size="small" type="primary" @click="Printing(scope.row)">打印</el-button>  
+          <!-- <el-button size="small" type="primary" @click="Printing(scope.row)">打印</el-button>   -->
         </template>
       </el-table-column>
 

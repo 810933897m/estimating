@@ -19,29 +19,56 @@
       style="width: 100%;">
 
       <el-table-column
+      v-if="activeName == 'first'"
+          width="40px"
+          align="left">
+            <template slot-scope="scope" >
+              <el-checkbox v-model="scope.row.checked"></el-checkbox>
+            </template>
+      </el-table-column>
+
+      <el-table-column
        label="id"
       width="50px"
-      key="1"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
         </template>
       </el-table-column>
 
-      <el-table-column
-      label="审核建议"
+      <!-- <el-table-column
+      label="紧急程度"
       width="120px"
-      key="2"
-      v-if="activeName == 'success' || activeName == 'no'"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
+          {{scope.row.approval_status}}
+        </template>
+      </el-table-column> -->
+
+      <el-table-column
+      label="项目报告份数"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="97"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="已发报告份数"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="87"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="流水号"
-      key="3"
       width="120px"
       align="center">
         <template slot-scope="scope">
@@ -52,115 +79,181 @@
       <el-table-column
       label="报告编号"
       width="150px"
-      key="4"
+      v-if="activeName == 'first'"
+      key="57"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_number}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="项目地址"
-      width="200px"
-      key="5"
+      label="旧流水号"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="47"
       align="center">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
+          {{scope.row.city}}
+        </template> -->
+      </el-table-column>
+
+      <el-table-column
+      label="旧报告编号"
+      v-if="activeName == 'first'"
+      key="37"
+      width="120px"
+      align="center">
+        <!-- <template slot-scope="scope">
           {{scope.row.plot_address}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="小区名称"
-      width="130px"
-      key="6"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.plot_name}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="紧急程度"
-      width="100px"
-      key="8"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_tale}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告类型"
-      width="100px"
-      key="9"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.report_tale}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="物业类型"
-      width="100px"
-      key="10"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.property_type}}
-        </template>
+        </template> -->
       </el-table-column>
 
       <el-table-column
       label="项目状态"
       width="100px"
-      key="11"
+      v-if="activeName == 'first'"
+      key="27"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
-    
+
       <el-table-column
-      label="撰写人员"
-      width="100px"
-      key="12"
-      v-if="activeName == 'two'"
+      label="项目地址"
+      width="130px"
+      v-if="activeName == 'first'"
+      key="17"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="小区名称"
+      width="100px"
+      v-if="activeName == 'first'"
+      key="10"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="受理时间"
+      v-if="activeName == 'first'"
+      key="9"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="报告类型"
+      v-if="activeName == 'first'"
+      key="8"
+      width="100px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="流程状态"
       width="100px"
-      key="13"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.approval_status}}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="立项时间"
       v-if="activeName == 'first'"
-      width="150px"
-      key="14"
+      key="7"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
 
+      
+
       <el-table-column
-      label="分配时间"
-      v-else-if="activeName == 'two'"
-      width="150px"
-      key="15"
-      align="center">
-        <template slot-scope="scope">
-          {{scope.row.finish_time}}
-        </template>
-      </el-table-column>
+          label="开票类型"
+          v-if="activeName != 'first'"
+          key="7"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_type}}
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+          v-if="activeName != 'first'"
+          key="6"
+          label="名称"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_company}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="纳税人识别码"
+          v-if="activeName != 'first'"
+          key="5"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.taxpayer_identification}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="电话"
+          v-if="activeName != 'first'"
+          key="4"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_telephone}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="地址"
+          v-if="activeName != 'first'"
+          key="3"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_address}}
+            </template>
+          </el-table-column>
+
+          <!-- <el-table-column
+          label="开票人姓名"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_username}}
+            </template>
+          </el-table-column> -->
+
+          <el-table-column
+          label="开户行"
+          v-if="activeName != 'first'"
+          key="2"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank}}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          v-if="activeName != 'first'"
+          key="1"
+          label="开户账户"
+          align="center">
+            <template slot-scope="scope" >
+              {{scope.row.invoice_bank_card}}
+            </template>
+          </el-table-column>
 
       <el-table-column
       label="操作"
@@ -196,6 +289,10 @@
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
                 <!-- <p style="margin-left:50px;">原始单价{{old_price}},修改单价{{new_price}}</p> -->
+                  <el-form-item v-if="passShow" label="发票号" class="form-input" prop="title" style="width:250px;float:left;">
+                    <el-input  placeholder="请输入" v-model="invoice_number"></el-input>
+                </el-form-item>
+
                   <el-form-item label="审核建议" class="form-input" prop="title" style="width:250px;float:left;">
                     <el-input  placeholder="请输入" v-model="admin_desc"></el-input>
                 </el-form-item>
@@ -244,6 +341,7 @@ export default {
         options:map.options,
         activeName: 'first',
         admin_desc : '',
+        invoice_number : '',
         outworkid:'',
         outworkid1:[
           {
@@ -287,8 +385,8 @@ export default {
     methods: {
       handleClick(tab, event){//改变状态
         if(this.activeName == 'first'){
-          request.post("/admin/askPriceCheck/query",{
-            status : 0
+          request.post("/admin/AuditInvoice/query",{
+            type : 0
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -299,8 +397,8 @@ export default {
             }
           });
         }else if(this.activeName == 'success'){
-          request.post("/admin/askPriceCheck/query",{
-            status : 1
+          request.post("/admin/AuditInvoice/query",{
+            type : 1
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -311,8 +409,8 @@ export default {
             }
           });
         }else if(this.activeName == 'no'){
-          request.post("/admin/askPriceCheck/query",{
-            status : 2
+          request.post("/admin/AuditInvoice/query",{
+            type : 2
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -347,8 +445,8 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/askPriceCheck/query",{
-            status : 0
+        request.post("/admin/AuditInvoice/query",{
+            type : 0
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -418,9 +516,10 @@ export default {
       },
       outworkidBtn(){//分配任务确定
         if(this.activeName == 'first'){
-          request.post("/admin/askPriceCheck/submit",{
+          request.post("/admin/AuditInvoice/create",{
             id : this.ROW.id,
-            admin_desc:this.admin_desc,
+            invoice_number : this.invoice_number,
+            invoice_remark:this.admin_desc,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -428,6 +527,7 @@ export default {
                     type: "success",
                     message: '同意变更成功'//提示同意变更成功
                 });
+                this.invoice_number = '';
                 this.admin_desc = '';
                 this.handleClick();
               }
@@ -437,9 +537,9 @@ export default {
       },
       outworkidBtn1(){//分配任务确定
         if(this.activeName == 'first'){
-          request.post("admin/askPriceCheck/refuse",{
+          request.post("/admin/AuditInvoice/update",{
             id : this.ROW.id,
-            admin_desc:this.admin_desc,
+            invoice_remark:this.admin_desc,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({

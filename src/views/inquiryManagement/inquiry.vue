@@ -272,12 +272,14 @@
       <el-table-column
       label="操作"
       fixed="right"
-      width="200px" align="center">
+      width="270px" align="center">
         <template slot-scope="scope">
             <p style="display:none;">{{scope.row}}</p>
             <!-- <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button> -->
+            <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="examine(scope.row)" >审核</el-button>
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
+            <el-button size="small" v-if="scope.row.project_status" type="info" disabled>审核</el-button>
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button>
 
@@ -296,6 +298,59 @@
       </el-table-column> -->
       
     </el-table>
+
+    <!-- 分配任务弹出框 -->
+          <!-- <el-dialog style="" :append-to-body='true' title="审核" :visible.sync="dialogFormVisible1">
+
+            <el-form ref="form" label-width="120px" style="width:100%;">
+              <div style="width:100%;position:relative;height:50px;">
+                  <el-form-item label="提示" class="form-input" prop="title" style="width:250px;float:left;">
+                    <el-input  placeholder="请输入" v-model="admin_desc"></el-input>
+                </el-form-item>
+              <el-button size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
+              </div>
+
+            </el-form>
+            
+          </el-dialog> -->
+          <!-- **************分配任务弹出框************** -->
+
+          <!--*************修改模态框*************-->
+        <el-dialog
+        title="审核"
+        :visible.sync="dialogFormVisible1"
+        width="50%">
+        <!-- :before-close="handleClose" -->
+            <el-form label-width="120px">
+
+                  <el-form-item label="审核人" class="select" style="width:500px;">
+                    <el-select v-model="username" filterable style="">
+                          <el-option
+                          v-for="item in username1"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                          </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="新价格" class="form-input" prop="title" style="">
+                    <el-input  placeholder="请输入" v-model="ask_univalence"></el-input>
+                </el-form-item>
+
+                <el-form-item label="备注" class="form-input" prop="title" style="">
+                    <el-input  placeholder="请输入" v-model="admin_desc"></el-input>
+                </el-form-item>
+
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="outworkidBtn(),dialogFormVisible1 = false">保 存</el-button>
+                <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************修改模态框结束*************-->
+
     <!-- *************分页************* -->
     <el-pagination
     style="margin-top:20px;"
@@ -373,6 +428,7 @@ export default {
             
         },],//列表绑定
         dialogFormVisible : false,//弹出框
+        dialogFormVisible1 : false,//弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -387,6 +443,11 @@ export default {
         page : 1,
         size :1,
        //*************分页变量*************
+       username : '',
+       username1 : [],
+       admin_desc : '',
+       ask_univalence : '',
+       examineId : '',
       }
     },
     created() {
@@ -405,8 +466,17 @@ export default {
               this.page = res.data.page.page;
               this.size = res.data.page.size;
             }
-            
         });
+
+        request.post("/admin/values/query",{
+                    type : 'price_check_user',
+                    name : '',
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.username1 = res.data;
+                    }
+                });
+
     },serachBtn(){ // 搜索功能
         request.post("/admin/askPrice/query",{
           keyword : this.search,
@@ -470,7 +540,37 @@ export default {
         // console.log(row.id);
         // this.dialogFormVisible = true;
         window.open(row.project_info_url, '_blank')
-      }
+      },
+      examine(row){
+        this.dialogFormVisible1 = true;
+        this.examineId = row.id;
+      },
+      outworkidBtn(){
+        console.log(this.admin_desc+','+this.examineId)
+        
+        
+         request.post("admin/askPrice/check",{
+           id : this.examineId,
+           username : this.username,
+           ask_univalence : this.ask_univalence,
+           admin_desc : this.admin_desc,
+        }).then(res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                  // type: res.errno === 0 ? "success" : "warning",
+                  type: "success",
+                  message: '添加成功'//提示添加成功
+              })
+              this.dialogFormVisible1 = false;
+              this.ask_univalence = '';
+              this.admin_desc = '';
+              this.username ='';
+              // this.agentList = res.data.list;
+              this.getAgentList();
+            }
+        });
+      },
   }
 }
 </script>

@@ -4,11 +4,11 @@
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
             <el-dialog style="" :append-to-body='true' title="添加" :visible.sync="dialogFormVisible">
                 <el-form-item label="看房联系人" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="name"></el-input>
+                    <el-input v-model="name" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-form-item label="联系人电话" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="telephone"></el-input>
+                    <el-input v-model="telephone" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-button type="primary" style="margin-left:60%;" plain @click="addContactBtn()">
@@ -19,23 +19,23 @@
 
             <el-dialog style="" :append-to-body='true' title="添加" :visible.sync="dialogFormVisible1">
                 <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="add.name"></el-input>
+                    <el-input v-model="add.name" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-form-item label="联系电话" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="add.telephone"></el-input>
+                    <el-input v-model="add.telephone" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-form-item label="所属机构" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="add.subsidiary_organ"></el-input>
+                    <el-input v-model="add.subsidiary_organ" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-form-item label="分支机构" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="add.affiliated_agency"></el-input>
+                    <el-input v-model="add.affiliated_agency" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <el-form-item label="地址" class="form-input" prop="title" style="width:90%;">
-                    <el-input v-model="add.company_addr"></el-input>
+                    <el-input v-model="add.company_addr" placeholder="请输入"></el-input>
                 </el-form-item>
 
                 <!-- <el-form-item label="邮政编码" class="form-input" prop="title" style="width:90%;">
@@ -61,43 +61,43 @@
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('city_children','')">行政区*</span>
-                <el-input  style="width:180px;" placeholder="请输入行政区"  v-model="form.district"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.district"></el-input>
             </el-form-item>
 
             <el-form-item label="小区名称" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入小区名称" v-model="form.plot_name"></el-input>
+                <el-input placeholder="请输入" v-model="form.plot_name"></el-input>
             </el-form-item>
 
             <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入小区地址" v-model="form.plot_address"></el-input>
+                <el-input placeholder="请输入" v-model="form.plot_address"></el-input>
             </el-form-item>
 
             <el-form-item label="楼栋单元号" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入楼栋单元号" v-model="form.unit_number"></el-input>
+                <el-input placeholder="请输入" v-model="form.unit_number"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;">房屋类型*</span>
-                <el-input style="width:180px;" disabled placeholder="请输入房屋类型"  v-model="form.house_type"></el-input>
+                <el-input style="width:180px;" disabled placeholder="请输入"  v-model="form.house_type"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('house_way','')">房屋用途*</span>
-                <el-input  style="width:180px;" placeholder="请输入房屋用途"  v-model="form.house_way"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.house_way"></el-input>
             </el-form-item>
 
             <el-form-item label="建筑面积" class="form-input" prop="title" style="width:300px;float:left;position:relative;">
-                <el-input placeholder="请输入建筑面积" disabled v-model="form.construct_area"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.construct_area"></el-input>
             </el-form-item>
             
             <span style="margin-top:10px;margin-left:2px;float:left;"> </span>
 
             <el-form-item label="所在楼层" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入所在楼层" v-model="form.floor"></el-input>
+                <el-input placeholder="请输入" v-model="form.floor"></el-input>
             </el-form-item>
 
             <el-form-item label="总楼层" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入总楼层" v-model="form.total_floor"></el-input>
+                <el-input placeholder="请输入" v-model="form.total_floor"></el-input>
             </el-form-item>
 
             <!-- <el-form-item label="权力性质" class="form-input" prop="title" style="width:300px;float:left;">
@@ -105,64 +105,64 @@
             </el-form-item> -->
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('right_nature','')">权利性质*</span>
-                <el-input  style="width:180px;" placeholder="请输入询价银行"  v-model="form.right_nature"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.right_nature"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank1','')">询价银行*</span>
-                <el-input  style="width:180px;" placeholder="请输入询价银行"  v-model="form.ask_bank"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.ask_bank"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('bazaar_crew','')">市场人员*</span>
-                <el-input  style="width:180px;" placeholder="请输入市场人员"  v-model="form.bazaar_crew"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.bazaar_crew"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">询值人员*</span>
-                <el-input  style="width:180px;" placeholder="请输入询值人员"  v-model="form.ask_price"></el-input>
+                <el-input  style="width:180px;" placeholder="请输入"  v-model="form.ask_price"></el-input>
             </el-form-item>
 
             <el-form-item label="询值单价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入询值单价" disabled v-model="form.ask_univalence"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.ask_univalence"></el-input>
             </el-form-item>
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入询值总价" disabled v-model="form.ask_price_total"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.ask_price_total"></el-input>
             </el-form-item>
 
             <el-form-item  label="净值系数" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input  placeholder="请输入净值系数" disabled v-model="form.factor"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.factor"></el-input>
             </el-form-item>
 
             <el-form-item label="净值总价" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入净值总价" disabled v-model="form.total_prices"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.total_prices"></el-input>
             </el-form-item>
 
             <el-form-item label="土地出让金" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入土地出让金" disabled v-model="form.land_leasing"></el-input>
+                <el-input placeholder="请输入" disabled v-model="form.land_leasing"></el-input>
             </el-form-item>
 
             <el-form-item label="建成年代" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入建成年代" v-model="form.activate_time"></el-input>
+                <el-input placeholder="请输入" v-model="form.activate_time"></el-input>
             </el-form-item>
             
             <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入建成年代" v-model="form.remark"></el-input>
+                <el-input placeholder="请输入" v-model="form.remark"></el-input>
             </el-form-item>
 
             <el-form-item label="小区特殊情况" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input placeholder="请输入建成年代" v-model="form.plot_special"></el-input>
+                <el-input placeholder="请输入" v-model="form.plot_special"></el-input>
             </el-form-item>
 
         </el-form>
 
             <el-form-item label="银行人员" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.bank_clerk"></el-input>
+                <el-input v-model="form.bank_clerk" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item label="银行手机" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.bank_phone"></el-input>
+                <el-input v-model="form.bank_phone" placeholder="请输入"></el-input>
             </el-form-item>
         </el-form>
         
@@ -170,7 +170,7 @@
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-form-item label="发送份数" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.send_num"></el-input>
+                <el-input v-model="form.send_num" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item class="" style="position:relative;width:300px;float:left;">
@@ -201,11 +201,11 @@
             </el-form-item> -->
 
             <el-form-item label="项目地址" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.project_address"></el-input>
+                <el-input placeholder="请输入" v-model="form.project_address"></el-input>
             </el-form-item>
 
             <el-form-item label="证载地址" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.load_address"></el-input>
+                <el-input placeholder="请输入" v-model="form.load_address"></el-input>
             </el-form-item>
 
             <!-- <el-form-item label="建筑面积" class="form-input" prop="title" style="width:300px;float:left;">
@@ -213,7 +213,7 @@
             </el-form-item> -->
 
             <el-form-item label="土地面积" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.land_area"></el-input>
+                <el-input placeholder="请输入" v-model="form.land_area"></el-input>
             </el-form-item>
 
             <!-- <el-form-item label="单价" class="form-input" prop="title" style="width:300px;float:left;">
@@ -248,20 +248,20 @@
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_bank_children','')">分支机构*</span>
-                <el-input  style="width:180px;" placeholder="请输入行政区"  v-model="form.affiliated_agency"></el-input>
+                <el-input  style="width:180px;"  placeholder="请输入"  v-model="form.affiliated_agency"></el-input>
             </el-form-item>
 
             <el-form-item label="估价委托方" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.valuation_principal"></el-input>
+                <el-input v-model="form.valuation_principal" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item label="估价委托方电话" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.valuation_client_phone"></el-input>
+                <el-input v-model="form.valuation_client_phone" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('settlement_method','')">结算方式*</span>
-                <el-input  style="width:180px;" placeholder="请输入行政区"  v-model="form.settlement_method"></el-input>
+                <el-input  style="width:180px;"  placeholder="请输入"  v-model="form.settlement_method"></el-input>
             </el-form-item>
 
             <!-- <el-form-item label="" class="form-input" prop="title" style="width:300px;float:left;">
@@ -269,7 +269,7 @@
             </el-form-item> -->
 
             <el-form-item label="应收金额(元)" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.money_due"></el-input>
+                <el-input v-model="form.money_due" placeholder="请输入"></el-input>
             </el-form-item>
 
             <!-- <el-form-item style="position:relative;width:300px;float:left;">
@@ -318,7 +318,7 @@
                 <el-radio v-model="reconnaissance" label="1">否</el-radio>
             </el-form-item>
             <el-form-item label="勘察备注" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.costs_reserved"></el-input>
+                <el-input v-model="form.costs_reserved" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item label="查勘人" class="select" style="float:left;">
@@ -375,11 +375,11 @@
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.delivery_note"></el-input>
+                <el-input v-model="form.delivery_note" placeholder="请输入"></el-input>
             </el-form-item>
 
             <el-form-item label="收取方式" class="select" >
-                <el-select @change="selectExpress" v-model="express" filterable placeholder="请选择产品分类" style="width:180px;float:left;">
+                <el-select @change="selectExpress" v-model="express" filterable placeholder="请选择" style="width:180px;float:left;">
                     <el-option
                     v-for="item in express1"
                     :key="item.value"
@@ -455,7 +455,7 @@
         <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">合同选择</span></div>
         <el-form ref="form" style="width:90%;padding-right:50px;">
             <el-form-item >
-                <!-- <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
+                <!-- <el-input v-model="search" style="width:300px;" placeholder="请输入查询数据"></el-input>
                 <el-button type="primary" style="" plain @click="serachBtn">搜索</el-button> -->
             </el-form-item>
         </el-form>
@@ -522,6 +522,7 @@
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
             <el-input
+            placeholder="请输入"
             type="textarea"
             :autosize="{ minRows: 5, maxRows: 10}"
             v-model="form.project_approval_remark">

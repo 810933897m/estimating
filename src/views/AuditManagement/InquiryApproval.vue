@@ -6,7 +6,7 @@
             <el-radio v-model="activeName" label="first" @change="handleClick()">未审核</el-radio>
             <el-radio v-model="activeName" label="success" @change="handleClick()">已审核</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">审核失败</el-radio>
-            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
     </el-form>
@@ -55,7 +55,7 @@
       key="4"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_number}}
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
         </template>
       </el-table-column>
 
@@ -65,7 +65,7 @@
       key="5"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_address}}
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -75,7 +75,7 @@
       key="6"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.plot_name}}
+          <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
         </template>
       </el-table-column>
 
@@ -85,7 +85,7 @@
       key="8"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -95,7 +95,7 @@
       key="9"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.report_tale}}
+          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
 
@@ -105,7 +105,7 @@
       key="10"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.property_type}}
+          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
         </template>
       </el-table-column>
 
@@ -115,7 +115,7 @@
       key="11"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
     
@@ -126,7 +126,7 @@
       v-if="activeName == 'two'"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -136,7 +136,7 @@
       key="13"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
         </template>
       </el-table-column>
 
@@ -147,7 +147,7 @@
       key="14"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -158,7 +158,7 @@
       key="15"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.finish_time}}
+          <p :title="scope.row.finish_time" class="nooverflow">{{scope.row.finish_time}}</p>
         </template>
       </el-table-column>
 
@@ -286,6 +286,7 @@ export default {
     },
     methods: {
       handleClick(tab, event){//改变状态
+      this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/askPriceCheck/query",{
             status : 0
@@ -368,8 +369,9 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/Auditing/query",{
+          request.post("/admin/askPriceCheck/query",{
           keyword : this.search,
+          status:0,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -380,9 +382,24 @@ export default {
                 this.size = res.data.page.size;
               }
           });
-        }else if(this.activeName == 'two'){
-          request.post("/admin/Auditing/inquire",{
+        }else if(this.activeName == 'success'){
+          request.post("/admin/askPriceCheck/query",{
           keyword : this.search,
+          status:1,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'no'){
+          request.post("/admin/askPriceCheck/query",{
+          keyword : this.search,
+          status:2,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -474,19 +491,32 @@ export default {
           console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/Auditing/query",{
+            request.post("/admin/askPriceCheck/query",{
             page : currentPage,
             keyword : this.search,
+            status:0,
           }).then(res => {
               console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
           });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/Auditing/inquire",{
+          }else if(this.activeName == 'success'){
+            request.post("/admin/askPriceCheck/query",{
             page : currentPage,
             keyword : this.search,
+            status:1,
+          }).then(res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'no'){
+            request.post("/admin/askPriceCheck/query",{
+            page : currentPage,
+            keyword : this.search,
+            status:2,
           }).then(res => {
               console.log(res)
               if (res.code == 200) {

@@ -5,7 +5,7 @@
         <el-form-item>
             <el-radio v-model="activeName" label="first" @change="handleClick()">未审核</el-radio>
             <el-radio v-model="activeName" label="two" @change="handleClick()">已审核</el-radio>
-            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
     </el-form>

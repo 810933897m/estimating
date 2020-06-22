@@ -70,7 +70,9 @@ import request from "./utils/request";
     text-align: left;
 }
 .nooverflow{
-  overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .el-form-item__content {
     line-height: 40px;

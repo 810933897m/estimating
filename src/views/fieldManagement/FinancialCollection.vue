@@ -1,17 +1,27 @@
 <template>
-
   <div class="app-container">
 
-    <el-form ref="form" >
+    <!-- <el-form ref="form" >
                 <el-form-item>
-                    <el-input v-model="search" style="width:600px;" placeholder="流水号/报告号/项目地址/小区名称/看房联系人电话/估价委托方"></el-input>
+                    <el-input v-model="search" style="width:600px;" placeholder="请输入查询数据"></el-input>
                     <el-button type="info" style="margin-left:0px;" plain >高级</el-button>
                     <el-button type="primary" style="" plain @click="searchBtn()">查询</el-button>
-                    <!-- <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button> -->
                     <el-button type="primary" style="" plain @click="BillingBtn()">添加收款</el-button>
 
                 </el-form-item>
-            </el-form>
+            </el-form> -->
+      <el-form ref="form" >
+        <el-form-item>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">收款</el-radio>
+            <el-radio v-model="activeName" label="two" @change="handleClick()">已收款</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">收款成功</el-radio>
+            <el-radio v-model="activeName" label="no" @change="handleClick()">收款失败</el-radio>
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
+            <el-button type="primary" style="" plain @click="searchBtn">查询</el-button>
+            <el-button type="primary" style="" v-if="activeName == 'first'" plain @click="BillingBtn()">添加收款</el-button>
+        </el-form-item>
+    </el-form>
+
 
       <el-table 
       class="table-picture"
@@ -22,6 +32,8 @@
 
       <el-table-column
       width="40px"
+      v-if="activeName == 'first'"
+      key="1"
       align="left">
         <template slot-scope="scope" >
           <el-checkbox v-model="scope.row.checked"></el-checkbox>
@@ -31,15 +43,49 @@
       <el-table-column
        label="id"
       width="50px"
+      key="2"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
         </template>
       </el-table-column>
 
+      <!-- <el-table-column
+      label="紧急程度"
+      width="120px"
+      align="center">
+        <template slot-scope="scope">
+          {{scope.row.approval_status}}
+        </template>
+      </el-table-column> -->
+
+      <el-table-column
+      label="项目报告份数"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="3"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="已发报告份数"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="4"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
+        </template>
+      </el-table-column>
+
       <el-table-column
       label="流水号"
       width="120px"
+      key="5"
+      v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -49,6 +95,8 @@
       <el-table-column
       label="报告编号"
       width="150px"
+      v-if="activeName == 'first'"
+      key="6"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -56,25 +104,43 @@
       </el-table-column>
 
       <el-table-column
-      label="应收金额"
-      width="130px"
+      label="旧流水号"
+      width="120px"
+      v-if="activeName == 'first'"
+      key="7"
       align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
-        </template>
+        <!-- <template slot-scope="scope">
+          {{scope.row.city}}
+        </template> -->
       </el-table-column>
 
       <el-table-column
-      label="实收金额"
-      width="130px"
+      label="旧报告编号"
+      v-if="activeName == 'first'"
+      key="8"
+      width="120px"
+      align="center">
+        <!-- <template slot-scope="scope">
+          {{scope.row.plot_address}}
+        </template> -->
+      </el-table-column>
+
+      <el-table-column
+      label="项目状态"
+      width="100px"
+      v-if="activeName == 'first'"
+      key="9"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
+          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="项目地址"
+      width="130px"
+      v-if="activeName == 'first'"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -83,24 +149,30 @@
 
       <el-table-column
       label="小区名称"
-      width="130px"
+      width="100px"
+      v-if="activeName == 'first'"
+      key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
         </template>
       </el-table-column>
 
-      <!-- <el-table-column
-      label="紧急程度"
+      <el-table-column
+      label="受理时间"
+      v-if="activeName == 'first'"
+      key="12"
       width="100px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column
       label="报告类型"
+      v-if="activeName == 'first'"
+      key="13"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -109,30 +181,75 @@
       </el-table-column>
 
       <el-table-column
-      label="物业类型"
+      label="流程状态"
       width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
+      v-if="activeName == 'first'"
+      key="14"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
 
+      
+
+      <el-table-column
+          label="收款方式"
+          v-if="activeName != 'first'"
+          key="15"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+          v-if="activeName != 'first'"
+          key="16"
+          label="收费总金额"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.charge_amount_total" class="nooverflow">{{scope.row.charge_amount_total}}</p>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="收款日期"
+          v-if="activeName != 'first'"
+          key="17"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="收款方"
+          v-if="activeName != 'first'"
+          key="18"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="转账备注"
+          v-if="activeName != 'first'"
+          key="19"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
+            </template>
+          </el-table-column>
+
       <el-table-column
       label="操作"
       fixed="right"
-      
-      width="200px" align="center">
+      v-if="activeName == 'first'"
+      width="100px" align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button>
+          <!-- <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button> -->
           <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
         </template>
       </el-table-column>
@@ -264,7 +381,7 @@
                 </el-form-item>
 
               <el-form-item label="收费总金额" style="width:250px;float:left;" >
-                  <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount"></el-input>
+                  <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount_total"></el-input>
                 </el-form-item>
 
               <el-form-item label="收款日期" style="width:250px;float:left;">
@@ -359,10 +476,10 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
-        
+        activeName : 'first',
         add:{
           charge_way : '',
-          charge_amount : 0,
+          charge_amount_total : 0,
           transfer_date : '',
           transfer_personnel : '',
           charge_remark : '',
@@ -407,6 +524,57 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
+       handleClick(tab, event){//改变状态
+        // console.log(this.activeName)
+        this.agentList = [];
+        if(this.activeName == 'first'){
+          request.post("/admin/Financial/query").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'success'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'no'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 3,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+      },
       confirmRevision(){//添加确定
           request.post("/admin/financial/create",{
             project_id : this.generateReportId,
@@ -435,12 +603,12 @@ export default {
       },
       recordDetail(row){//详情
         this.dialogVisibleRecordDetail = true;
-        request.post("/admin/financial/info",{
+        request.post("/admin/Financial/getFinancialInfo",{
             id : row.id,
           }).then(res => {
             if (res.code == 200) {
               // console.log(res)
-              this.recordDetailList =res.data;
+              this.recordDetailList =res.data.list;
 
             }
         });
@@ -559,7 +727,7 @@ export default {
             sum += Number(element.charge_amount)
           });
           // console.log(sum)
-          this.add.charge_amount = sum;
+          this.add.charge_amount_total = sum;
         },
         confirmRevisionAdd(){
           console.log(this.add)
@@ -567,12 +735,38 @@ export default {
           let list2 = [];
           this.billingList.forEach(element => {
             list1 = {
-              id:element.id,
-              money : element.charge_amount
+              project_id:element.id,
+              charge_amount : element.charge_amount
             }
             list2.push(list1)
           });
           console.log(list2)
+          request.post("/admin/Financial/create",{
+                child : list2,
+                charge_amount_total : this.add.charge_amount_total,
+                charge_way : this.add.charge_way,
+                transfer_date : this.add.transfer_date,
+                transfer_personnel : this.add.transfer_personnel,
+                charge_remark : this.add.charge_remark,
+            }).then(res => {
+                if (res.code == 200) {
+                  // this.agentList = res.data.list;
+                  this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '添加成功'//提示添加成功
+                  });
+                  this.add = {
+                    charge_amount_total : '',
+                    charge_way : '',
+                    transfer_date : '',
+                    transfer_personnel : '',
+                    charge_remark : '',
+                };
+                this.handleClick();
+
+                }
+            })
         },
   }
 }

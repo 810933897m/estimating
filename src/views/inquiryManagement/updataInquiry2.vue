@@ -11,44 +11,54 @@
             <el-form-item label="询值人员" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.ask_price"></el-input>
             </el-form-item>
+
             <el-form-item label="金融机构" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.ask_bank"></el-input>
             </el-form-item>
+
             <el-form-item label="项目名称" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.project_name"></el-input>
             </el-form-item>
+
             <el-form-item label="测算人员" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.test_user"></el-input>
             </el-form-item>
+
             <el-form-item label="用途" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.house_way"></el-input>
             </el-form-item>
+
             <el-form-item label="建筑面积" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.construct_area"></el-input>
             </el-form-item>
+
             <el-form-item label="土地面积" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.land_area"></el-input>
             </el-form-item>
+
             <el-form-item label="估价总价(万元)" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.ask_price_total"></el-input>
             </el-form-item>
+
             <el-form-item label="估价单价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.ask_univalence"></el-input>
             </el-form-item>
+
             <el-form-item label="净值(万元)" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.total_prices"></el-input>
             </el-form-item>
+
             <el-form-item label="审核人员" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input  placeholder="请输入" v-model="form.check_user"></el-input>
             </el-form-item>
 
             <el-form-item label="项目特殊情况" class="form-input1" prop="title" style="width:100%;float:left;">
-            <el-input
-            type="textarea"
-            :rows="2"
-            placeholder=""
-            v-model="form.remark">
-            </el-input>
+                <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入"
+                v-model="form.remark">
+                </el-input>
             </el-form-item>
 
         </el-form>
@@ -59,7 +69,7 @@
                 询价
             </el-button> -->
 
-            <el-button type="primary" style="" plain @click="updataCommodity()">
+            <el-button type="primary" style="margin-left:60%;" plain @click="updataCommodity()">
                 保存
             </el-button>
 
@@ -365,7 +375,7 @@ export default {
                 }
             },
             'factor' : function(){//监听净值系数改变做算法
-                console.log('14142')
+                // console.log('14142')
                 // this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
                 if(this.house_type == '商品房'){
                     this.tudiMoney = '0';

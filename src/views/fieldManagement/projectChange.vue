@@ -10,7 +10,7 @@
             <el-radio v-model="distribution" label="1" @change="distributionBtn1()">审核通过</el-radio>
             <el-radio v-model="distribution" label="2" @change="distributionBtn1()">审核失败</el-radio>
             <el-radio v-model="distribution" label="3" @change="distributionBtn1()">取消变更</el-radio>
-            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
     </el-form>

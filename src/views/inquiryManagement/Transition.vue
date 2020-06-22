@@ -2,14 +2,21 @@
 
   <div class="app-container">
 
-    <el-form ref="form" >
+    <!-- <el-form ref="form" >
                 <el-form-item>
                     <el-input v-model="search" style="width:600px;" placeholder="请输入查询数据"></el-input>
                     <el-button type="info" style="margin-left:0px;" plain >高级</el-button>
                     <el-button type="primary" style="" plain @click="searchBtn()">查询</el-button>
-                    <!-- <el-button type="info" style="margin-left:0px;" plain  @click="addProjectInitiation()">资料齐全</el-button> -->
                 </el-form-item>
-            </el-form>
+            </el-form> -->
+    <el-form ref="form" >
+        <el-form-item>
+          <el-radio v-model="activeName" label="first" @change="handleClick()">未转正</el-radio>
+          <el-radio v-model="activeName" label="success" @change="handleClick()">已转正</el-radio>
+          <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
+          <el-button type="primary" style="" plain @click="searchBtn">查询</el-button>
+        </el-form-item>
+    </el-form>
 
     <el-table 
       class="table-picture"
@@ -92,13 +99,14 @@
       <el-table-column
       label="操作"
       fixed="right"
-      
-      width="200px" align="center">
+      v-if="activeName == 'first'"
+      width="100px" 
+      align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
+          <el-button size="small" type="primary" @click="updateAgent(scope.row)" >转正式</el-button>
           <div v-show="dialogFormVisible" class="dialog-box"></div>
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button> -->
-          <el-button size="small" type="primary" @click="generateReport(scope.row)">生成报告号</el-button>
+          <!-- <el-button size="small" type="primary" @click="generateReport(scope.row)">生成报告号</el-button> -->
           <!-- <el-button size="small" type="info" v-else disabled >生成报告</el-button> -->
         </template>
       </el-table-column>
@@ -213,7 +221,7 @@ export default {
         formLabelWidth : '120px',
         Id : '',
         generateReportId:'',
-
+        activeName : 'first',
         report_number :'',
         report_number1 : [],
         report_number_children : '',
@@ -233,6 +241,34 @@ export default {
      this.getAgentList();//渲染列表
     },
     methods: {
+      handleClick(tab, event){//改变状态
+      this.agentList = [];
+        if(this.activeName == 'first'){
+          request.post("/admin/evaluationProject/query",{
+            type : 0
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'success'){
+          request.post("/admin/evaluationProject/query",{
+            type : 1
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }
+      },
       confirmRevision(){//生成确定
           request.post("/admin/project/projectReport",{
             id : this.generateReportId,
@@ -260,7 +296,9 @@ export default {
       },
       getAgentList() {//初始渲染列表方法封装
         // this.dialogFormVisible = false;
-        request.post("/admin/project/query").then(res => {
+        request.post("/admin/evaluationProject/query",{
+          type : 0,
+        }).then(res => {
             if (res.code == 200) {
               // console.log(res)
               this.agentList = res.data.list;
@@ -323,8 +361,7 @@ export default {
         });
 
     },updateAgent(row) {//修改按钮
-       this.$router.push({path:'/updateprojectInitiation',query:{row:row,id:row.id}})
-       
+       this.$router.push({path:'/updateTransition',query:{row:row,id:row.id}})
       },
       reportChange(){//报告改变
         request.post("/admin/values/query",{
@@ -347,8 +384,10 @@ export default {
         window.open(row.project_info_url, '_blank')
       },
       searchBtn(){//搜索
-        request.post("/admin/project/query",{
+      if(this.activeName == 'first'){
+        request.post("/admin/evaluationProject/query",{
           keyword : this.search,
+          type : 0,
           // page : this.currentPage,
         }).then(res => {
             if (res.code == 200) {
@@ -359,6 +398,22 @@ export default {
               this.size = res.data.page.size;
             }
         });
+      }else if(this.activeName == 'success'){
+        request.post("/admin/evaluationProject/query",{
+          keyword : this.search,
+          type : 1,
+          // page : this.currentPage,
+        }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+      }
+        
       },
       addProjectInitiation(){
         // this.$router.push({path:'/addProjectInitiation'})
@@ -371,13 +426,27 @@ export default {
           this.$router.push({path:'/detaiPprojectInitiation',query:{id:row.id}})
       },
       handleCurrentChange: function(currentPage){//换页
-          request.post("/admin/project/query",{
-          page : currentPage 
+        if(this.activeName == 'first'){
+        request.post("/admin/evaluationProject/query",{
+          keyword : this.search,
+          type : 0,
+          page : this.currentPage,
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
             }
         });
+      }else if(this.activeName == 'success'){
+        request.post("/admin/evaluationProject/query",{
+          keyword : this.search,
+          type : 1,
+          page : this.currentPage,
+        }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+            }
+        });
+      }
       },
   }
 }

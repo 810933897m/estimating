@@ -7,7 +7,7 @@
 
     <!-- <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
-            <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:300px;float:left;" placeholder="请输入查询数据"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
     </el-form> -->
@@ -18,9 +18,9 @@
             <el-radio v-model="activeName" label="two" @change="handleClick()">待审核</el-radio>
             <el-radio v-model="activeName" label="success" @change="handleClick()">开票成功</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio>
-            <el-input v-model="search" style="width:200px;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
-            <el-button type="primary" style="" plain @click="BillingBtn()">添加发票</el-button>
+            <el-button type="primary" style="" v-if="activeName == 'first'" plain @click="BillingBtn()">添加发票</el-button>
         </el-form-item>
     </el-form>
 
@@ -32,8 +32,9 @@
       style="width: 100%;">
 
       <el-table-column
-      v-if="activeName == 'first'"
+          v-if="activeName == 'first'"
           width="40px"
+          key="1"
           align="left">
             <template slot-scope="scope" >
               <el-checkbox v-model="scope.row.checked"></el-checkbox>
@@ -43,6 +44,7 @@
       <el-table-column
        label="id"
       width="50px"
+      key="2"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -62,7 +64,7 @@
       label="项目报告份数"
       width="120px"
       v-if="activeName == 'first'"
-      key="97"
+      key="3"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
@@ -73,7 +75,7 @@
       label="已发报告份数"
       width="120px"
       v-if="activeName == 'first'"
-      key="87"
+      key="4"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
@@ -83,6 +85,8 @@
       <el-table-column
       label="流水号"
       width="120px"
+      key="5"
+      v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -93,7 +97,7 @@
       label="报告编号"
       width="150px"
       v-if="activeName == 'first'"
-      key="57"
+      key="6"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -104,7 +108,7 @@
       label="旧流水号"
       width="120px"
       v-if="activeName == 'first'"
-      key="47"
+      key="7"
       align="center">
         <!-- <template slot-scope="scope">
           {{scope.row.city}}
@@ -114,7 +118,7 @@
       <el-table-column
       label="旧报告编号"
       v-if="activeName == 'first'"
-      key="37"
+      key="8"
       width="120px"
       align="center">
         <!-- <template slot-scope="scope">
@@ -126,7 +130,7 @@
       label="项目状态"
       width="100px"
       v-if="activeName == 'first'"
-      key="27"
+      key="9"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
@@ -137,7 +141,7 @@
       label="项目地址"
       width="130px"
       v-if="activeName == 'first'"
-      key="17"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -148,7 +152,7 @@
       label="小区名称"
       width="100px"
       v-if="activeName == 'first'"
-      key="10"
+      key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
@@ -158,7 +162,7 @@
       <el-table-column
       label="受理时间"
       v-if="activeName == 'first'"
-      key="9"
+      key="12"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -169,7 +173,7 @@
       <el-table-column
       label="报告类型"
       v-if="activeName == 'first'"
-      key="8"
+      key="13"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -181,7 +185,7 @@
       label="流程状态"
       width="100px"
       v-if="activeName == 'first'"
-      key="7"
+      key="14"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
@@ -193,50 +197,50 @@
       <el-table-column
           label="开票类型"
           v-if="activeName != 'first'"
-          key="7"
+          key="15"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_type}}
+              <p :title="scope.row.invoice_type" class="nooverflow">{{scope.row.invoice_type}}</p>
             </template>
           </el-table-column>
           
           <el-table-column
           v-if="activeName != 'first'"
-          key="6"
+          key="16"
           label="名称"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_company}}
+              <p :title="scope.row.invoice_company" class="nooverflow">{{scope.row.invoice_company}}</p>
             </template>
           </el-table-column>
 
           <el-table-column
           label="纳税人识别码"
           v-if="activeName != 'first'"
-          key="5"
+          key="17"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.taxpayer_identification}}
+              <p :title="scope.row.taxpayer_identification" class="nooverflow">{{scope.row.taxpayer_identification}}</p>
             </template>
           </el-table-column>
 
           <el-table-column
           label="电话"
           v-if="activeName != 'first'"
-          key="4"
+          key="18"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_telephone}}
+              <p :title="scope.row.invoice_telephone" class="nooverflow">{{scope.row.invoice_telephone}}</p>
             </template>
           </el-table-column>
 
           <el-table-column
           label="地址"
           v-if="activeName != 'first'"
-          key="3"
+          key="19"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_address}}
+              <p :title="scope.row.invoice_address" class="nooverflow">{{scope.row.invoice_address}}</p>
             </template>
           </el-table-column>
 
@@ -251,20 +255,20 @@
           <el-table-column
           label="开户行"
           v-if="activeName != 'first'"
-          key="2"
+          key="20"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_bank}}
+              <p :title="scope.row.invoice_bank" class="nooverflow">{{scope.row.invoice_bank}}</p>
             </template>
           </el-table-column>
 
           <el-table-column
           v-if="activeName != 'first'"
-          key="1"
+          key="21"
           label="开户账户"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_bank_card}}
+              <p :title="scope.row.invoice_bank_card" class="nooverflow">{{scope.row.invoice_bank_card}}</p>
             </template>
           </el-table-column>
     
@@ -307,19 +311,10 @@
           style="width: 100%;">
 
           <el-table-column
-          label="id"
-          width="50px"
-          align="center">
-            <template slot-scope="scope" >
-              {{scope.row.id}}
-            </template>
-          </el-table-column>
-
-          <el-table-column
           label="开票类型"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_type}}
+              <p :title="scope.row.invoice_type" class="nooverflow">{{scope.row.invoice_type}}</p>
             </template>
           </el-table-column>
           
@@ -327,7 +322,7 @@
           label="名称"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_company}}
+              <p :title="scope.row.invoice_company" class="nooverflow">{{scope.row.invoice_company}}</p>
             </template>
           </el-table-column>
 
@@ -335,7 +330,7 @@
           label="纳税人识别码"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.taxpayer_identification}}
+              <p :title="scope.row.taxpayer_identification" class="nooverflow">{{scope.row.taxpayer_identification}}</p>
             </template>
           </el-table-column>
 
@@ -343,7 +338,7 @@
           label="电话"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_telephone}}
+              <p :title="scope.row.invoice_telephone" class="nooverflow">{{scope.row.invoice_telephone}}</p>
             </template>
           </el-table-column>
 
@@ -351,7 +346,7 @@
           label="地址"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_address}}
+              <p :title="scope.row.invoice_address" class="nooverflow">{{scope.row.invoice_address}}</p>
             </template>
           </el-table-column>
 
@@ -367,7 +362,7 @@
           label="开户行"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_bank}}
+              <p :title="scope.row.invoice_bank" class="nooverflow">{{scope.row.invoice_bank}}</p>
             </template>
           </el-table-column>
 
@@ -375,7 +370,7 @@
           label="开户账户"
           align="center">
             <template slot-scope="scope" >
-              {{scope.row.invoice_bank_card}}
+              <p :title="scope.row.invoice_bank_card" class="nooverflow">{{scope.row.invoice_bank_card}}</p>
             </template>
           </el-table-column>
           </el-table>
@@ -661,6 +656,7 @@ export default {
       },
       handleClick(tab, event){//改变状态
         // console.log(this.activeName)
+        this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/ProjectInvoice/query").then(res => {
             if (res.code == 200) {
@@ -764,8 +760,23 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/ProjectInvoice/ProjectList",{
+          request.post("/admin/ProjectInvoice/query",{
           keyword : this.search,
+          type : 0,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+          keyword : this.search,
+          type : 1,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -777,8 +788,23 @@ export default {
               }
           });
         }else if(this.activeName == 'success'){
-          request.post("/admin/ProjectInvoice/ProjectPublicList",{
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
+          type : 2,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'no'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+          keyword : this.search,
+          type : 3,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -802,7 +828,7 @@ export default {
             id : row.id,
           }).then(res => {
             if (res.code == 200) {
-              this.recordDetailList =res.data;
+              this.recordDetailList =res.data.list;
             }
         });
         this.dialogVisibleRecordDetail = true;
@@ -864,8 +890,8 @@ export default {
           // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/ProjectInvoice/ProjectList",{
-              
+            request.post("/admin/ProjectInvoice/query",{
+              type : 0,
               page : currentPage,
               keyword : this.search,
           }).then(res => {
@@ -874,17 +900,48 @@ export default {
                 this.agentList = res.data.list;
               }
           });
-          }else if(this.activeName == 'success'){
-            request.post("/admin/ProjectInvoice/ProjectPublicList",{
+          }else if(this.activeName == 'two'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            page : currentPage,
+            keyword : this.search,
+            type : 1,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'success'){
+            request.post("/admin/ProjectInvoice/invoiceQuery",{
               page : currentPage,
               keyword : this.search,
+              type : 2,
           }).then(res => {
               // console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
           });
-          }
+          }else if(this.activeName == 'no'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            page : currentPage,
+            keyword : this.search,
+            type : 3,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }
       },
       BillingBtn(){//开票
         this.billingList = [];

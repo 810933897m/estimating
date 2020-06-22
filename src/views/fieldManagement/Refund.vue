@@ -8,7 +8,7 @@
 
     <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
-            <el-input v-model="search" style="width:300px;float:left;" placeholder="流水号/报告编号/项目地址/小区名称"></el-input>
+            <el-input v-model="search" style="width:300px;float:left;" placeholder="请输入查询数据"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>

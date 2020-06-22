@@ -53,9 +53,9 @@
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
                 
-                <div style="width:570px;float:left;">
+                <div style="width:570px;float:left;border:1px solid black;">
                     <!-- <p>回收站</p> -->
-                    <div style="margin-top:10px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
+                    <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
                         <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
                     </div>
 
@@ -435,6 +435,7 @@ export default {
                             ss.id = element.id;
                             ss.guid = element.guid;
                             ss.title = element.title;
+                            // console.log(element.id)
                             ss.w = 800;
                             ss.h = 800;
                             // ss.order = element.order;
@@ -462,9 +463,10 @@ export default {
             let sort = [];
             this.slide1.forEach(element => {
                 // console.log(element.id)
+                // console.log(element.id)
                 sort.push(element.id)
             });
-            console.log(sort)
+            // console.log(sort)
             request.post("/admin/appraisal/order",{
                 data : sort,
                 // order : order,

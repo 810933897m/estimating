@@ -13,7 +13,7 @@
     
     <el-form ref="form" >
         <el-form-item>
-            <el-input v-model="search" style="width:300px;" placeholder="小区名称/小区地址/询值人/创建人"></el-input>
+            <el-input v-model="search" style="width:300px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
             <el-button type="primary" style="margin-left:0px;" plain @click="addCommodity">添加</el-button>
         </el-form-item>

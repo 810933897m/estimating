@@ -118,7 +118,7 @@ import userList from "@/views/administrators/userList";
             component: () => import('@/views/inquiryManagement/CorporateInquiry'),
             meta: {
                 title: '对公询价',
-                icon: 'order'
+                icon: 'total-yesterday'
             }
         },
         {//报告立项
@@ -128,6 +128,16 @@ import userList from "@/views/administrators/userList";
             meta: {
                 title: '报告立项',
                 icon: 'product-brand',
+                // keepAlive: true
+            }
+        },
+        {//报告立项
+            path: 'Transition',
+            name: 'Transition',
+            component: () => import('@/views/inquiryManagement/Transition'),
+            meta: {
+                title: '预评转正式',
+                icon: 'xianxia',
                 // keepAlive: true
             }
         },{//添加询价
@@ -228,6 +238,14 @@ import userList from "@/views/administrators/userList";
                 title:'修改报告立项',
             },
             hidden: true
+        },{//修改报告
+            path: '/updateTransition',
+            component: () => import('@/views/inquiryManagement/updateTransition'),
+            name:'updateTransition',
+            meta:{
+                title:'预评转正式',
+            },
+            hidden: true
         },
     ],
     },{//我的项目
@@ -236,7 +254,7 @@ import userList from "@/views/administrators/userList";
         name: 'fieldManagement',
         meta: {
             title: '我的项目',
-            icon: 'order-return-reason'
+            icon: 'sms'
         },
         children: [{
                 path: 'fieldManagement',
@@ -293,7 +311,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/fieldManagement/printing'),
                 meta: {
                     title: '打印装订',
-                    icon: 'sms',
+                    icon: 'sms-flash',
                     // keepAlive: true
                 }
             }
@@ -323,7 +341,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/fieldManagement/ProjectArchive'),
                 meta: {
                     title: '项目归档',
-                    icon: 'product-comment',
+                    icon: 'product-cate',
                     // keepAlive: true
                 }
             }
@@ -362,7 +380,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/fieldManagement/FinancialCollection'),
                 meta: {
                     title: '财务收款',
-                    icon: 'product-list',
+                    icon: 'total-today',
                     // keepAlive: true
                 }
             }
@@ -372,7 +390,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/fieldManagement/invoice'),
                 meta: {
                     title: '发票',
-                    icon: 'product-list',
+                    icon: 'sms-subject',
                     // keepAlive: true
                 }
             },{
@@ -427,7 +445,7 @@ import userList from "@/views/administrators/userList";
         name: 'AuditManagement',
         meta: {
             title: '审核管理',
-            icon: 'marker'
+            icon: 'sms'
         },
         children: [
             {
@@ -436,7 +454,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/AuditManagement/InquiryApproval'),
                 meta: {
                     title: '询值单价审核',
-                    icon: 'sms-subject',
+                    icon: 'sms-new',
                     // keepAlive: true
                 }
             },
@@ -456,7 +474,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/AuditManagement/SecondProject'),
                 meta: {
                     title: '估价作业审核',
-                    icon: 'example',
+                    icon: 'total-week',
                     // keepAlive: true
                 }
             },
@@ -476,7 +494,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/AuditManagement/FinancialCollection'),
                 meta: {
                     title: '财务收款审核',
-                    icon: 'order',
+                    icon: 'total-today',
                     // keepAlive: true
                 }
             },{
@@ -485,7 +503,7 @@ import userList from "@/views/administrators/userList";
                 component: () => import('@/views/AuditManagement/changeReview'),
                 meta: {
                     title: '变更审核',
-                    icon: 'order',
+                    icon: 'xt2',
                     // keepAlive: true
                 }
             }

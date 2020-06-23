@@ -92,7 +92,7 @@
       width="120px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.source" class="nooverflow">{{scope.row.source}}</p>
+          <p :title="scope.row.old_report_number" class="nooverflow">{{scope.row.old_report_number}}</p>
         </template>
       </el-table-column>
 

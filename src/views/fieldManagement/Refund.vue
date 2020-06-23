@@ -1,17 +1,23 @@
 <template>
 
   <div class="app-container">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="退单" name="first"></el-tab-pane>
-    <!-- <el-tab-pane label="盖章成功" name="success"></el-tab-pane>-->
-    <el-tab-pane label="撤单" name="last"></el-tab-pane> 
-
-    <el-form ref="form" >
+    <!-- <el-form ref="form" >
         <el-form-item style="width:300px;float:left;">
             <el-input v-model="search" style="width:300px;float:left;" placeholder="请输入查询数据"></el-input>
         </el-form-item>
         <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>
+    </el-form> -->
+    <el-form ref="form" >
+        <el-form-item>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">退单</el-radio>
+            <el-radio v-model="activeName" label="two" @change="handleClick()">撤单</el-radio>
+            <el-radio v-model="activeName" label="success" @change="handleClick()">哦哦哦</el-radio>
+            <!-- <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio> -->
+            <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
+            <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
+            <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>
+        </el-form-item>
     </el-form>
 
     <el-table 
@@ -172,8 +178,6 @@
     :total="count">
     </el-pagination>
     <!-- *************分页************* -->
-    
-  </el-tabs>
     
           <!-- 分配任务弹出框 -->
           <el-dialog style="" :append-to-body='true' title="退费" :visible.sync="dialogFormVisible">

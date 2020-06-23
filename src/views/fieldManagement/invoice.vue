@@ -271,14 +271,28 @@
               <p :title="scope.row.invoice_bank_card" class="nooverflow">{{scope.row.invoice_bank_card}}</p>
             </template>
           </el-table-column>
-    
+     
       <el-table-column
       label="操作"
       fixed="right"
+      v-if="activeName != 'success'"
+      width="100px" align="center">
+        <template slot-scope="scope">
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
+          <!-- <el-button size="small" type="primary" @click="Report(scope.row)" >新增记录</el-button> -->
+          <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
+          </template>
+      </el-table-column>
+
+      <el-table-column
+      label="操作"
+      fixed="right"
+      v-else
       width="200px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
           <!-- <el-button size="small" type="primary" @click="Report(scope.row)" >新增记录</el-button> -->
+          <el-button size="small" type="primary" @click="recovery(scope.row)">发票回收</el-button>
           <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
           </template>
       </el-table-column>
@@ -305,11 +319,119 @@
         width="50%">
 
           <el-table 
+            class="table-picture"
+            :data="recordDetailList"
+            border
+            style="width: 100%;">
+
+            <el-table-column
+            label="流水号"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
+              </template>
+            </el-table-column>
+            
+            <el-table-column
+            label="小区名称"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="项目地址"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="发票号码"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.invoice_number" class="nooverflow">{{scope.row.invoice_number}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="开票类型"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.invoice_type" class="nooverflow">{{scope.row.invoice_type}}</p>
+              </template>
+            </el-table-column>
+
+            <!-- <el-table-column
+            label="开票人姓名"
+            align="center">
+              <template slot-scope="scope" >
+                {{scope.row.invoice_username}}
+              </template>
+            </el-table-column> -->
+
+            <el-table-column
+            label="名称"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.invoice_company" class="nooverflow">{{scope.row.invoice_company}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="发票金额"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.invoice_money" class="nooverflow">{{scope.row.invoice_money}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="开票状态"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+            label="开票创建人"
+            align="center">
+              <template slot-scope="scope" >
+                <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
+              </template>
+            </el-table-column>
+
+            </el-table>
+
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
+            </span>
+        </el-dialog>
+      <!--*************收款记录模态框*************-->
+
+      <!--*************收款记录模态框*************-->
+        <el-dialog
+        title="开票记录"
+        :visible.sync="dialogVisibleRecordDetail1"
+        width="50%">
+
+            <el-table 
           class="table-picture"
           :data="recordDetailList"
           border
           style="width: 100%;">
 
+          <el-table-column
+          label="发票号码"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.invoice_number" class="nooverflow">{{scope.row.invoice_number}}</p>
+            </template>
+          </el-table-column>
+          
           <el-table-column
           label="开票类型"
           align="center">
@@ -317,7 +439,7 @@
               <p :title="scope.row.invoice_type" class="nooverflow">{{scope.row.invoice_type}}</p>
             </template>
           </el-table-column>
-          
+
           <el-table-column
           label="名称"
           align="center">
@@ -335,18 +457,10 @@
           </el-table-column>
 
           <el-table-column
-          label="电话"
+          label="发票金额"
           align="center">
             <template slot-scope="scope" >
-              <p :title="scope.row.invoice_telephone" class="nooverflow">{{scope.row.invoice_telephone}}</p>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-          label="地址"
-          align="center">
-            <template slot-scope="scope" >
-              <p :title="scope.row.invoice_address" class="nooverflow">{{scope.row.invoice_address}}</p>
+              <p :title="scope.row.invoice_money" class="nooverflow">{{scope.row.invoice_money}}</p>
             </template>
           </el-table-column>
 
@@ -359,24 +473,41 @@
           </el-table-column> -->
 
           <el-table-column
-          label="开户行"
+          label="开票状态"
           align="center">
             <template slot-scope="scope" >
-              <p :title="scope.row.invoice_bank" class="nooverflow">{{scope.row.invoice_bank}}</p>
+              <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
             </template>
           </el-table-column>
 
           <el-table-column
-          label="开户账户"
+          label="开票审核状态"
           align="center">
             <template slot-scope="scope" >
-              <p :title="scope.row.invoice_bank_card" class="nooverflow">{{scope.row.invoice_bank_card}}</p>
+              <p :title="scope.row.invoice_examiner_status" class="nooverflow">{{scope.row.invoice_examiner_status}}</p>
             </template>
           </el-table-column>
+
+          <el-table-column
+          label="退票状态"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.chargeback_status" class="nooverflow">{{scope.row.chargeback_status}}</p>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="开票操作人"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
+            </template>
+          </el-table-column>
+
           </el-table>
 
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
+                <el-button @click="dialogVisibleRecordDetail1 = false">取 消</el-button>
             </span>
         </el-dialog>
       <!--*************收款记录模态框*************-->
@@ -622,6 +753,7 @@ export default {
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
         dialogVisibleRecordDetail : false,//发票记录弹出框
+        dialogVisibleRecordDetail1 : false,//发票记录弹出框
         dialogVisibleAdd : false,//发票记录弹出框
         disa : true,
         shopId : '',//id存储
@@ -655,7 +787,7 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-        // console.log(this.activeName)
+        console.log(this.activeName)
         this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/ProjectInvoice/query").then(res => {
@@ -679,9 +811,9 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        }else if(this.activeName == 'success'){
+        }else if(this.activeName == 'no'){
           request.post("/admin/ProjectInvoice/invoiceQuery",{
-            type : 2,
+            type : 3,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -691,9 +823,9 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        }else if(this.activeName == 'no'){
+        }else{
           request.post("/admin/ProjectInvoice/invoiceQuery",{
-            type : 3,
+            type : 2,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -723,6 +855,8 @@ export default {
                         type: "success",
                         message: '回收成功！'
                     });
+                    
+                    this.handleClick();
                 }).catch(res => {
                     this.$message({
                         type: "warning",
@@ -824,14 +958,27 @@ export default {
         this.Id = row.id;
       },
       recordDetail(row){//详情
-        request.post("/admin/ProjectInvoice/getInvoiceList",{
+        if(this.activeName != 'first'){
+          request.post("/admin/ProjectInvoice/getInvoiceList",{
             id : row.id,
           }).then(res => {
             if (res.code == 200) {
               this.recordDetailList =res.data.list;
             }
-        });
-        this.dialogVisibleRecordDetail = true;
+          });
+          
+          this.dialogVisibleRecordDetail = true;
+        }else{
+          request.post("/admin/ProjectInvoice/getProjectInvoice",{
+            id : row.id,
+          }).then(res => {
+            if (res.code == 200) {
+              this.recordDetailList =res.data.list;
+            }
+          });
+          this.dialogVisibleRecordDetail1 = true;
+        }
+        
       },
       Report(row){
         this.tongyi = false;

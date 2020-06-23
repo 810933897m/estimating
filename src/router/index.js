@@ -364,16 +364,16 @@ import userList from "@/views/administrators/userList";
             //         // keepAlive: true
             //     }
             // }
-            // ,{
-            //     path: 'Refund',
-            //     name: 'Refund',
-            //     component: () => import('@/views/fieldManagement/Refund'),
-            //     meta: {
-            //         title: '退单撤单',
-            //         icon: 'product-list',
-            //         // keepAlive: true
-            //     }
-            // }
+            ,{
+                path: 'Refund',
+                name: 'Refund',
+                component: () => import('@/views/fieldManagement/Refund'),
+                meta: {
+                    title: '退单撤单',
+                    icon: 'product-list',
+                    // keepAlive: true
+                }
+            }
             ,{
                 path: 'FinancialCollection',
                 name: 'FinancialCollection',

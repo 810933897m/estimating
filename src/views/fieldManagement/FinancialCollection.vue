@@ -14,8 +14,8 @@
         <el-form-item>
             <el-radio v-model="activeName" label="first" @change="handleClick()">收款</el-radio>
             <el-radio v-model="activeName" label="two" @change="handleClick()">已收款</el-radio>
-            <el-radio v-model="activeName" label="success" @change="handleClick()">收款成功</el-radio>
-            <el-radio v-model="activeName" label="no" @change="handleClick()">收款失败</el-radio>
+            <!-- <el-radio v-model="activeName" label="success" @change="handleClick()">收款成功</el-radio>
+            <el-radio v-model="activeName" label="no" @change="handleClick()">收款失败</el-radio> -->
             <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="searchBtn">查询</el-button>
             <el-button type="primary" style="" v-if="activeName == 'first'" plain @click="BillingBtn()">添加收款</el-button>
@@ -246,7 +246,6 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-if="activeName == 'first'"
       width="100px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button> -->
@@ -274,30 +273,23 @@
         class="table-picture"
         :data="recordDetailList"
         border
+        max-height="300"
         style="width: 100%;">
 
         <el-table-column
-        label="id"
-        width="50px"
+        label="实收金额"
+        width="150px"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.id}}
+            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
           </template>
         </el-table-column>
-        
+
         <el-table-column
         label="收款方式"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.charge_way}}
-          </template>
-        </el-table-column>
-
-        <el-table-column
-        label="收费金额"
-        align="center">
-          <template slot-scope="scope" >
-            {{scope.row.charge_amount}}
+            <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
           </template>
         </el-table-column>
 
@@ -305,7 +297,7 @@
         label="收款日期"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.transfer_date}}
+            <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
           </template>
         </el-table-column>
 
@@ -313,20 +305,122 @@
         label="收款方"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.transfer_personnel}}
+            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="转账备注"
+        label="收款备注"
         align="center">
           <template slot-scope="scope" >
-            {{scope.row.charge_remark}}
+            <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
           </template>
         </el-table-column>
+
+        <el-table-column
+        label="收款状态"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.financial_status" class="nooverflow">{{scope.row.financial_status}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收款操作人"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
+          </template>
+        </el-table-column>
+        
         </el-table>
             <span slot="footer" class="dialog-footer" style="margin-top:10px;">
                 <el-button @click="dialogVisibleRecordDetail = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************收款记录模态框*************-->
+
+        <!--*************收款记录模态框*************-->
+        <el-dialog
+        title="收款记录"
+        :visible.sync="dialogVisibleRecordDetail1"
+        width="50%">
+
+        <el-table 
+        class="table-picture"
+        :data="recordDetailList"
+        border
+        max-height="300"
+        style="width: 100%;">
+
+        <el-table-column
+        label="报告号"
+        width="150px"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+          </template>
+        </el-table-column>
+        
+        <el-table-column
+        label="小区名称"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="项目地址"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="应收金额"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="实收金额"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收款方式"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收款日期"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收款方"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+          </template>
+        </el-table-column>
+
+        </el-table>
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+                <el-button @click="dialogVisibleRecordDetail1 = false">取 消</el-button>
             </span>
         </el-dialog>
         <!--*************收款记录模态框*************-->
@@ -350,7 +444,7 @@
               <el-form-item label="收款日期" class="select" >
                   <el-input placeholder="请输入收款日期" v-model="transfer_date"></el-input>
                 </el-form-item>
-
+ 
               <el-form-item label="收款方" class="select" >
                   <el-input placeholder="请输入收款方" v-model="transfer_personnel"></el-input>
                 </el-form-item>
@@ -498,6 +592,7 @@ export default {
         dialogFormVisible : false,//弹出框
         dialogVisible : false,//弹出框
         dialogVisibleRecordDetail : false,//弹出框
+        dialogVisibleRecordDetail1 : false,//弹出框
         dialogVisibleAdd : false,//弹出框
         disa : true,
         shopId : '',//id存储
@@ -597,21 +692,36 @@ export default {
               this.transfer_date = '';
               this.transfer_personnel = '';
               this.charge_remark = '';
-
             }
-        });
+          });
       },
       recordDetail(row){//详情
-        this.dialogVisibleRecordDetail = true;
-        request.post("/admin/Financial/getFinancialInfo",{
+        if(this.activeName == 'first'){
+          request.post("/admin/Financial/getFinancialInfo",{
             id : row.id,
           }).then(res => {
-            if (res.code == 200) {
-              // console.log(res)
-              this.recordDetailList =res.data.list;
+              if (res.code == 200) {
+                // console.log(res)
+                this.recordDetailList =res.data.list;
+              }
+          });
 
-            }
-        });
+          this.dialogVisibleRecordDetail = true;
+        }else{
+          // console.log('5235235235')
+          request.post("/admin/Financial/financialQueryInfo",{
+            id : row.id,
+          }).then(res => {
+              if (res.code == 200) {
+                // console.log(res)
+                this.recordDetailList =res.data.list;
+              }
+          });
+
+          this.dialogVisibleRecordDetail1 = true;
+        }
+        
+
       },
       getAgentList() {//初始渲染列表方法封装
         // this.dialogFormVisible = false;
@@ -651,7 +761,6 @@ export default {
       generateReport(row){//生成报告
         // console.log(row.id)
         this.generateReportId = row.id;
-        
       },
       getInfo(row, event, column){
         // console.log(row.id);
@@ -678,12 +787,12 @@ export default {
         this.center = value[2];
       },
       confirmDetail(row) {//查看
-         this.shopId = row.id;
-          this.$router.push({path:'/detaiPprojectInitiation',query:{id:row.id}})
+        this.shopId = row.id;
+        this.$router.push({path:'/detaiPprojectInitiation',query:{id:row.id}})
       },
       handleCurrentChange: function(currentPage){//换页
-          this.currentPage =currentPage;
-          request.post("/admin/financial/query",{
+        this.currentPage =currentPage;
+        request.post("/admin/financial/query",{
             page : currentPage,
             keyword : this.search,
             pageSize : this.pagesize,
@@ -748,7 +857,7 @@ export default {
                 transfer_date : this.add.transfer_date,
                 transfer_personnel : this.add.transfer_personnel,
                 charge_remark : this.add.charge_remark,
-            }).then(res => {
+          }).then(res => {
                 if (res.code == 200) {
                   // this.agentList = res.data.list;
                   this.$message({
@@ -762,11 +871,10 @@ export default {
                     transfer_date : '',
                     transfer_personnel : '',
                     charge_remark : '',
-                };
+                  };
                 this.handleClick();
-
                 }
-            })
+          })
         },
   }
 }

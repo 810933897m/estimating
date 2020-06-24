@@ -12,7 +12,7 @@
             </el-form> -->
       <el-form ref="form" >
         <el-form-item>
-            <el-radio v-model="activeName" label="first" @change="handleClick()">收款</el-radio>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">未收款</el-radio>
             <el-radio v-model="activeName" label="two" @change="handleClick()">已收款</el-radio>
             <!-- <el-radio v-model="activeName" label="success" @change="handleClick()">收款成功</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">收款失败</el-radio> -->
@@ -60,32 +60,9 @@
       </el-table-column> -->
 
       <el-table-column
-      label="项目报告份数"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="3"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="已发报告份数"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="4"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
       label="流水号"
       width="120px"
       key="5"
-      v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -93,9 +70,8 @@
       </el-table-column>
 
       <el-table-column
-      label="报告编号"
+      label="报告号"
       width="150px"
-      v-if="activeName == 'first'"
       key="6"
       align="center">
         <template slot-scope="scope">
@@ -104,43 +80,29 @@
       </el-table-column>
 
       <el-table-column
-      label="旧流水号"
+      label="应收金额"
       width="120px"
-      v-if="activeName == 'first'"
       key="7"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
-      label="旧报告编号"
-      v-if="activeName == 'first'"
+      label="已收金额"
       key="8"
       width="120px"
       align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="9"
-      align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
+          <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="项目地址"
-      width="130px"
-      v-if="activeName == 'first'"
-      key="10"
+      width="100px"
+      key="9"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -148,52 +110,58 @@
       </el-table-column>
 
       <el-table-column
-      label="小区名称"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="11"
+      label="外业状态"
+      width="130px"
+      key="10"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+          <p :title="scope.row.outworker_relevance_status" class="nooverflow">{{scope.row.outworker_relevance_status}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="受理时间"
-      v-if="activeName == 'first'"
+      label="内业状态"
+      width="100px"
+      key="11"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.secretary_relevance_status" class="nooverflow">{{scope.row.secretary_relevance_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="二审状态"
       key="12"
       width="100px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+          <p :title="scope.row.secretary_relevance_check" class="nooverflow">{{scope.row.secretary_relevance_check}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="报告类型"
-      v-if="activeName == 'first'"
+      label="终审状态"
       key="13"
       width="100px"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+          <p :title="scope.row.final_appraisal_check" class="nooverflow">{{scope.row.final_appraisal_check}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="流程状态"
+      label="财务状态"
       width="100px"
-      v-if="activeName == 'first'"
       key="14"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
+          <p :title="scope.row.finance_status" class="nooverflow">{{scope.row.finance_status}}</p>
         </template>
       </el-table-column>
 
       
 
-      <el-table-column
+      <!-- <el-table-column
           label="收款方式"
           v-if="activeName != 'first'"
           key="15"
@@ -241,14 +209,15 @@
             <template slot-scope="scope" >
               <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
       <el-table-column
       label="操作"
       fixed="right"
-      width="100px" align="center">
+      width="200px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button> -->
+          <el-button size="small" type="primary" @click="printReceipt(scope.row)">打印收据</el-button>
           <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
         </template>
       </el-table-column>
@@ -277,11 +246,10 @@
         style="width: 100%;">
 
         <el-table-column
-        label="实收金额"
-        width="150px"
+        label="付款方"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
+            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
           </template>
         </el-table-column>
 
@@ -294,7 +262,7 @@
         </el-table-column>
 
         <el-table-column
-        label="收款日期"
+        label="收款时间"
         align="center">
           <template slot-scope="scope" >
             <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
@@ -302,10 +270,11 @@
         </el-table-column>
 
         <el-table-column
-        label="收款方"
+        label="收款金额"
+        width="150px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
           </template>
         </el-table-column>
 
@@ -316,17 +285,18 @@
             <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
           </template>
         </el-table-column>
-
+<!-- 
         <el-table-column
         label="收款状态"
         align="center">
           <template slot-scope="scope" >
             <p :title="scope.row.financial_status" class="nooverflow">{{scope.row.financial_status}}</p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
         label="收款操作人"
+        width="120px"
         align="center">
           <template slot-scope="scope" >
             <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
@@ -354,43 +324,10 @@
         style="width: 100%;">
 
         <el-table-column
-        label="报告号"
-        width="150px"
+        label="付款方"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
-          </template>
-        </el-table-column>
-        
-        <el-table-column
-        label="小区名称"
-        align="center">
-          <template slot-scope="scope" >
-            <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-        label="项目地址"
-        align="center">
-          <template slot-scope="scope" >
-            <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-        label="应收金额"
-        align="center">
-          <template slot-scope="scope" >
-            <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-        label="实收金额"
-        align="center">
-          <template slot-scope="scope" >
-            <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
+            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
           </template>
         </el-table-column>
 
@@ -403,7 +340,7 @@
         </el-table-column>
 
         <el-table-column
-        label="收款日期"
+        label="收款时间"
         align="center">
           <template slot-scope="scope" >
             <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
@@ -411,10 +348,36 @@
         </el-table-column>
 
         <el-table-column
-        label="收款方"
+        label="收款金额"
+        width="150px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="收款备注"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
+          </template>
+        </el-table-column>
+<!-- 
+        <el-table-column
+        label="收款状态"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.financial_status" class="nooverflow">{{scope.row.financial_status}}</p>
+          </template>
+        </el-table-column> -->
+
+        <el-table-column
+        label="收款操作人"
+        width="120px"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
           </template>
         </el-table-column>
 
@@ -470,20 +433,39 @@
         <!-- :before-close="handleClose" -->
             <el-form label-width="90px" style="float:left;">
 
-                <el-form-item label="收款方式" style="width:250px;float:left;">
+                <!-- <el-form-item label="收款方式" style="width:250px;float:left;">
                   <el-input placeholder="请输入收款方式" v-model="add.charge_way"></el-input>
-                </el-form-item>
+                </el-form-item> -->
+                <el-form-item label="收款方式" class="select" style="float:left;">
+                <el-select v-model="add.charge_way" filterable placeholder="请选择" style="">
+                    <el-option
+                    v-for="item in charge_way1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+              </el-form-item>
 
               <el-form-item label="收费总金额" style="width:250px;float:left;" >
                   <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount_total"></el-input>
                 </el-form-item>
 
-              <el-form-item label="收款日期" style="width:250px;float:left;">
+              <!-- <el-form-item label="收款日期" style="width:250px;float:left;">
                   <el-input placeholder="请输入收款日期" v-model="add.transfer_date"></el-input>
-                </el-form-item>
+                </el-form-item> -->
+                <el-form-item label="收款日期" style="width:300px;float:left;">
+                  <el-date-picker
+                  v-model="add.transfer_date"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择收款日期">
+                </el-date-picker>
+              </el-form-item>
 
-              <el-form-item label="收款方" style="width:250px;float:left;">
-                  <el-input placeholder="请输入收款方" v-model="add.transfer_personnel"></el-input>
+              <el-form-item label="付款方" style="width:250px;float:left;">
+                  <el-input placeholder="请输入付款方" v-model="add.transfer_personnel"></el-input>
                 </el-form-item>
 
                 <el-form-item label="转账备注" style="width:250px;float:left;">
@@ -580,6 +562,7 @@ export default {
         },
 
         charge_way : '',
+        charge_way1 : [],
         charge_amount : '',
         transfer_date : '',
         transfer_personnel : '',
@@ -720,8 +703,6 @@ export default {
 
           this.dialogVisibleRecordDetail1 = true;
         }
-        
-
       },
       getAgentList() {//初始渲染列表方法封装
         // this.dialogFormVisible = false;
@@ -736,12 +717,15 @@ export default {
             }
         });
         
-        // request.post("/admin/projectExpress/param").then(res => {
-        //     if (res.code == 200) {
-        //       console.log(res)
-        //     }
-        // });
-
+        request.post("/admin/values/query",{
+          type : 'settlement_method',
+          name : '',
+        }).then(res => {
+            if (res.code == 200) {
+              // console.log(res)
+              this.charge_way1 = res.data;
+            }
+        });
     },
       addRecord(row) {//添加记录
         this.dialogVisible = true;
@@ -875,6 +859,9 @@ export default {
                 this.handleClick();
                 }
           })
+        },
+        printReceipt(row){//打印
+          console.log(row)
         },
   }
 }

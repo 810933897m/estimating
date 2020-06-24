@@ -59,26 +59,25 @@
           {{scope.row.approval_status}}
         </template>
       </el-table-column> -->
-
       <el-table-column
-      label="项目报告份数"
-      width="120px"
+      label="应收金额"
+      width="150px"
       v-if="activeName == 'first'"
-      key="3"
+      key="61"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
+          <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="已发报告份数"
-      width="120px"
+      label="已收金额"
+      width="150px"
       v-if="activeName == 'first'"
-      key="4"
+      key="6"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
+          <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
         </template>
       </el-table-column>
 
@@ -97,43 +96,10 @@
       label="报告编号"
       width="150px"
       v-if="activeName == 'first'"
-      key="6"
+      key="611"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="旧流水号"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="7"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="旧报告编号"
-      v-if="activeName == 'first'"
-      key="8"
-      width="120px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="9"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
       </el-table-column>
 
@@ -163,36 +129,11 @@
       label="受理时间"
       v-if="activeName == 'first'"
       key="12"
-      width="100px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
-
-      <el-table-column
-      label="报告类型"
-      v-if="activeName == 'first'"
-      key="13"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="流程状态"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="14"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
-        </template>
-      </el-table-column>
-
-      
 
       <el-table-column
           label="开票类型"
@@ -201,6 +142,16 @@
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.invoice_type" class="nooverflow">{{scope.row.invoice_type}}</p>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+          label="开票金额"
+          v-if="activeName != 'first'"
+          key="151"
+          align="center">
+            <template slot-scope="scope" >
+              <p :title="scope.row.invoice_money_total" class="nooverflow">{{scope.row.invoice_money_total}}</p>
             </template>
           </el-table-column>
           
@@ -218,6 +169,7 @@
           label="纳税人识别码"
           v-if="activeName != 'first'"
           key="17"
+          width="130px"
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.taxpayer_identification" class="nooverflow">{{scope.row.taxpayer_identification}}</p>
@@ -314,7 +266,7 @@
 
         <!--*************收款记录模态框*************-->
         <el-dialog
-        title="开票记录"
+        title="项目列表"
         :visible.sync="dialogVisibleRecordDetail"
         width="50%">
 
@@ -322,6 +274,7 @@
             class="table-picture"
             :data="recordDetailList"
             border
+            max-height="300"
             style="width: 100%;">
 
             <el-table-column
@@ -333,10 +286,10 @@
             </el-table-column>
             
             <el-table-column
-            label="小区名称"
+            label="报告号"
             align="center">
               <template slot-scope="scope" >
-                <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
+                <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
               </template>
             </el-table-column>
 
@@ -348,13 +301,13 @@
               </template>
             </el-table-column>
 
-            <el-table-column
+            <!-- <el-table-column
             label="发票号码"
             align="center">
               <template slot-scope="scope" >
                 <p :title="scope.row.invoice_number" class="nooverflow">{{scope.row.invoice_number}}</p>
               </template>
-            </el-table-column>
+            </el-table-column> -->
 
             <el-table-column
             label="开票类型"
@@ -389,10 +342,10 @@
             </el-table-column>
 
             <el-table-column
-            label="开票状态"
+            label="开票备注"
             align="center">
               <template slot-scope="scope" >
-                <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
+                <p :title="scope.row.invoice_note" class="nooverflow">{{scope.row.invoice_note}}</p>
               </template>
             </el-table-column>
 
@@ -422,6 +375,7 @@
           class="table-picture"
           :data="recordDetailList"
           border
+          max-height="300"
           style="width: 100%;">
 
           <el-table-column
@@ -473,10 +427,10 @@
           </el-table-column> -->
 
           <el-table-column
-          label="开票状态"
+          label="开票备注"
           align="center">
             <template slot-scope="scope" >
-              <p :title="scope.row.invoice_status" class="nooverflow">{{scope.row.invoice_status}}</p>
+              <p :title="scope.row.invoice_note" class="nooverflow">{{scope.row.invoice_note}}</p>
             </template>
           </el-table-column>
 
@@ -551,6 +505,10 @@
                 <el-input  placeholder="请输入" v-model="form.invoice_bank_card"></el-input>
               </el-form-item>
 
+              <el-form-item label="开票备注" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_note"></el-input>
+              </el-form-item>
+
               <!-- <el-form-item label="开票审核人id" class="select" style="width:500px;">
                 <el-select v-model="form.Invoice_examiner_id" filterable style="">
                       <el-option
@@ -614,6 +572,10 @@
                   <el-input disabled placeholder="请输入收费金额" v-model="add.charge_amount"></el-input>
                 </el-form-item>
 
+                <el-form-item label="开票备注" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="form.invoice_note"></el-input>
+              </el-form-item>
+
                 <el-table 
                 class="table-picture"
                 :data="billingList"
@@ -654,7 +616,7 @@
                 </el-table-column>
 
                 <el-table-column
-                label="收款金额"
+                label="开票金额"
                 align="center">
                   <template slot-scope="scope">
                     <el-input @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
@@ -735,6 +697,7 @@ export default {
           invoice_bank_card : '',
           Invoice_examiner_id:'',
           invoice_type : '普票',
+          invoice_note:'',
         },
         add:{
           charge_amount : 0,
@@ -1007,6 +970,7 @@ export default {
           invoice_type : this.form.invoice_type,
           invoice_bank : this.form.invoice_bank,
           invoice_bank_card : this.form.invoice_bank_card,
+          invoice_note : this.form.invoice_note,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -1022,6 +986,7 @@ export default {
                   invoice_type : '普票',
                   invoice_bank : '',
                   invoice_bank_card : '',
+                  invoice_note : '',
                 };
                 this.express_type = '';
                 this.type = '';
@@ -1135,6 +1100,7 @@ export default {
               invoice_bank_card : this.add.invoice_bank_card,
               invoice_money_total : this.add.charge_amount,
               child : list2,
+              invoice_note : this.form.invoice_note,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({

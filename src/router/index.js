@@ -389,8 +389,17 @@ import userList from "@/views/administrators/userList";
                 name: 'invoice',
                 component: () => import('@/views/fieldManagement/invoice'),
                 meta: {
-                    title: '发票',
+                    title: '申请发票',
                     icon: 'sms-subject',
+                    // keepAlive: true
+                }
+            },{
+                path: 'InvoiceAudit',
+                name: 'InvoiceAudit',
+                component: () => import('@/views/AuditManagement/InvoiceAudit'),
+                meta: {
+                    title: '发票开具',
+                    icon: 'example',
                     // keepAlive: true
                 }
             },{
@@ -458,16 +467,7 @@ import userList from "@/views/administrators/userList";
                     // keepAlive: true
                 }
             },
-            {
-                path: 'InvoiceAudit',
-                name: 'InvoiceAudit',
-                component: () => import('@/views/AuditManagement/InvoiceAudit'),
-                meta: {
-                    title: '发票审核',
-                    icon: 'sms-subject',
-                    // keepAlive: true
-                }
-            },
+            
             {
                 path: 'SecondProject',
                 name: 'SecondProject',

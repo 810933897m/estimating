@@ -10,9 +10,9 @@
     </el-form> -->
     <el-form ref="form" >
         <el-form-item>
-            <el-radio v-model="activeName" label="first" @change="handleClick()">退单</el-radio>
-            <el-radio v-model="activeName" label="two" @change="handleClick()">撤单</el-radio>
-            <el-radio v-model="activeName" label="success" @change="handleClick()">哦哦哦</el-radio>
+            <el-radio v-model="activeName" label="first" @change="handleClick()">项目列表</el-radio>
+            <el-radio v-model="activeName" label="two" @change="handleClick()">退单 </el-radio>
+            <el-radio v-model="activeName" label="three" @change="handleClick()">撤单</el-radio>
             <!-- <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio> -->
             <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
@@ -36,18 +36,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-      label="紧急程度"
-      width="120px"
+      <!-- <el-table-column
+       label="挂起原因"
+      width="100px"
+      key="1" 
+      v-if="activeName != 'first'"
       align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
+        <template slot-scope="scope" >
+          <p :title="scope.row.admin_desc" class="nooverflow">{{scope.row.admin_desc}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="流水号"
-      width="120px"
+      width="200px"
+      key="22" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -55,112 +58,72 @@
       </el-table-column>
 
       <el-table-column
-      label="报告编号"
-      width="150px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="旧流水号"
-      width="150px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="旧报告编号"
-      width="200px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="退单状态"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.show_withdraw_status" class="nooverflow">{{scope.row.show_withdraw_status}}</p>
-        </template>
-      </el-table-column>
-      
-
-      <el-table-column
-      label="项目地址"
-      width="130px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="小区名称"
-      width="100px"
+      label="报告类型"
+      width="120px"
+      key="3" 
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="估价目的"
+      width="120px"
+      key="4" 
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="报告号"
+      width="200px"
+      key="5" 
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="报告地址"
+      key="6" 
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
       label="受理时间"
-      width="100px"
+      width="150px"
+      key="7" 
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.created_time" class="nooverflow">{{scope.row.created_time}}</p>
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
       <el-table-column
-      label="报告类型"
+      label="分配时间"
       width="100px"
+      key="8" 
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
-      </el-table-column>
-
-      <el-table-column
-      label="流程状态"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="撰写人员"
-      width="100px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
-        </template> -->
       </el-table-column>
     
       <el-table-column
       label="操作"
+      v-if="activeName == 'first'"
       fixed="right"
       align="center">
         <template slot-scope="scope">
-          <!-- <el-button size="small" type="primary" @click="AssignTasks(scope.row)" >退费</el-button> -->
-          <el-button size="small" type="primary" @click="cancel(scope.row)" >取消</el-button>
+          <el-button size="small" type="primary" @click="AssignTasks(scope.row)" >申请</el-button>
+          <!-- <el-button size="small" type="primary" @click="cancel(scope.row)" >取消</el-button> -->
 
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
           <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
@@ -180,10 +143,9 @@
     <!-- *************分页************* -->
     
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="退费" :visible.sync="dialogFormVisible">
+          <!-- <el-dialog style="" :append-to-body='true' title="退费" :visible.sync="dialogFormVisible">
            
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <!-- <div style="width:100%;position:relative;height:50px;"> -->
               <el-radio @change="operationBtn" v-model="operation" label="1">通过</el-radio>
               <el-radio @change="operationBtn" v-model="operation" label="2">拒绝</el-radio>
 
@@ -192,11 +154,10 @@
               </el-form-item>
 
               <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" v-if="tongyi" @click="outworkidBtn()">确定退费</el-button>
-              <!-- </div> -->
 
             </el-form>
             
-          </el-dialog>
+          </el-dialog> -->
           <!-- **************分配任务弹出框************** -->
 
           <!-- 分配任务弹出框 -->
@@ -304,6 +265,54 @@
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
+          <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="申请" :visible.sync="dialogFormVisible">
+            
+            <el-form ref="form" label-width="120px" style="width:100%;">
+              <!-- <div style="width:100%;position:relative;height:50px;"> -->
+              <el-form-item label="退单撤单" class="select" style="">
+                  <el-select v-model="type" filterable style="">
+                      <el-option
+                      v-for="item in type1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+              <el-form-item label="回收报告" class="form-input" prop="title" style="width:500px;">
+                <el-radio v-model="need_report" label="0">否</el-radio>
+                <el-radio v-model="need_report" label="1">是</el-radio>
+              </el-form-item>
+
+              <el-form-item label="需要收费" class="form-input" prop="title" style="width:500px;">
+                <el-radio v-model="need_payment" label="0">否</el-radio>
+                <el-radio v-model="need_payment" label="1">是</el-radio>
+              </el-form-item>
+
+              <el-form-item label="需要退费" class="form-input" prop="title" style="width:500px;">
+                <el-radio v-model="need_collection" label="0">否</el-radio>
+                <el-radio v-model="need_collection" label="1">是</el-radio>
+              </el-form-item>
+
+              <el-form-item label="回收发票" class="form-input" prop="title" style="width:500px;">
+                <el-radio v-model="need_invoice" label="0">否</el-radio>
+                <el-radio v-model="need_invoice" label="1">是</el-radio>
+              </el-form-item>
+
+              <el-form-item label="备注" class="form-input" prop="title"  style="width:500px;">
+                <el-input  placeholder="请输入" v-model="admin_desc"></el-input>
+              </el-form-item>
+
+            </el-form>
+            
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="outworkidBtn1(),dialogFormVisible = false">保 存</el-button>
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+            </span>
+          </el-dialog>
+
   </div>
 </template>
 <script>
@@ -313,6 +322,22 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
+        type : '',
+        type1 : [
+          {
+            value : '1',
+            label : '退单'
+          },{
+            value : '2',
+            label : '撤单'
+          }
+        ],
+        need_report : '0',
+        need_payment : '0',
+        need_collection : '0',
+        need_invoice : '0',
+
+
         operation : '',
         tuifei : false,
         falseC:'',
@@ -389,10 +414,12 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+        // console.log(this.activeName)
+        this.agentList = [];
+
         if(this.activeName == 'first'){
-          request.post("/admin/projectWithdraw/query",{
-            exit_type:0,
+          request.post("admin/projectWithdraw/query",{
+            status : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -402,9 +429,9 @@ export default {
               this.size = res.data.page.size;
             }
         });
-        }else if(this.activeName == 'last'){
-          request.post("/admin/projectWithdraw/query",{
-            exit_type:1,
+        }else if(this.activeName == 'two'){
+          request.post("admin/projectWithdraw/query",{
+            status : 1,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -413,7 +440,19 @@ export default {
               this.page = res.data.page.page;
               this.size = res.data.page.size;
             }
-        });
+          });
+        }else if(this.activeName == 'three'){
+          request.post("admin/projectWithdraw/query",{
+            status : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
         }
       },
       recovery(row){//回收
@@ -439,8 +478,8 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("/admin/projectWithdraw/query",{
-            exit_type:0,
+        request.post("admin/projectWithdraw/query",{
+            status : 0,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -448,13 +487,6 @@ export default {
               this.max = res.data.page.max;
               this.page = res.data.page.page;
               this.size = res.data.page.size;
-            }
-        });
-        request.post("/admin/Auditing/param").then(res => {
-            if (res.code == 200) {
-              console.log(res)
-              this.ask_univalence1 = res.data.check_user;
-              // this.agentList = res.data.list;
             }
         });
         // request.post("/admin/outwork/param").then(res => {
@@ -538,9 +570,34 @@ export default {
         console.log(this.ROW.id);
         console.log(this.outworkid);
       },
+      // outworkidBtn1(){//分配任务确定
+      //     request.post("/admin/ProjectSeal/refuse",{
+      //     id : this.Id,
+      //     admin_desc : this.admin_desc,
+      //     }).then(res => {
+      //         if (res.code == 200) {
+      //           this.$message({
+      //               // type: res.errno === 0 ? "success" : "warning",
+      //               type: "success",
+      //               message: '回收成功'//提示回收成功
+      //           });
+      //           this.handleClick();
+      //         }
+      //     });
+      //   this.dialogFormVisible=false;
+      //   this.admin_desc = '';
+        
+      //   console.log(this.ROW.id);
+      //   console.log(this.outworkid);
+      // },
       outworkidBtn1(){//分配任务确定
-          request.post("/admin/ProjectSeal/refuse",{
+          request.post("admin/projectWithdraw/create",{
           id : this.Id,
+          type : this.type,
+          need_report : this.need_report,
+          need_payment : this.need_payment,
+          need_collection : this.need_collection,
+          need_invoice : this.need_invoice,
           admin_desc : this.admin_desc,
           }).then(res => {
               if (res.code == 200) {
@@ -553,6 +610,11 @@ export default {
               }
           });
         this.dialogFormVisible=false;
+        this.type = '';
+        this.need_report = '0';
+        this.need_payment = '0';
+        this.need_collection = '0';
+        this.need_invoice = '0';
         this.admin_desc = '';
         
         console.log(this.ROW.id);

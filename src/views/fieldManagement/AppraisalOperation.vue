@@ -58,6 +58,7 @@
       <el-table-column
       label="流水号"
       width="120px"
+      key="2"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -67,6 +68,7 @@
       <el-table-column
       label="报告编号"
       width="150px"
+      key="3"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -76,6 +78,7 @@
       <el-table-column
       label="旧流水号"
       width="150px"
+      key="4"
       align="center">
         <!-- <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -85,6 +88,7 @@
       <el-table-column
       label="旧报告编号"
       width="200px"
+      key="5"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
@@ -94,6 +98,7 @@
       <el-table-column
       label="项目地址"
       width="130px"
+      key="6"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
@@ -103,6 +108,7 @@
       <el-table-column
       label="小区名称"
       width="100px"
+      key="7"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -112,6 +118,7 @@
       <el-table-column
       label="受理时间"
       width="100px"
+      key="8"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -121,6 +128,7 @@
       <el-table-column
       label="报告类型"
       width="100px"
+      key="9"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -130,6 +138,7 @@
       <el-table-column
       label="流程状态"
       width="100px"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
@@ -139,6 +148,7 @@
       <el-table-column
       label="分配时间"
       width="100px"
+      key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.updata_time" class="nooverflow">{{scope.row.updata_time}}</p>
@@ -148,6 +158,7 @@
       <el-table-column
       label="领取时间"
       width="100px"
+      key="12"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
@@ -166,6 +177,7 @@
       <el-table-column
       label="报告状态"
       width="150px"
+      key="13"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -175,6 +187,7 @@
       <el-table-column
       label="勘察状态"
       width="150px"
+      key="14"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>

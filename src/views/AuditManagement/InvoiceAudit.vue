@@ -18,7 +18,7 @@
        max-height="550"
       style="width: 100%;">
 
-      <el-table-column
+      <!-- <el-table-column
           v-if="activeName == 'first'"
           width="40px"
           key="1"
@@ -26,12 +26,12 @@
             <template slot-scope="scope" >
               <el-checkbox v-model="scope.row.checked"></el-checkbox>
             </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
        label="id"
-       key="2"
       width="50px"
+      key="2222"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -39,127 +39,30 @@
       </el-table-column>
 
       <!-- <el-table-column
-      label="紧急程度"
+      label="流水号"
       width="120px"
+      key="5"
+      v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.approval_status}}
+          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
         </template>
       </el-table-column> -->
 
-      <el-table-column
-      label="项目报告份数"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="3"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="已发报告份数"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="4"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.is_send_num" class="nooverflow">{{scope.row.is_send_num}}</p>
-        </template>
-      </el-table-column>
 
       <!-- <el-table-column
-      label="流水号"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
-        </template>
-      </el-table-column> -->
-
-      <el-table-column
-      label="流水号"
-      v-if="activeName == 'first'"
-      key="5"
-      width="120px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告编号"
-      width="150px"
-      v-if="activeName == 'first'"
-      key="6"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="旧流水号"
-      width="120px"
-      v-if="activeName == 'first'"
-      key="7"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.city}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="旧报告编号"
-      v-if="activeName == 'first'"
-      key="8"
-      width="120px"
-      align="center">
-        <!-- <template slot-scope="scope">
-          {{scope.row.plot_address}}
-        </template> -->
-      </el-table-column>
-
-      <el-table-column
-      label="项目状态"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="9"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="项目地址"
-      width="130px"
-      v-if="activeName == 'first'"
-      key="10"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
       label="小区名称"
       width="100px"
-      v-if="activeName == 'first'"
       key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="受理时间"
-      v-if="activeName == 'first'"
       key="12"
-      width="100px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
@@ -167,32 +70,17 @@
       </el-table-column>
 
       <el-table-column
-      label="报告类型"
-      v-if="activeName == 'first'"
-      key="13"
+      label="开票备注"
       width="100px"
+      key="9222"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
+          <p :title="scope.row.invoice_note" class="nooverflow">{{scope.row.invoice_note}}</p>
         </template>
       </el-table-column>
-
-      <el-table-column
-      label="流程状态"
-      width="100px"
-      v-if="activeName == 'first'"
-      key="14"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
-        </template>
-      </el-table-column>
-
-      
 
       <el-table-column
           label="开票类型"
-          v-if="activeName != 'first'"
           key="15"
           align="center">
             <template slot-scope="scope" >
@@ -201,7 +89,6 @@
           </el-table-column>
           
           <el-table-column
-          v-if="activeName != 'first'"
           key="16"
           label="名称"
           align="center">
@@ -212,7 +99,6 @@
 
           <el-table-column
           label="纳税人识别码"
-          v-if="activeName != 'first'"
           key="17"
           align="center">
             <template slot-scope="scope" >
@@ -221,22 +107,11 @@
           </el-table-column>
 
           <el-table-column
-          label="电话"
-          v-if="activeName != 'first'"
+          label="发票金额"
           key="18"
           align="center">
             <template slot-scope="scope" >
-              <p :title="scope.row.invoice_telephone" class="nooverflow">{{scope.row.invoice_telephone}}</p>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-          label="地址"
-          v-if="activeName != 'first'"
-          key="19"
-          align="center">
-            <template slot-scope="scope" >
-              <p :title="scope.row.invoice_address" class="nooverflow">{{scope.row.invoice_address}}</p>
+              <p :title="scope.row.invoice_money_total" class="nooverflow">{{scope.row.invoice_money_total}}</p>
             </template>
           </el-table-column>
 
@@ -250,7 +125,6 @@
 
           <el-table-column
           label="开户行"
-          v-if="activeName != 'first'"
           key="20"
           align="center">
             <template slot-scope="scope" >
@@ -259,7 +133,6 @@
           </el-table-column>
 
           <el-table-column
-          v-if="activeName != 'first'"
           key="21"
           label="开户账户"
           align="center">
@@ -275,7 +148,7 @@
       width="150px" align="center">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks(scope.row)" >同意</el-button>
-          <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks1(scope.row)" >拒绝</el-button>
+          <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="AssignTasks1(scope.row)" >拒绝</el-button> -->
           <!-- <el-button size="small" type="primary" v-else-if="activeName == 'two'" @click="AssignTasks(scope.row)">重新分配</el-button> -->
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
 
@@ -295,46 +168,42 @@
     :total="count">
     </el-pagination>
     <!-- *************分页************* -->
-    
-          <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="审核提交" :visible.sync="dialogFormVisible">
 
-            <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
-              <div style="width:100%;position:relative;height:50px;">
-                <!-- <p style="margin-left:50px;">原始单价{{old_price}},修改单价{{new_price}}</p> -->
-                  <el-form-item v-if="passShow" label="发票号" class="form-input" prop="title" style="width:250px;float:left;">
-                    <el-input  placeholder="请输入" v-model="invoice_number"></el-input>
+          <!--*************添加收款模态框*************-->
+        <el-dialog
+        title="添加"
+        :visible.sync="dialogFormVisible"
+        width="50%">
+        <!-- :before-close="handleClose" -->
+            <el-form label-width="90px">
+
+                <el-form-item v-if="passShow" label="发票号" class="form-input" prop="title" style="">
+                    <!-- <el-input  placeholder="请输入" v-model="invoice_number"></el-input> -->
+                    <el-input
+                    placeholder="请输入"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 10}"
+                    v-model="invoice_number">
+                    </el-input>
                 </el-form-item>
 
-                  <el-form-item label="审核建议" class="form-input" prop="title" style="width:250px;float:left;">
+                  <el-form-item label="审核建议" class="form-input" prop="title" style="">
                     <el-input  placeholder="请输入" v-model="admin_desc"></el-input>
                 </el-form-item>
-                <el-button v-if="passShow" size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
-                <el-button v-if="!passShow" size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;" @click="outworkidBtn1()">确定</el-button>
-              </div>
-
-              <!-- <el-checkbox style="width:120px;" v-model="checked">推送到App</el-checkbox>
-              <el-form-item label="查勘表" class="select" style="width:30%;">
-                <el-select v-model="form.user" filterable style="width:120px;">
-                    <el-option
-                    v-for="item in form.user"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item> -->
-
-
+                <!-- <el-button v-if="passShow" size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
+                <el-button v-if="!passShow" size="small" type="primary" style="float:left;margin-left:20px;margin-top:5px;" @click="outworkidBtn1()">确定</el-button> -->
             </el-form>
-            <!-- </div> -->
-            <!-- <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="confirmRevision()">确定修改</el-button>
-            </div> -->
-            
-          </el-dialog>
-          <!-- **************分配任务弹出框************** -->
+        
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+                <el-button v-if="passShow" type="primary" @click="outworkidBtn(),dialogFormVisible = false">保 存</el-button>
+                <el-button v-if="!passShow" type="primary" @click="outworkidBtn(),dialogFormVisible = false">保 存</el-button>
+
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************添加收款模态框*************-->
+    
+          
   </div>
 </template>
 <script>

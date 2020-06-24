@@ -21,6 +21,7 @@
       <el-table-column
        label="id"
       width="50px"
+      key="1"
       align="center">
         <template slot-scope="scope" >
           {{scope.row.id}}
@@ -30,7 +31,7 @@
       <el-table-column
       label="流水号"
       width="120px"
-      
+      key="2"
       align="center">
         <template slot-scope="scope" >
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -40,6 +41,7 @@
       <el-table-column
       label="报告编号"
       width="150px"
+      key="3"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -49,7 +51,7 @@
       <el-table-column
       label="应收金额"
       width="130px"
-      key="1" 
+      key="4" 
       v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
@@ -60,7 +62,7 @@
       <el-table-column
       label="实收金额"
       width="130px"
-      key="2" 
+      key="5" 
       v-if="activeName == 'first'"
       align="center">
         <template slot-scope="scope">
@@ -71,6 +73,7 @@
       <el-table-column
       label="项目地址"
       width="200px"
+      key="6"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
@@ -80,6 +83,7 @@
       <el-table-column
       label="小区名称"
       width="130px"
+      key="7"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_name" class="nooverflow">{{scope.row.plot_name}}</p>
@@ -98,6 +102,7 @@
       <el-table-column
       label="报告类型"
       width="100px"
+      key="8"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
@@ -107,6 +112,7 @@
       <el-table-column
       label="物业类型"
       width="100px"
+      key="9"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.property_type" class="nooverflow">{{scope.row.property_type}}</p>
@@ -116,6 +122,7 @@
       <el-table-column
       label="项目状态"
       width="100px"
+      key="10"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
@@ -135,6 +142,7 @@
       <el-table-column
       label="流程状态"
       width="100px"
+      key="11"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
@@ -143,12 +151,12 @@
 
       <el-table-column
       label="立项时间"
-      key="3" 
+      key="12" 
       v-if="activeName == 'first'"
       width="150px"
       align="center">
         <template slot-scope="scope">
-          {{scope.row.create_time}}
+          <p :title="scope.row.create_time" style="" class="nooverflow">{{scope.row.create_time}}</p>
         </template>
       </el-table-column>
 
@@ -164,7 +172,7 @@
 
       <el-table-column
       label="备注"
-      key="4" 
+      key="13" 
       v-if="activeName == 'two'"
       width="150px"
       align="center">

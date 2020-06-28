@@ -165,15 +165,6 @@
         </template>
       </el-table-column>
 
-      <!-- <el-table-column
-      label="紧急程度"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.approval_status" class="nooverflow">{{scope.row.approval_status}}</p>
-        </template>
-      </el-table-column> -->
-
       <el-table-column
       label="报告状态"
       width="150px"

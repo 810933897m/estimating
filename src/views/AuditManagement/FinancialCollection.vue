@@ -29,6 +29,17 @@
       </el-table-column>
 
       <el-table-column
+      label="备注"
+      key="13" 
+      v-if="activeName == 'two'"
+      width="150px"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.finance_status_desc" class="nooverflow">{{scope.row.finance_status_desc}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
       label="流水号"
       width="120px"
       key="2"
@@ -169,17 +180,6 @@
           {{scope.row.finish_time}}
         </template>
       </el-table-column> -->
-
-      <el-table-column
-      label="备注"
-      key="13" 
-      v-if="activeName == 'two'"
-      width="150px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.finance_status_desc" class="nooverflow">{{scope.row.finance_status_desc}}</p>
-        </template>
-      </el-table-column>
 
       <el-table-column
       label="操作"

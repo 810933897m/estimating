@@ -754,6 +754,7 @@ export default {
         request.post("/admin/financial/query",{
           keyword : this.search,
           // page : this.currentPage,
+          pageSize : this.pagesize,
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;

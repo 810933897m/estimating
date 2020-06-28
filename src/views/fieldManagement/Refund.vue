@@ -13,10 +13,15 @@
             <el-radio v-model="activeName" label="first" @change="handleClick()">项目列表</el-radio>
             <el-radio v-model="activeName" label="two" @change="handleClick()">退单 </el-radio>
             <el-radio v-model="activeName" label="three" @change="handleClick()">撤单</el-radio>
+
+            <el-radio v-model="activeName" label="need_report" @change="handleClick()">报告待回收</el-radio>
+            <el-radio v-model="activeName" label="need_payment" @change="handleClick()">待付款</el-radio>
+            <el-radio v-model="activeName" label="need_collection" @change="handleClick()">待退款</el-radio>
+            <el-radio v-model="activeName" label="need_invoice" @change="handleClick()">发票待回收</el-radio>
             <!-- <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio> -->
             <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
-            <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button>
+            <!-- <el-button type="primary" style="margin-left:0px;" plain @click="uploadBtn">添加</el-button> -->
         </el-form-item>
     </el-form>
 
@@ -118,11 +123,12 @@
     
       <el-table-column
       label="操作"
-      v-if="activeName == 'first'"
+      v-if="activeName != 'two' && activeName != 'three'"
       fixed="right"
       align="center">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="AssignTasks(scope.row)" >申请</el-button>
+          <el-button v-if="activeName == 'first'" size="small" type="primary" @click="AssignTasks(scope.row)" >申请</el-button>
+          <el-button v-else size="small" type="primary" @click="determine(scope.row)" >确定</el-button>
           <!-- <el-button size="small" type="primary" @click="cancel(scope.row)" >取消</el-button> -->
 
           <!-- <el-button size="small" type="info" @click="confirmDetail(scope.row)">查看</el-button>
@@ -313,6 +319,23 @@
             </span>
           </el-dialog>
 
+          <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="确定" :visible.sync="dialogFormVisible3">
+            
+            <el-form ref="form" label-width="120px" style="width:100%;">
+
+              <el-form-item label="备注" class="form-input" prop="title"  style="width:500px;">
+                <el-input  placeholder="请输入" v-model="admin_desc1"></el-input>
+              </el-form-item>
+
+            </el-form>
+            
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="outworkidBtn2(),dialogFormVisible3 = false">保 存</el-button>
+                <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+            </span>
+          </el-dialog>
+
   </div>
 </template>
 <script>
@@ -344,6 +367,7 @@ export default {
         radio:'',
         tongyi : '',
         admin_desc:'',
+        admin_desc1 : '',
         ReportReviewerId: '',
         price_status: '',
         ask_univalence: '',
@@ -383,6 +407,7 @@ export default {
         dialogFormVisible : false,//弹出框
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//报告审核人弹出框
+        dialogFormVisible3 : false,//报告审核人弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -418,7 +443,7 @@ export default {
         this.agentList = [];
 
         if(this.activeName == 'first'){
-          request.post("admin/projectWithdraw/query",{
+          request.post("/admin/projectWithdraw/query",{
             status : 0,
           }).then(res => {
             if (res.code == 200) {
@@ -430,7 +455,7 @@ export default {
             }
         });
         }else if(this.activeName == 'two'){
-          request.post("admin/projectWithdraw/query",{
+          request.post("/admin/projectWithdraw/query",{
             status : 1,
           }).then(res => {
             if (res.code == 200) {
@@ -442,8 +467,56 @@ export default {
             }
           });
         }else if(this.activeName == 'three'){
-          request.post("admin/projectWithdraw/query",{
+          request.post("/admin/projectWithdraw/query",{
             status : 2,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_report'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_report',
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_payment'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_payment',
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_collection'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_collection',
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_invoice'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_invoice',
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -478,7 +551,7 @@ export default {
             });
       },
       getAgentList() {//初始渲染列表方法封装某人
-        request.post("admin/projectWithdraw/query",{
+        request.post("/admin/projectWithdraw/query",{
             status : 0,
           }).then(res => {
             if (res.code == 200) {
@@ -495,6 +568,10 @@ export default {
         //       this.outworkid1 = res.data.admin_username;
         //     }
         // });
+    },
+    determine(row){
+      this.Id = row.id;
+      this.dialogFormVisible3 = true;
     },
     cancel(row){
       this.$confirm("您确定要取消？", "提示", {
@@ -590,8 +667,75 @@ export default {
       //   console.log(this.ROW.id);
       //   console.log(this.outworkid);
       // },
+      outworkidBtn2(){
+        if(this.activeName == 'need_report'){
+          request.post("/admin/projectWithdraw/finish",{
+            id : this.Id,
+            type : 'need_report',
+            admin_desc : this.admin_desc1,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '确定成功'//提示确定成功
+                });
+                this.admin_desc1 = '';
+                this.handleClick();
+              }
+          });
+        }else if(this.activeName == 'need_payment'){
+          request.post("/admin/projectWithdraw/finish",{
+            id : this.Id,
+            type : 'need_payment',
+            admin_desc : this.admin_desc1,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '确定成功'//提示确定成功
+                });
+                this.admin_desc1 = '';
+                this.handleClick();
+              }
+          });
+        }else if(this.activeName == 'need_collection'){
+          request.post("/admin/projectWithdraw/finish",{
+            id : this.Id,
+            type : 'need_collection',
+            admin_desc : this.admin_desc1,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '确定成功'//提示确定成功
+                });
+                this.admin_desc1 = '';
+                this.handleClick();
+              }
+          });
+        }else if(this.activeName == 'need_invoice'){
+          request.post("/admin/projectWithdraw/finish",{
+            id : this.Id,
+            type : 'need_invoice',
+            admin_desc : this.admin_desc1,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '确定成功'//提示确定成功
+                });
+                this.admin_desc1 = '';
+                this.handleClick();
+              }
+          });
+        }
+      },
       outworkidBtn1(){//分配任务确定
-          request.post("admin/projectWithdraw/create",{
+          request.post("/admin/projectWithdraw/create",{
           id : this.Id,
           type : this.type,
           need_report : this.need_report,

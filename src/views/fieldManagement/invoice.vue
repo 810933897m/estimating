@@ -254,7 +254,8 @@
     <el-pagination
     style="margin-top:20px;"
     @current-change="handleCurrentChange"
-    :page-sizes="[20]" 
+    @size-change="handleSizeChange"
+    :page-sizes="[20,50,100,150]"  
     :page-size="page"
     layout="total, sizes, prev, pager, next, jumper"
     :total="count">
@@ -860,6 +861,7 @@ export default {
           request.post("/admin/ProjectInvoice/query",{
           keyword : this.search,
           type : 0,
+          pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -874,6 +876,7 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
           type : 1,
+          pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -888,6 +891,7 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
           type : 2,
+          pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -902,6 +906,7 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
           type : 3,
+          pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {
@@ -1005,6 +1010,7 @@ export default {
             request.post("/admin/ProjectInvoice/query",{
               type : 0,
               page : currentPage,
+              pageSize : this.pagesize,
               keyword : this.search,
           }).then(res => {
               // console.log(res)
@@ -1016,6 +1022,7 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
             page : currentPage,
             keyword : this.search,
+            pageSize : this.pagesize,
             type : 1,
           // page : this.currentPage,
           }).then(res => {
@@ -1031,6 +1038,7 @@ export default {
             request.post("/admin/ProjectInvoice/invoiceQuery",{
               page : currentPage,
               keyword : this.search,
+              pageSize : this.pagesize,
               type : 2,
           }).then(res => {
               // console.log(res)
@@ -1042,6 +1050,7 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
             page : currentPage,
             keyword : this.search,
+            pageSize : this.pagesize,
             type : 3,
           // page : this.currentPage,
           }).then(res => {
@@ -1055,6 +1064,67 @@ export default {
           });
         }
       },
+      handleSizeChange: function (size) {
+            this.pagesize = size;
+            // console.log(this.pagesize)  //每页下拉显示数据
+            if(this.activeName == 'first'){
+            request.post("/admin/ProjectInvoice/query",{
+              type : 0,
+              page : this.currentPage,
+              pageSize : this.pagesize,
+              keyword : this.search,
+          }).then(res => {
+              // console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'two'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            page : this.currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+            type : 1,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'success'){
+            request.post("/admin/ProjectInvoice/invoiceQuery",{
+              page : this.currentPage,
+              keyword : this.search,
+              pageSize : this.pagesize,
+              type : 2,
+          }).then(res => {
+              // console.log(res)
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+              }
+          });
+          }else if(this.activeName == 'no'){
+          request.post("/admin/ProjectInvoice/invoiceQuery",{
+            page : this.currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+            type : 3,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }
+        },
       BillingBtn(){//开票
         this.billingList = [];
           this.agentList.forEach(element => {

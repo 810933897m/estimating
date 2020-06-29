@@ -123,6 +123,7 @@
 
             <el-form-item label="项目信息" class="form-input1" prop="title" style="">
             <el-input
+            disabled
             type="textarea"
             :rows="2"
             placeholder="请输入"

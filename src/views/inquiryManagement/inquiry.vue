@@ -221,9 +221,7 @@
           <p :title="scope.row.create_username" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.create_username}}</p>
         </template>
       </el-table-column>
-
       
-
       <el-table-column
       label="已立项"
       width="100px"

@@ -18,6 +18,7 @@
             <el-radio v-model="activeName" label="two" @change="handleClick()">待审核</el-radio>
             <el-radio v-model="activeName" label="success" @change="handleClick()">开票成功</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">开票失败</el-radio>
+            <el-radio v-model="activeName" label="refund" @change="handleClick()">发票回收</el-radio>
             <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
             <el-button type="primary" style="" v-if="activeName == 'first'" plain @click="BillingBtn()">添加发票</el-button>
@@ -227,7 +228,7 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-if="activeName != 'success'"
+      v-if="activeName != 'success' && activeName != 'refund'"
       width="100px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
@@ -239,7 +240,7 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-else
+      v-else-if="activeName == 'success'"
       width="200px" align="center">
         <template slot-scope="scope">
           <!-- <el-button size="small" type="primary" v-if="activeName == 'first'" @click="Report(scope.row)" >发送报告</el-button> -->
@@ -528,6 +529,34 @@
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
+          <!-- 分配任务弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="回收" :visible.sync="dialogFormVisibleRefund">
+            
+            <el-form ref="form" label-width="120px" style="width:100%;">
+              <!-- <div style="width:100%;position:relative;height:50px;"> -->
+              <el-form-item label="退单撤单" class="select" style="">
+                  <el-select v-model="chargeback_invoice_status" filterable style="">
+                      <el-option
+                      v-for="item in chargeback_invoice_status1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+              <el-form-item label="回收备注" class="form-input" prop="title"  style="width:500px;">
+                <el-input  placeholder="请输入" v-model="chargeback_remark"></el-input>
+              </el-form-item>
+
+            </el-form>
+            
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="outworkidBtnRefund(),dialogFormVisibleRefund = false">保 存</el-button>
+                <el-button @click="dialogFormVisibleRefund = false">取 消</el-button>
+            </span>
+          </el-dialog>
+
           <!--*************添加收款模态框*************-->
         <el-dialog
         title="添加"
@@ -644,6 +673,9 @@ import request from "@/utils/request";
 export default {
     data() {
       return {
+        chargeback_invoice_status : '',
+        chargeback_invoice_status1 : [],
+        chargeback_remark : '',
         type:'',
         listAdd:[],
         type1:[],
@@ -719,6 +751,7 @@ export default {
         dialogVisibleRecordDetail : false,//发票记录弹出框
         dialogVisibleRecordDetail1 : false,//发票记录弹出框
         dialogVisibleAdd : false,//发票记录弹出框
+        dialogFormVisibleRefund : false,//发票记录弹出框
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -751,7 +784,7 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+        // console.log(this.activeName)
         this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/ProjectInvoice/query").then(res => {
@@ -787,6 +820,16 @@ export default {
               this.size = res.data.page.size;
             }
         });
+        }else if(this.activeName == 'refund'){
+          request.post("/admin/ProjectInvoice/chargebackQuery").then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }else{
           request.post("/admin/ProjectInvoice/invoiceQuery",{
             type : 2,
@@ -806,48 +849,30 @@ export default {
         window.open(row.project_info_url, '_blank')
       },
       recovery(row){//回收
-        this.$confirm("您确定要回收？", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消"
-            }).then(() => {
-                request.post("/admin/Outwork/recycle", {
-                        id:row.id
-                }).then(res => {
-                    // res.errno === 0 && this.getList();
-                    this.$message({
-                        // type: res.errno === 0 ? "success" : "warning",
-                        type: "success",
-                        message: '回收成功！'
-                    });
-                    
-                    this.handleClick();
-                }).catch(res => {
-                    this.$message({
-                        type: "warning",
-                        message: "回收失败!"
-                    });
-                });
-            });
+        this.dialogFormVisibleRefund = true;
+        this.Id = row.id;
       },
       getAgentList() {//初始渲染列表方法封装某人
         request.post("/admin/ProjectInvoice/query",{
-            type : 0,
-          }).then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-              this.count = res.data.page.count;
-              this.max = res.data.page.max;
-              this.page = res.data.page.page;
-              this.size = res.data.page.size;
-            }
+          type : 0,
+        }).then(res => {
+          if (res.code == 200) {
+            this.agentList = res.data.list;
+            this.count = res.data.page.count;
+            this.max = res.data.page.max;
+            this.page = res.data.page.page;
+            this.size = res.data.page.size;
+          }
         });
-        // request.post("/admin/ProjectInvoice/param").then(res => {
-        //     if (res.code == 200) {
-        //       console.log(res)
-        //       this.invoice_examiner = res.data.invoice_examiner;
-        //       // this.agentList = res.data.list;
-        //     }
-        // });
+
+        request.post("/admin/values/query",{
+          type : 'chargeback_invoice_status',
+          name : '',
+        }).then(res => {
+          if (res.code == 200) {
+            this.chargeback_invoice_status1 = res.data;
+          }
+        });
 
         // request.post("/admin/outwork/param").then(res => {
         //     if (res.code == 200) {
@@ -855,24 +880,23 @@ export default {
         //       this.outworkid1 = res.data.admin_username;
         //     }
         // });
-
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/ProjectInvoice/query",{
-          keyword : this.search,
-          type : 0,
-          pageSize : this.pagesize,
-          // page : this.currentPage,
-          }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'two'){
+        request.post("/admin/ProjectInvoice/query",{
+        keyword : this.search,
+        type : 0,
+        pageSize : this.pagesize,
+        // page : this.currentPage,
+      }).then(res => {
+        if (res.code == 200) {
+          this.agentList = res.data.list;
+          this.count = res.data.page.count;
+          this.max = res.data.page.max;
+          this.page = res.data.page.page;
+          this.size = res.data.page.size;
+        }
+      });
+    }else if(this.activeName == 'two'){
           request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
           type : 1,
@@ -906,6 +930,20 @@ export default {
           request.post("/admin/ProjectInvoice/invoiceQuery",{
           keyword : this.search,
           type : 3,
+          pageSize : this.pagesize,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'refund'){
+          request.post("/admin/ProjectInvoice/chargebackQuery",{
+          keyword : this.search,
           pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
@@ -962,6 +1000,25 @@ export default {
         //         // this.handleClick();
         //       }
         //   });
+      },
+      outworkidBtnRefund(){//回收确认
+        request.post("/admin/ProjectInvoice/Recycle ",{
+            id : this.Id,
+            chargeback_invoice_status : this.chargeback_invoice_status,
+            chargeback_remark : this.chargeback_remark,
+          }).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '回收成功'//提示回收成功
+                });
+                this.chargeback_invoice_status = '';
+                this.chargeback_remark = '';
+                this.handleClick();
+
+              }
+          });
       },
       outworkidBtn1(){//报告装订
           request.post("/admin/ProjectInvoice/create",{
@@ -1062,6 +1119,21 @@ export default {
                 this.size = res.data.page.size;
               }
           });
+        }else if(this.activeName == 'refund'){
+          request.post("/admin/ProjectInvoice/chargebackQuery",{
+            page : currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
         }
       },
       handleSizeChange: function (size) {
@@ -1113,6 +1185,21 @@ export default {
             keyword : this.search,
             pageSize : this.pagesize,
             type : 3,
+          // page : this.currentPage,
+          }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+        }else if(this.activeName == 'refund'){
+          request.post("/admin/ProjectInvoice/chargebackQuery",{
+            page : this.currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
           // page : this.currentPage,
           }).then(res => {
               if (res.code == 200) {

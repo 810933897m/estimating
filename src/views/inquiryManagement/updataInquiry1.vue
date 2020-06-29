@@ -32,7 +32,7 @@
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('house_type','')">房屋类型*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;">房屋类型*</span>
                 <el-input style="width:180px;" placeholder="请输入" disabled v-model="house_type"></el-input>
             </el-form-item>
 
@@ -87,7 +87,7 @@
             </el-form-item>
       
             <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('factor','')">净值系数*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;">净值系数*</span>
                 <el-input  style="width:180px;" placeholder="请输入" disabled v-model="factor" @change="totalPrices();sumComputed()"></el-input>
             </el-form-item>
 
@@ -113,6 +113,7 @@
 
             <el-form-item label="项目信息" class="form-input1" prop="title">
                 <el-input
+                disabled
                 type="textarea"
                 :rows="2"
                 placeholder="请输入"

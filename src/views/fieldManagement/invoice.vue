@@ -170,7 +170,7 @@
           label="纳税人识别码"
           v-if="activeName != 'first'"
           key="17"
-          width="130px"
+          width="160px"
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.taxpayer_identification" class="nooverflow">{{scope.row.taxpayer_identification}}</p>
@@ -406,6 +406,7 @@
 
           <el-table-column
           label="纳税人识别码"
+          width="160px"
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.taxpayer_identification" class="nooverflow">{{scope.row.taxpayer_identification}}</p>
@@ -438,6 +439,7 @@
 
           <el-table-column
           label="开票审核状态"
+          width="160px"
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.invoice_examiner_status" class="nooverflow">{{scope.row.invoice_examiner_status}}</p>
@@ -454,12 +456,13 @@
 
           <el-table-column
           label="开票操作人"
+          width="160px"
           align="center">
             <template slot-scope="scope" >
               <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
             </template>
           </el-table-column>
-
+ 
           </el-table>
 
             <span slot="footer" class="dialog-footer">

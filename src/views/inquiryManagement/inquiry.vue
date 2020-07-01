@@ -261,6 +261,7 @@
 
       <el-table-column
       label="小区特殊情况"
+      width="120px"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.plot_special" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.plot_special}}</p>

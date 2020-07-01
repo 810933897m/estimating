@@ -25,7 +25,7 @@ import {getRoute} from '@/utils/route.js'
 
 import userList from "@/views/administrators/userList";
 // import userList from "@/views/administrators/userList";
-
+console.log(Layout)
  var constantRouterMap = [
     {//登录页
         path: '/login',

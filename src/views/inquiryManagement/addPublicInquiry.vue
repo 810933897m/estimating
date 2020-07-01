@@ -51,11 +51,11 @@
 
         </el-form>
         
-        <div style="width:300px;float:left;">
+        <div style="width:100%;float:left;">
             <!-- <el-button type="primary" style="margin-left:30%;" plain @click="showInput()">
                 询价
             </el-button> -->
-            <el-button type="primary" style="" plain @click="addCommodity()">
+            <el-button type="primary" style="margin-left:60%;" plain @click="addCommodity()">
                 保存
             </el-button>
             <!-- <el-button type="primary" style="" plain @click="addProjectCommodity()">

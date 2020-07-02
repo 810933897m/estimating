@@ -396,6 +396,7 @@ export default {
        selectBox : [],
         };
     },
+    
     watch:{
             'house_type': function(){//监听房屋类型值改变做算法
                 if(this.house_type == '商品房'){

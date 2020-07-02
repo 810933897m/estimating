@@ -266,11 +266,29 @@ console.log(Layout)
                     // keepAlive: true
                 }
             },{
+                path: 'fieldManagementDeclaration',
+                name: 'fieldManagementDeclaration',
+                component: () => import('@/views/fieldManagement/fieldManagementDeclaration'),
+                meta: {
+                    title: '外业报单',
+                    icon: 'sms-subject',
+                    // keepAlive: true
+                }
+            },{
                 path: 'InteriorManagement',
                 name: 'InteriorManagement',
                 component: () => import('@/views/fieldManagement/InteriorManagement'),
                 meta: {
                     title: '内业分配',
+                    icon: 'example',
+                    // keepAlive: true
+                }
+            },{
+                path: 'InteriorManagementDeclaration',
+                name: 'InteriorManagementDeclaration',
+                component: () => import('@/views/fieldManagement/InteriorManagementDeclaration'),
+                meta: {
+                    title: '内业报单',
                     icon: 'example',
                     // keepAlive: true
                 }

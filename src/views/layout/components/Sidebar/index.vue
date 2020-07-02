@@ -40,6 +40,7 @@ export default {
       // return this.$router.options.routes
     }
   },
+  
   computed: {
     ...mapGetters([
       'sidebar'
@@ -76,6 +77,7 @@ export default {
       
       // console.log(this.$router.options.routes)
       return this.$router.options.routes
+      // return JSON.parse(sessionStorage.getItem('route1'))
     },
     isCollapse() {
       return !this.sidebar.opened

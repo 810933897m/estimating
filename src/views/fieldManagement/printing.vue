@@ -178,12 +178,23 @@
           <!-- **************分配任务弹出框************** -->
 
           <!-- 分配任务弹出框 -->
-          <el-dialog style="" :append-to-body='true' title="设置" :visible.sync="dialogFormVisibleValuer">
+          <!-- <el-dialog style="" :append-to-body='true' title="设置" :visible.sync="dialogFormVisibleValuer">
            
             <el-form ref="form" label-width="120px" :model="form" style="">
               <div style="width:100%;position:relative;height:50px;">
-                  <el-form-item label="估价师" class="select" style="float:left;">
+                  <el-form-item label="估价师1" class="select" style="float:left;">
                   <el-select v-model="valuer" filterable style="">
+                      <el-option
+                      v-for="item in valuer1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="估价师2" class="select" style="float:left;">
+                  <el-select v-model="valuer2" filterable style="">
                       <el-option
                       v-for="item in valuer1"
                       :key="item.value"
@@ -195,7 +206,7 @@
               <el-button size="small" type="primary" style="margin-left:20px;margin-top:5px;" @click="outworkidBtn()">确定</el-button>
               </div>
             </el-form>
-          </el-dialog>
+          </el-dialog> -->
           <!-- **************分配任务弹出框************** -->
 
           <!-- 分配任务弹出框 -->
@@ -215,6 +226,39 @@
             </el-form>
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
+
+          <!-- 申请变更弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="申请" :visible.sync="dialogFormVisibleValuer">
+           
+            <el-form ref="form" label-width="120px" style="width:100%;">
+              <el-form-item label="估价师1" class="select" style="">
+                  <el-select v-model="valuer" filterable style="">
+                      <el-option
+                      v-for="item in valuer1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="估价师2" class="select" style="">
+                  <el-select v-model="valuer2" filterable style="">
+                      <el-option
+                      v-for="item in valuer1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+            </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="outworkidBtn(),dialogFormVisibleValuer = false">保 存</el-button>
+                <el-button @click="dialogFormVisibleValuer = false">取 消</el-button>
+            </span>
+          </el-dialog>
+          <!-- **************申请变更弹出框************** -->
 
   </div>
 </template>
@@ -270,6 +314,7 @@ export default {
         dialogFormVisibleValuer : false,//打印师弹出框
         valuer:'',
         valuer1:[],
+        valuer2 : '',
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -416,9 +461,14 @@ export default {
           this.Id = row.id;
       },
       outworkidBtn(){//打印师确认
+        let child = [{
+          username : this.valuer
+        },{
+          username : this.valuer2
+        }]
         request.post("/admin/projectPrint/valuer",{
           id : this.Id,
-          username : this.valuer ,
+          child : child ,
           }).then(res => {
               if (res.code == 200) {
                 this.$message({
@@ -431,6 +481,7 @@ export default {
           });
         this.dialogFormVisibleValuer=false;
         this.valuer = '';
+        this.valuer2 = '';
       },
       outworkidBtn1(){//打印报告
           request.post("/admin/projectPrint/submit",{

@@ -403,6 +403,16 @@ console.log(Layout)
                 }
             }
             ,{
+                path: 'FinancialRefund',
+                name: 'FinancialRefund',
+                component: () => import('@/views/fieldManagement/FinancialRefund'),
+                meta: {
+                    title: '财务退款',
+                    icon: 'total-today',
+                    // keepAlive: true
+                }
+            }
+            ,{
                 path: 'invoice',
                 name: 'invoice',
                 component: () => import('@/views/fieldManagement/invoice'),

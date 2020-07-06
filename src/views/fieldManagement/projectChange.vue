@@ -257,8 +257,12 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="询值单价" class="form-input" prop="title" style="width:500px;">
+              <el-form-item v-show="change_type == '1'" label="询值单价" class="form-input" prop="title" style="width:500px;">
                 <el-input  placeholder="请输入" v-model="ask_univalence"></el-input>
+              </el-form-item>
+
+              <el-form-item v-show="change_type == '2'" label="应收金额" class="form-input" prop="title" style="width:500px;">
+                <el-input  placeholder="请输入" v-model="money_due"></el-input>
               </el-form-item>
 
               <el-form-item label="变更审核人员" class="select" style="width:500px;">
@@ -307,12 +311,17 @@ export default {
         change_user : '',
         change_user1 : [],
         ask_univalence : '',
+        money_due : '',
         admin_desc : '',
-        change_type : '询值单价审核',
+        change_type : '',
         change_type1 : [
           {
             label : '询值单价审核',
             value : '1',
+          },
+          {
+            label : '应收金额',
+            value : '2',
           }
         ],
         company : '',
@@ -670,9 +679,10 @@ export default {
       outworkidBtn1(){
         // data[ask_univalence]
         let change_value = {'ask_univalence':this.ask_univalence};
-        
-        // console.log(change_value);
-        request.post("/admin/projectChange/submit",{
+        let change_value1 = {'money_due' : this.money_due};
+        console.log(this.change_type);
+        if(this.change_type == '1'){
+          request.post("/admin/projectChange/submit",{
             id : this.Id,
             data : change_value,
             admin_desc : this.admin_desc,
@@ -691,6 +701,28 @@ export default {
             this.change_type = '';
             this.change_user = '';
           })
+        }else{
+          request.post("/admin/projectChange/submit",{
+            id : this.Id,
+            data : change_value1,
+            admin_desc : this.admin_desc,
+            type : this.change_type,
+            username : this.change_user,
+          }).then(res => {
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '申请成功'//提示申请成功
+            });
+            this.dialogFormVisibleChange = false;
+            this.distributionBtn1();
+            this.money_due = '';
+            this.admin_desc = '';
+            this.change_type = '';
+            this.change_user = '';
+          })
+        }
+        
       },
       generateReport(row){//生成报告
         this.generateReportId = row.id;

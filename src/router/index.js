@@ -270,7 +270,7 @@ console.log(Layout)
                 name: 'fieldManagementDeclaration',
                 component: () => import('@/views/fieldManagement/fieldManagementDeclaration'),
                 meta: {
-                    title: '外业报单',
+                    title: '报单情况',
                     icon: 'sms-subject',
                     // keepAlive: true
                 }
@@ -283,16 +283,18 @@ console.log(Layout)
                     icon: 'example',
                     // keepAlive: true
                 }
-            },{
-                path: 'InteriorManagementDeclaration',
-                name: 'InteriorManagementDeclaration',
-                component: () => import('@/views/fieldManagement/InteriorManagementDeclaration'),
-                meta: {
-                    title: '内业报单',
-                    icon: 'example',
-                    // keepAlive: true
-                }
-            },{
+            }
+            // ,{
+            //     path: 'InteriorManagementDeclaration',
+            //     name: 'InteriorManagementDeclaration',
+            //     component: () => import('@/views/fieldManagement/InteriorManagementDeclaration'),
+            //     meta: {
+            //         title: '内业报单',
+            //         icon: 'example',
+            //         // keepAlive: true
+            //     }
+            // }
+            ,{
                 path: 'AppraisalOperation',
                 name: 'AppraisalOperation',
                 component: () => import('@/views/fieldManagement/AppraisalOperation'),
@@ -412,7 +414,7 @@ console.log(Layout)
                     // keepAlive: true
                 }
             }
-            ,{
+            ,{   
                 path: 'invoice',
                 name: 'invoice',
                 component: () => import('@/views/fieldManagement/invoice'),
@@ -512,6 +514,16 @@ console.log(Layout)
                 component: () => import('@/views/AuditManagement/FinalAudit'),
                 meta: {
                     title: '最终审核',
+                    icon: 'example',
+                    // keepAlive: true
+                }
+            },
+            {
+                path: 'RefundAudit',
+                name: 'RefundAudit',
+                component: () => import('@/views/AuditManagement/RefundAudit'),
+                meta: {
+                    title: '财务退款审核',
                     icon: 'example',
                     // keepAlive: true
                 }

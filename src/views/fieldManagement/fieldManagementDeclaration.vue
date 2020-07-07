@@ -5,13 +5,11 @@
     <el-tab-pane label="外业跟进" name="first"> -->
       <el-form ref="form" >
         <el-form-item>
-            <!-- <el-radio v-model="distribution" label="0" @change="distributionBtn1()">未分配</el-radio> -->
-            <el-radio v-model="distribution" label="1" @change="distributionBtn1()">待领取</el-radio>
+            <!-- <el-radio v-model="distribution" label="1" @change="distributionBtn1()">待领取</el-radio>
             <el-radio v-model="distribution" label="2" @change="distributionBtn1()">已领取</el-radio>
             <el-radio v-model="distribution" label="3" @change="distributionBtn1()">已挂起</el-radio>
             <el-radio v-model="distribution" label="4" @change="distributionBtn1()">已完成</el-radio>
-            <el-radio v-model="distribution" label="5" @change="distributionBtn1()">已回收</el-radio>
-            <!-- <el-radio v-model="distribution" label="6" @change="distributionBtn1()">无需外业</el-radio> -->
+            <el-radio v-model="distribution" label="5" @change="distributionBtn1()">已回收</el-radio> -->
             <el-input v-model="search" style="width:200px;" placeholder="请输入查询数据"></el-input>
             <el-button type="primary" style="" plain @click="serachBtn">查询</el-button>
         </el-form-item>
@@ -35,17 +33,6 @@
       </el-table-column>
 
       <el-table-column
-       label="挂起原因"
-      width="100px"
-      key="1" 
-      v-if="distribution == '3'"
-      align="center">
-        <template slot-scope="scope" >
-          <p :title="scope.row.hang_up_content" class="nooverflow">{{scope.row.hang_up_content}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
       label="流水号"
       width="200px"
       key="12"
@@ -56,29 +43,9 @@
       </el-table-column>
 
       <el-table-column
-      label="报告类型"
+      label="报告号"
       width="120px"
       key="13"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="估价目的"
-      width="120px"
-      key="14"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.inquiry_purpose" class="nooverflow">{{scope.row.inquiry_purpose}}</p>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-      label="报告号"
-      width="200px"
-      key="15"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -87,7 +54,8 @@
 
       <el-table-column
       label="报告地址"
-      key="16"
+      width="120px"
+      key="14"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
@@ -95,31 +63,60 @@
       </el-table-column>
 
       <el-table-column
-      label="受理时间"
+      label="项目状态"
+      width="200px"
+      key="15"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="外业状态"
+      key="16"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.outworker_relevance_status" class="nooverflow">{{scope.row.outworker_relevance_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="内业状态"
+      key="18"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.secretary_relevance_status" class="nooverflow">{{scope.row.secretary_relevance_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="二审状态"
       width="150px"
       key="17"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+          <p :title="scope.row.secretary_relevance_check" class="nooverflow">{{scope.row.secretary_relevance_check}}</p>
         </template>
       </el-table-column>
 
-      <!-- <el-table-column
-      label="分配时间"
+      <el-table-column
+      label="终审状态"
+      width="150px"
+      key="17"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.create_time" class="nooverflow">{{scope.row.create_time}}</p>
+          <p :title="scope.row.final_appraisal_check" class="nooverflow">{{scope.row.final_appraisal_check}}</p>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column
-      label="查勘人员"
-      v-if="distribution == '1'||distribution == '2'||distribution == '3'||distribution == '4'||distribution == '6' "
-      width="100px"
-      key="18"
+      label="财务状态"
+      width="150px"
+      key="17"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.admin_username" class="nooverflow">{{scope.row.admin_username}}</p>
+          <p :title="scope.row.finance_status" class="nooverflow">{{scope.row.finance_status}}</p>
         </template>
       </el-table-column>
       
@@ -401,7 +398,17 @@ export default {
         }
       },
       getAgentList() {//初始渲染列表方法封装某人
-      this.distributionBtn1();
+        request.post("/admin/EntryDetails/outQuery",{
+          id : localStorage.getItem('user_id')
+        }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
         // request.post("/admin/outwork/query",{
         //     type : 0,
         //   }).then(res => {

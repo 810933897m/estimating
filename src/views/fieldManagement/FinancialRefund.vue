@@ -66,6 +66,7 @@
       label="流水号"
       width="120px"
       key="5"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.serial_number" style="cursor: pointer;" @click="getInfo(scope.row)" class="nooverflow">{{scope.row.serial_number}}</p>
@@ -76,6 +77,7 @@
       label="报告号"
       width="150px"
       key="6"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
@@ -86,6 +88,7 @@
       label="应收金额"
       width="120px"
       key="7"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
@@ -95,6 +98,7 @@
       <el-table-column
       label="已收金额"
       key="8"
+      v-if="activeName == 'zero'"
       width="120px"
       align="center">
         <template slot-scope="scope">
@@ -106,6 +110,7 @@
       label="项目地址"
       width="100px"
       key="9"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
@@ -116,6 +121,7 @@
       label="外业状态"
       width="130px"
       key="10"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.outworker_relevance_status" class="nooverflow">{{scope.row.outworker_relevance_status}}</p>
@@ -126,6 +132,7 @@
       label="内业状态"
       width="100px"
       key="11"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.secretary_relevance_status" class="nooverflow">{{scope.row.secretary_relevance_status}}</p>
@@ -135,6 +142,7 @@
       <el-table-column
       label="二审状态"
       key="12"
+      v-if="activeName == 'zero'"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -145,6 +153,7 @@
       <el-table-column
       label="终审状态"
       key="13"
+      v-if="activeName == 'zero'"
       width="100px"
       align="center">
         <template slot-scope="scope">
@@ -156,9 +165,105 @@
       label="财务状态"
       width="100px"
       key="14"
+      v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.finance_status" class="nooverflow">{{scope.row.finance_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="退款方式"
+      width="120px"
+      key="15"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="退款总金额"
+      width="120px"
+      key="16"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.total_refund_amount" class="nooverflow">{{scope.row.total_refund_amount}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="退款日期"
+      width="120px"
+      key="17"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="收款方"
+      width="120px"
+      key="18"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="退款备注"
+      width="120px"
+      key="19"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="退款状态"
+      key="20"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.financial_status" class="nooverflow">{{scope.row.financial_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="审核状态"
+      key="21"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.refund_audit_status" class="nooverflow">{{scope.row.refund_audit_status}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="审核人"
+      key="22"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.refund_audit_user" class="nooverflow">{{scope.row.refund_audit_user}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="操作人"
+      key="23"
+      v-if="activeName != 'zero'"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
         </template>
       </el-table-column>
 
@@ -217,11 +322,12 @@
       <el-table-column
       label="操作"
       fixed="right"
-      v-if="activeName == 'first'"
+      v-if="activeName != 'zero'"
       width="200px" align="center">
         <template slot-scope="scope">
+          <el-button size="small" v-if="activeName == 'first'" type="primary" @click="refund(scope.row)">取消</el-button>
           <!-- <el-button size="small" type="primary" @click="addRecord(scope.row)" >添加记录</el-button> -->
-          <el-button size="small" type="primary" @click="printReceipt(scope.row)">打印收据</el-button>
+          <!-- <el-button size="small" type="primary" @click="printReceipt(scope.row)">打印收据</el-button> -->
           <el-button size="small" type="primary" @click="recordDetail(scope.row)">记录查询</el-button>
         </template>
       </el-table-column>
@@ -250,43 +356,43 @@
         style="width: 100%;">
 
         <el-table-column
-        label="付款方"
+        label="流水号"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+            <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款方式"
+        label="报告号"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
+            <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款时间"
+        label="所属部门"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
+            <p :title="scope.row.enquiry_department" class="nooverflow">{{scope.row.enquiry_department}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款金额"
+        label="项目地址"
         width="150px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
+            <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款备注"
+        label="应收金额"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
+            <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
           </template>
         </el-table-column>
 <!-- 
@@ -299,11 +405,20 @@
         </el-table-column> -->
 
         <el-table-column
-        label="收款操作人"
+        label="实收金额"
         width="120px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
+            <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="已退金额"
+        width="120px"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.refund_amount" class="nooverflow">{{scope.row.refund_amount}}</p>
           </template>
         </el-table-column>
         
@@ -328,43 +443,43 @@
         style="width: 100%;">
 
         <el-table-column
-        label="付款方"
+        label="流水号"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_personnel" class="nooverflow">{{scope.row.transfer_personnel}}</p>
+            <p :title="scope.row.serial_number" class="nooverflow">{{scope.row.serial_number}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款方式"
+        label="报告号"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_way" class="nooverflow">{{scope.row.charge_way}}</p>
+            <p :title="scope.row.report_number" class="nooverflow">{{scope.row.report_number}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款时间"
+        label="所属部门"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.transfer_date" class="nooverflow">{{scope.row.transfer_date}}</p>
+            <p :title="scope.row.enquiry_department" class="nooverflow">{{scope.row.enquiry_department}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款金额"
+        label="项目地址"
         width="150px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_amount" class="nooverflow">{{scope.row.charge_amount}}</p>
+            <p :title="scope.row.show_merge_addr" class="nooverflow">{{scope.row.show_merge_addr}}</p>
           </template>
         </el-table-column>
 
         <el-table-column
-        label="收款备注"
+        label="应收金额"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.charge_remark" class="nooverflow">{{scope.row.charge_remark}}</p>
+            <p :title="scope.row.money_due" class="nooverflow">{{scope.row.money_due}}</p>
           </template>
         </el-table-column>
 <!-- 
@@ -377,11 +492,20 @@
         </el-table-column> -->
 
         <el-table-column
-        label="收款操作人"
+        label="实收金额"
         width="120px"
         align="center">
           <template slot-scope="scope" >
-            <p :title="scope.row.create_username" class="nooverflow">{{scope.row.create_username}}</p>
+            <p :title="scope.row.actual_charge" class="nooverflow">{{scope.row.actual_charge}}</p>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+        label="已退金额"
+        width="120px"
+        align="center">
+          <template slot-scope="scope" >
+            <p :title="scope.row.refund_amount" class="nooverflow">{{scope.row.refund_amount}}</p>
           </template>
         </el-table-column>
 
@@ -626,7 +750,7 @@ export default {
         // console.log(this.activeName)
         this.agentList = [];
         if(this.activeName == 'zero'){
-          request.post("admin/FinancialRefund/query").then(res => {
+          request.post("/admin/FinancialRefund/query").then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -636,8 +760,8 @@ export default {
             }
         });
         }
-        if(this.activeName == 'first'){
-          request.post("admin/FinancialRefund/auditQuery",{
+        else if(this.activeName == 'first'){
+          request.post("/admin/FinancialRefund/auditQuery",{
             type : 1,
           }).then(res => {
             if (res.code == 200) {
@@ -649,7 +773,7 @@ export default {
             }
         });
         }else if(this.activeName == 'two'){
-          request.post("admin/FinancialRefund/auditQuery",{
+          request.post("/admin/FinancialRefund/auditQuery",{
             type : 2,
           }).then(res => {
             if (res.code == 200) {
@@ -661,7 +785,7 @@ export default {
             }
         });
         }else if(this.activeName == 'three'){
-          request.post("admin/FinancialRefund/auditQuery",{
+          request.post("/admin/FinancialRefund/auditQuery",{
             type : 3,
           }).then(res => {
             if (res.code == 200) {
@@ -673,8 +797,8 @@ export default {
             }
         });
         }else if(this.activeName == 'four'){
-          request.post("admin/FinancialRefund/auditQuery",{
-            type : 4,
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 4, 
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -713,7 +837,7 @@ export default {
       },
       recordDetail(row){//详情
         if(this.activeName == 'first'){
-          request.post("/admin/Financial/getFinancialInfo",{
+          request.post("/admin/FinancialRefund/getInfo",{
             id : row.id,
           }).then(res => {
               if (res.code == 200) {
@@ -725,7 +849,7 @@ export default {
           this.dialogVisibleRecordDetail = true;
         }else{
           // console.log('5235235235')
-          request.post("/admin/Financial/financialQueryInfo",{
+          request.post("/admin/FinancialRefund/getInfo",{
             id : row.id,
           }).then(res => {
               if (res.code == 200) {
@@ -775,11 +899,12 @@ export default {
         window.open(row.project_info_url, '_blank')
       },
       searchBtn(){//搜索
-        request.post("/admin/financial/query",{
-          keyword : this.search,
-          // page : this.currentPage,
-          pageSize : this.pagesize,
-        }).then(res => {
+        if(this.activeName == 'zero'){
+          request.post("/admin/FinancialRefund/query",{
+            keyword : this.search,
+            // page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -788,6 +913,68 @@ export default {
               this.size = res.data.page.size;
             }
         });
+        }
+        else if(this.activeName == 'first'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 1,
+            keyword : this.search,
+            // page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 2,
+            keyword : this.search,
+            // page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'three'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 3,
+            keyword : this.search,
+            // page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'four'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 4, 
+            keyword : this.search,
+            // page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
       },
       addProjectInitiation(){
         // this.$router.push({path:'/addProjectInitiation'})
@@ -814,17 +1001,101 @@ export default {
       handleSizeChange: function (size) {
             this.pagesize = size;
             // console.log(this.pagesize)  //每页下拉显示数据
-            request.post("/admin/financial/query",{
-                page : this.currentPage,
-                keyword : this.search,
-                pageSize : this.pagesize,
-            }).then(res => {
-                if (res.code == 200) {
-                  this.agentList = res.data.list;
-                }
-            })
+            if(this.activeName == 'zero'){
+          request.post("/admin/FinancialRefund/query",{
+            page : this.currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if(this.activeName == 'first'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 1,
+            page : this.currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 2,
+            keyword : this.search,
+            page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'three'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 3,
+            keyword : this.search,
+            page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'four'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 4, 
+            keyword : this.search,
+            page : this.currentPage,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
         },
-
+       refund(row){
+         this.$confirm("您确定要取消吗？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/FinancialRefund/cancel", {
+                        id:row.id
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '取消成功！'
+                    });
+                    this.handleClick();
+                })
+            });
+       },
         changeAdd(id){
           console.log(id)
         },

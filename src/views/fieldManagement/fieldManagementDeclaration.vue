@@ -62,7 +62,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
       label="项目状态"
       width="200px"
       key="15"
@@ -70,7 +70,7 @@
         <template slot-scope="scope">
           <p :title="scope.row.project_status" class="nooverflow">{{scope.row.project_status}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
       label="外业状态"

@@ -529,9 +529,9 @@ console.log(Layout)
                 }
             },
             {
-                path: 'FinancialCollection',
-                name: 'FinancialCollection',
-                component: () => import('@/views/AuditManagement/FinancialCollection'),
+                path: 'FinancialCollectionExamine',
+                name: 'FinancialCollectionExamine',
+                component: () => import('@/views/AuditManagement/FinancialCollectionExamine'),
                 meta: {
                     title: '财务收款审核',
                     icon: 'total-today',

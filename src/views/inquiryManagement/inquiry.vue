@@ -475,7 +475,6 @@ export default {
                         this.username1 = res.data;
                     }
                 });
-
     },serachBtn(){ // 搜索功能
         request.post("/admin/askPrice/query",{
           keyword : this.search,
@@ -497,11 +496,9 @@ export default {
         this.project_status = row.project_status;
       },
       updateAgent(row) {//修改按钮
-      // v-if="!scope.row.project_status"
-      // console.log(row)
-          this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
-        
-        
+        // v-if="!scope.row.project_status"
+        // console.log(row)
+        this.$router.push({path:'/updataInquiry1',query:{id:row.id}})
       },
       handleChange (value) {
         this.center = value[2];
@@ -513,7 +510,6 @@ export default {
       },
       addProject(row){//转立项
           this.$router.push({path:'/addProjectInitiation',query:{row:row,id:row.id}})
-        
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
@@ -546,9 +542,7 @@ export default {
       },
       outworkidBtn(){
         console.log(this.admin_desc+','+this.examineId)
-        
-        
-         request.post("admin/askPrice/check",{
+         request.post("/admin/askPrice/check",{
            id : this.examineId,
            username : this.username,
            ask_univalence : this.ask_univalence,

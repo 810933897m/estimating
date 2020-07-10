@@ -93,7 +93,7 @@
       <el-table-column
       label="二审状态"
       width="150px"
-      key="17"
+      key="19"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.secretary_relevance_check" class="nooverflow">{{scope.row.secretary_relevance_check}}</p>
@@ -103,7 +103,7 @@
       <el-table-column
       label="终审状态"
       width="150px"
-      key="17"
+      key="20"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.final_appraisal_check" class="nooverflow">{{scope.row.final_appraisal_check}}</p>
@@ -113,7 +113,7 @@
       <el-table-column
       label="财务状态"
       width="150px"
-      key="17"
+      key="21"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.finance_status" class="nooverflow">{{scope.row.finance_status}}</p>
@@ -299,8 +299,6 @@ export default {
       this.dialogFormVisible = false;
       this.agentList =[];
         if(this.distribution == 0){
-          // console.log('未分配')
-          // this.getAgentList();//渲染列表
           request.post("/admin/outwork/query",{
             type : 0,
           }).then(res => {
@@ -313,7 +311,6 @@ export default {
             }
           });
         }else if(this.distribution == 1){
-          // console.log('已分配')
           request.post("/admin/EntryDetails/outQuery",{
             type : 0,
             id : localStorage.getItem('user_id'),
@@ -327,7 +324,6 @@ export default {
             }
           });
         }else if(this.distribution == 2){
-          // console.log('已回收')
           request.post("/admin/EntryDetails/outQuery",{
             type : 1,
             id : localStorage.getItem('user_id'),
@@ -341,7 +337,6 @@ export default {
             }
           });
         }else if(this.distribution == 3){
-          // console.log('已完成')
           request.post("/admin/EntryDetails/outQuery",{
             type : 2,
             id : localStorage.getItem('user_id'),
@@ -355,7 +350,6 @@ export default {
             }
           });
         }else if(this.distribution == 4){
-          // console.log('已完成')
           request.post("/admin/EntryDetails/outQuery",{
             type : 3,
             id : localStorage.getItem('user_id'),
@@ -369,7 +363,6 @@ export default {
             }
           });
         }else if(this.distribution == 5){
-          // console.log('已完成')
           request.post("/admin/EntryDetails/outQuery",{
             type : 4,
             id : localStorage.getItem('user_id'),
@@ -383,7 +376,6 @@ export default {
             }
           });
         }else if(this.distribution == 6){
-          // console.log('已完成')
           request.post("/admin/outwork/query",{
             type : 6,
           }).then(res => {
@@ -467,101 +459,98 @@ export default {
     },serachBtn(){ // 搜索功能
       if(this.distribution == 0){
           request.post("/admin/outwork/query",{
-          type : 0,
-          keyword : this.search,
-          // page : this.currentPage,
+            type : 0,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 1){
-          request.post("/admin/outwork/query",{
-          type : 1,
-          keyword : this.search,
-          // page : this.currentPage,
+          request.post("/admin/EntryDetails/outQuery",{
+            keyword : this.search,
+            id : localStorage.getItem('user_id'),
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 2){
-         request.post("/admin/outwork/query",{
-          type : 2,
-          keyword : this.search,
-          // page : this.currentPage,
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 1,
+            keyword : this.search,
+            id : localStorage.getItem('user_id'),
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 3){
-          request.post("/admin/outwork/query",{
-          type : 3,
-          keyword : this.search,
-          // page : this.currentPage,
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 2,
+            keyword : this.search,
+            id : localStorage.getItem('user_id'),
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 4){
-          request.post("/admin/outwork/query",{
-          type : 4,
-          keyword : this.search,
-          // page : this.currentPage,
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 3,
+            keyword : this.search,
+            id : localStorage.getItem('user_id'),
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 5){
-          request.post("/admin/outwork/query",{
-          type : 5,
-          keyword : this.search,
-          // page : this.currentPage,
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 4,
+            keyword : this.search,
+            id : localStorage.getItem('user_id'),
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }else if(this.distribution == 6){
           request.post("/admin/outwork/query",{
-          type : 6,
-          keyword : this.search,
-          // page : this.currentPage,
+            type : 6,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }
         
@@ -648,7 +637,6 @@ export default {
               this.project_classify = '';
               this.report_tale = '';
               this.Alphabetic = '';
-
             }
         });
       },
@@ -670,78 +658,108 @@ export default {
       // /admin/Outwork/assigned
       this.currentPage = currentPage;
       if(this.distribution == 0){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 0
-        }).then(res => {
+          request.post("/admin/outwork/query",{
+            type : 0,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 1){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 1
-        }).then(res => {
+          });
+        }else if(this.distribution == 1){
+          request.post("/admin/EntryDetails/outQuery",{
+            keyword : this.search,
+            page : currentPage,
+            id : localStorage.getItem('user_id'),
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 2){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 2
-        }).then(res => {
+          });
+        }else if(this.distribution == 2){
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 1,
+            keyword : this.search,
+            page : currentPage,
+            id : localStorage.getItem('user_id'),
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 3){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 3
-        }).then(res => {
+          });
+        }else if(this.distribution == 3){
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 2,
+            keyword : this.search,
+            page : currentPage,
+            id : localStorage.getItem('user_id'),
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 4){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 4
-        }).then(res => {
+          });
+        }else if(this.distribution == 4){
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 3,
+            keyword : this.search,
+            page : currentPage,
+            id : localStorage.getItem('user_id'),
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 5){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 5
-        }).then(res => {
+          });
+        }else if(this.distribution == 5){
+          request.post("/admin/EntryDetails/outQuery",{
+            type : 4,
+            keyword : this.search,
+            page : currentPage,
+            id : localStorage.getItem('user_id'),
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }else if(this.distribution == 6){
-        request.post("/admin/outwork/query",{
-          page : currentPage,
-          keyword : this.search,
-          type : 6
-        }).then(res => {
+          });
+        }else if(this.distribution == 6){
+          request.post("/admin/outwork/query",{
+            type : 6,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
-        });
-      }
-        
-          
+          });
+        } 
           
       },
       addCommodity(){//添加询价

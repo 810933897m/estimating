@@ -111,7 +111,7 @@
       key="10"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 

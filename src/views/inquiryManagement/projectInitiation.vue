@@ -372,7 +372,8 @@ export default {
       },
       handleCurrentChange: function(currentPage){//换页
           request.post("/admin/project/query",{
-          page : currentPage 
+          page : currentPage,
+          keyword : this.search,
         }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;

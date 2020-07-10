@@ -600,18 +600,96 @@ export default {
             })
     },
     serachBtn(){ // 搜索功能
-      if(this.activeName == 'first'){
-          request.post("/admin/ProjectWithdraw/query",{
-          keyword : this.search,
-          // page : this.currentPage,
+        if(this.activeName == 'first'){
+          request.post("/admin/projectWithdraw/query",{
+            status : 0,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/projectWithdraw/query",{
+            status : 1,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'three'){
+          request.post("/admin/projectWithdraw/query",{
+            status : 2,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_report'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_report',
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_payment'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_payment',
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_collection'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_collection',
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_invoice'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_invoice',
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
         }
       },
@@ -769,16 +847,104 @@ export default {
           console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/ProjectWithdraw/query",{
-              page : currentPage,
-              keyword : this.search,
+          request.post("/admin/projectWithdraw/query",{
+            status : 0,
+            keyword : this.search,
+            page : currentPage,
           }).then(res => {
-              console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/projectWithdraw/query",{
+            status : 1,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
           });
-          }
+        }else if(this.activeName == 'three'){
+          request.post("/admin/projectWithdraw/query",{
+            status : 2,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_report'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_report',
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_payment'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_payment',
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_collection'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_collection',
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }else if(this.activeName == 'need_invoice'){
+          request.post("/admin/projectWithdraw/status",{
+            type : 'need_invoice',
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+          });
+        }
       },
       operationBtn(){//退费
         if(this.operation == '2'){

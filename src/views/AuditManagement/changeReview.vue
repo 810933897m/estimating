@@ -64,10 +64,8 @@
         </template>
       </el-table-column>
 
-      
       <el-table-column
       label="报告编号"
-      width="150px"
       key="4" 
       align="center">
         <template slot-scope="scope">
@@ -77,7 +75,6 @@
 
       <el-table-column
       label="项目状态"
-      width="100px"
       key="5" 
       align="center">
         <template slot-scope="scope">
@@ -87,7 +84,6 @@
 
       <el-table-column
       label="项目地址"
-      width="130px"
       key="6" 
       align="center">
         <template slot-scope="scope">
@@ -97,7 +93,6 @@
 
       <el-table-column
       label="小区名称"
-      width="100px"
       key="7" 
       align="center">
         <template slot-scope="scope">
@@ -107,7 +102,6 @@
 
       <el-table-column
       label="受理时间"
-      width="100px"
       key="8" 
       align="center">
         <template slot-scope="scope">
@@ -117,7 +111,6 @@
 
       <el-table-column
       label="报告类型"
-      width="100px"
       key="9" 
       align="center">
         <template slot-scope="scope">
@@ -127,7 +120,6 @@
 
       <el-table-column
       label="流程状态"
-      width="100px"
       key="10" 
       align="center">
         <template slot-scope="scope">
@@ -394,47 +386,45 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/changeAudit/query",{
-          keyword : this.search,
-          seal_status : 0,
-          // page : this.currentPage,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 0,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }else if(this.activeName == 'success'){
-          request.post("/admin/changeAudit/query",{
-          keyword : this.search,
-          seal_status : 1,
-          // page : this.currentPage,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 1,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
-        }else if(this.activeName == 'last'){
-          request.post("/admin/changeAudit/query",{
-          keyword : this.search,
-          seal_status : 2,
-          // page : this.currentPage,
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if(this.activeName == 'last'){
+          request.post("/admin/projectChangeCheck/query",{
+            type : 2,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }
         
       },
@@ -503,39 +493,49 @@ export default {
           // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 0,
-              page : currentPage,
-              keyword : this.search,
+          request.post("/admin/projectChangeCheck/query",{
+            type : 0,
+            keyword : this.search,
+            page : currentPage,
           }).then(res => {
-              // console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 1,
-              page : currentPage,
-              keyword : this.search,
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'success'){
+          request.post("/admin/projectChangeCheck/query",{
+            type : 1,
+            keyword : this.search,
+            page : currentPage,
           }).then(res => {
-              // console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/changeAudit/query",{
-              seal_status : 2,
-              page : currentPage,
-              keyword : this.search,
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if(this.activeName == 'last'){
+          request.post("/admin/projectChangeCheck/query",{
+            type : 2,
+            keyword : this.search,
+            page : currentPage,
           }).then(res => {
-              // console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
           
       },
       addCommodity(){//添加询价

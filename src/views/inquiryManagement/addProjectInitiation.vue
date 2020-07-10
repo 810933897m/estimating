@@ -484,36 +484,68 @@
                 </el-table-column>
 
                 <el-table-column
-                label="合同编号"
-                align="center">
-                    <template slot-scope="scope" >
-                    {{scope.row.contract_no}}
-                    </template>
-                </el-table-column>
+      label="合同编号"
+      align="center">
+        <template slot-scope="scope" >
+          <p :title="scope.row.contract_no" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_no}}</p>
+        </template>
+      </el-table-column>
 
-                <el-table-column
-                label="甲方"
-                align="center">
-                    <template slot-scope="scope">
-                    {{scope.row.first_party}}
-                    </template>
-                </el-table-column>
+      <el-table-column
+      label="甲方"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.first_party" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.first_party}}</p>
+        </template>
+      </el-table-column>
 
-                <el-table-column
-                label="乙方"
-                align="center">
-                    <template slot-scope="scope">
-                    {{scope.row.second_party}}
-                    </template>
-                </el-table-column>
+      <el-table-column
+      label="乙方"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.second_party" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.second_party}}</p>
+        </template>
+      </el-table-column>
 
-                <el-table-column
-                label="合同内容"
-                align="center">
-                    <template slot-scope="scope">
-                    {{scope.row.content}}
-                    </template>
-                </el-table-column>
+      <el-table-column
+      label="估价对象"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.inquiry_objects" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.inquiry_objects}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="估价目的"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.appraisal_purpose" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.appraisal_purpose}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="合同类型"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.contract_type" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_type}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="合同金额"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.contract_amount" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_amount}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="项目名称"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.content" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.content}}</p>
+        </template>
+      </el-table-column>
 
                 </el-table>
         </el-form>

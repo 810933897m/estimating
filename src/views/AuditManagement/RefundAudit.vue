@@ -467,31 +467,47 @@ export default {
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){
-          request.post("/admin/projectReview/query",{
-          keyword : this.search,
-          // page : this.currentPage,
+          // this.getAgentList();//渲染列表
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 1,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }else if(this.activeName == 'two'){
-          request.post("/admin/projectReview/finish",{
-          keyword : this.search,
-          // page : this.currentPage,
+          // console.log('2')
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 2,
+            keyword : this.search,
           }).then(res => {
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-                this.count = res.data.page.count;
-                this.max = res.data.page.max;
-                this.page = res.data.page.page;
-                this.size = res.data.page.size;
-              }
-          });
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'no'){
+          // console.log('2')
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 3,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
         }
         
       },
@@ -601,26 +617,51 @@ export default {
       // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
-            request.post("/admin/projectReview/query",{
-            page : currentPage,
+          // this.getAgentList();//渲染列表
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 1,
             keyword : this.search,
-          }).then(res => {
-              // console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }else if(this.activeName == 'two'){
-            request.post("/admin/projectReview/finish",{
             page : currentPage,
-            keyword : this.search,
           }).then(res => {
-              // console.log(res)
-              if (res.code == 200) {
-                this.agentList = res.data.list;
-              }
-          });
-          }
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          // console.log('2')
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 2,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'no'){
+          // console.log('2')
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 3,
+            keyword : this.search,
+            page : currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})

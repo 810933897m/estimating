@@ -75,7 +75,6 @@
 
       <el-table-column
       label="报告号"
-      width="150px"
       key="6"
       v-if="activeName == 'zero'"
       align="center">
@@ -108,12 +107,11 @@
 
       <el-table-column
       label="项目地址"
-      width="100px"
       key="9"
       v-if="activeName == 'zero'"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -902,7 +900,6 @@ export default {
         if(this.activeName == 'zero'){
           request.post("/admin/FinancialRefund/query",{
             keyword : this.search,
-            // page : this.currentPage,
             pageSize : this.pagesize,
           }).then(res => {
             if (res.code == 200) {
@@ -918,7 +915,6 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 1,
             keyword : this.search,
-            // page : this.currentPage,
             pageSize : this.pagesize,
           }).then(res => {
             if (res.code == 200) {
@@ -933,7 +929,6 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 2,
             keyword : this.search,
-            // page : this.currentPage,
             pageSize : this.pagesize,
           }).then(res => {
             if (res.code == 200) {
@@ -948,7 +943,6 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 3,
             keyword : this.search,
-            // page : this.currentPage,
             pageSize : this.pagesize,
           }).then(res => {
             if (res.code == 200) {
@@ -963,7 +957,6 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 4, 
             keyword : this.search,
-            // page : this.currentPage,
             pageSize : this.pagesize,
           }).then(res => {
             if (res.code == 200) {
@@ -988,24 +981,11 @@ export default {
       },
       handleCurrentChange: function(currentPage){//换页
         this.currentPage =currentPage;
-        request.post("/admin/financial/query",{
-            page : currentPage,
-            keyword : this.search,
-            pageSize : this.pagesize,
-        }).then(res => {
-            if (res.code == 200) {
-              this.agentList = res.data.list;
-            }
-        });
-      },
-      handleSizeChange: function (size) {
-            this.pagesize = size;
-            // console.log(this.pagesize)  //每页下拉显示数据
-            if(this.activeName == 'zero'){
+        if(this.activeName == 'zero'){
           request.post("/admin/FinancialRefund/query",{
-            page : this.currentPage,
             keyword : this.search,
             pageSize : this.pagesize,
+            page : this.currentPage,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -1019,9 +999,9 @@ export default {
         else if(this.activeName == 'first'){
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 1,
-            page : this.currentPage,
             keyword : this.search,
             pageSize : this.pagesize,
+            page : this.currentPage,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -1035,8 +1015,8 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 2,
             keyword : this.search,
-            page : this.currentPage,
             pageSize : this.pagesize,
+            page : this.currentPage,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -1050,8 +1030,8 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 3,
             keyword : this.search,
-            page : this.currentPage,
             pageSize : this.pagesize,
+            page : this.currentPage,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -1065,8 +1045,88 @@ export default {
           request.post("/admin/FinancialRefund/auditQuery",{
             type : 4, 
             keyword : this.search,
-            page : this.currentPage,
             pageSize : this.pagesize,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+      },
+      handleSizeChange: function (size) {
+            this.pagesize = size;
+            // console.log(this.pagesize)  //每页下拉显示数据
+        if(this.activeName == 'zero'){
+          request.post("/admin/FinancialRefund/query",{
+            keyword : this.search,
+            pageSize : this.pagesize,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if(this.activeName == 'first'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 1,
+            keyword : this.search,
+            pageSize : this.pagesize,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 2,
+            keyword : this.search,
+            pageSize : this.pagesize,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'three'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 3,
+            keyword : this.search,
+            pageSize : this.pagesize,
+            page : this.currentPage,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }else if(this.activeName == 'four'){
+          request.post("/admin/FinancialRefund/auditQuery",{
+            type : 4, 
+            keyword : this.search,
+            pageSize : this.pagesize,
+            page : this.currentPage,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;

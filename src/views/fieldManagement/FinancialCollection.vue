@@ -101,11 +101,10 @@
 
       <el-table-column
       label="项目地址"
-      width="100px"
       key="9"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p>
+          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
         </template>
       </el-table-column>
 
@@ -751,11 +750,10 @@ export default {
         window.open(row.project_info_url, '_blank')
       },
       searchBtn(){//搜索
-        request.post("/admin/financial/query",{
-          keyword : this.search,
-          // page : this.currentPage,
-          pageSize : this.pagesize,
-        }).then(res => {
+        if(this.activeName == 'first'){
+          request.post("/admin/Financial/query",{
+            keyword : this.search,
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
               this.count = res.data.page.count;
@@ -764,6 +762,20 @@ export default {
               this.size = res.data.page.size;
             }
         });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 1,
+            keyword : this.search,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
       },
       addProjectInitiation(){
         // this.$router.push({path:'/addProjectInitiation'})
@@ -777,28 +789,79 @@ export default {
       },
       handleCurrentChange: function(currentPage){//换页
         this.currentPage =currentPage;
-        request.post("/admin/financial/query",{
+        if(this.activeName == 'first'){
+          request.post("/admin/Financial/query",{
             page : currentPage,
             keyword : this.search,
             pageSize : this.pagesize,
-        }).then(res => {
+          }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
             }
         });
+        }else if(this.activeName == 'two'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 1,
+            page : currentPage,
+            keyword : this.search,
+            pageSize : this.pagesize,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
       },
       handleSizeChange: function (size) {
             this.pagesize = size;
             // console.log(this.pagesize)  //每页下拉显示数据
-            request.post("/admin/financial/query",{
-                page : this.currentPage,
-                keyword : this.search,
-                pageSize : this.pagesize,
+            // request.post("/admin/financial/query",{
+            //     page : this.currentPage,
+            //     keyword : this.search,
+            //     pageSize : this.pagesize,
+            // }).then(res => {
+            //     if (res.code == 200) {
+            //       this.agentList = res.data.list;
+            //     }
+            // })
+            if(this.activeName == 'first'){
+            request.post("/admin/Financial/query",{
+              page : this.currentPage,
+              keyword : this.search,
+              pageSize : this.pagesize,
             }).then(res => {
-                if (res.code == 200) {
-                  this.agentList = res.data.list;
-                }
-            })
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+          });
+          }else if(this.activeName == 'two'){
+            request.post("/admin/Financial/financialQuery",{
+              type : 1,
+              page : this.currentPage,
+              keyword : this.search,
+              pageSize : this.pagesize,
+            }).then(res => {
+              if (res.code == 200) {
+                this.agentList = res.data.list;
+                this.count = res.data.page.count;
+                this.max = res.data.page.max;
+                this.page = res.data.page.page;
+                this.size = res.data.page.size;
+              }
+            });
+          }
         },
 
         changeAdd(id){

@@ -60,7 +60,39 @@
       </el-table-column>
 
       <el-table-column
-      label="合同内容"
+      label="估价对象"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.inquiry_objects" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.inquiry_objects}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="估价目的"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.appraisal_purpose" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.appraisal_purpose}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="合同类型"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.contract_type" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_type}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="合同金额"
+      align="center">
+        <template slot-scope="scope">
+          <p :title="scope.row.contract_amount" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.contract_amount}}</p>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+      label="项目名称"
       align="center">
         <template slot-scope="scope">
           <p :title="scope.row.content" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{scope.row.content}}</p>
@@ -127,14 +159,33 @@
                     <el-input v-model="add.second_party"></el-input>
                 </el-form-item>
 
-                <el-form-item label="合同内容">
-                    <!-- <el-input v-model="updata.content"></el-input> -->
+                <el-form-item label="估价对象">
+                    <el-input v-model="add.inquiry_objects"></el-input>
+                </el-form-item>
+
+                <el-form-item label="估价目的">
+                    <el-input v-model="add.appraisal_purpose"></el-input>
+                </el-form-item>
+
+                <el-form-item label="合同类型">
+                    <el-input v-model="add.contract_type"></el-input>
+                </el-form-item>
+
+                <el-form-item label="合同金额">
+                    <el-input v-model="add.contract_amount"></el-input>
+                </el-form-item>
+
+                <el-form-item label="项目名称">
+                    <el-input v-model="add.content"></el-input>
+                </el-form-item>
+
+                <!-- <el-form-item label="合同内容">
                     <el-input
                     type="textarea"
                     :autosize="{ minRows: 5, maxRows: 10}"
                     v-model="add.content">
                     </el-input>
-                </el-form-item>
+                </el-form-item> -->
 
             </el-form>
         
@@ -164,13 +215,24 @@
                     <el-input v-model="updata.second_party"></el-input>
                 </el-form-item>
 
-                <el-form-item label="合同内容">
-                    <!-- <el-input v-model="updata.content"></el-input> -->
-                    <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 5, maxRows: 10}"
-                    v-model="updata.content">
-                    </el-input>
+                <el-form-item label="估价对象">
+                    <el-input v-model="updata.inquiry_objects"></el-input>
+                </el-form-item>
+
+                <el-form-item label="估价目的">
+                    <el-input v-model="updata.appraisal_purpose"></el-input>
+                </el-form-item>
+
+                <el-form-item label="合同类型">
+                    <el-input v-model="updata.contract_type"></el-input>
+                </el-form-item>
+
+                <el-form-item label="合同金额">
+                    <el-input v-model="updata.contract_amount"></el-input>
+                </el-form-item>
+
+                <el-form-item label="项目名称">
+                    <el-input v-model="updata.content"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -199,12 +261,20 @@ export default {
           contract_no : '',
           first_party : '',
           second_party : '',
+          inquiry_objects : '',
+          appraisal_purpose : '',
+          contract_type : '',
+          contract_amount : '',
           content : '',
         },
         add:{
           contract_no : '',
           first_party : '',
           second_party : '',
+          inquiry_objects : '',
+          appraisal_purpose : '',
+          contract_type : '',
+          contract_amount : '',
           content : '',
         },
         search : '',
@@ -281,6 +351,10 @@ export default {
               first_party : this.add.first_party,
               // construct_area : this.add.construct_area,
               second_party : this.add.second_party,
+              inquiry_objects : this.add.inquiry_objects,
+              appraisal_purpose : this.add.appraisal_purpose,
+              contract_type : this.add.contract_type,
+              contract_amount : this.add.contract_amount,
               content : this.add.content,
             }).then(res => {
                   // console.log(res)
@@ -295,6 +369,10 @@ export default {
             this.add.contract_no ='';
             this.add.first_party ='';
             this.add.second_party ='';
+            this.add.inquiry_objects ='';
+            this.add.appraisal_purpose ='';
+            this.add.contract_type ='';
+            this.add.contract_amount ='';
             this.add.content ='';
           }
         });
@@ -304,7 +382,12 @@ export default {
           id : this.UpId,
           contract_no : this.updata.contract_no,
           first_party : this.updata.first_party,
+          // construct_area : this.add.construct_area,
           second_party : this.updata.second_party,
+          inquiry_objects : this.updata.inquiry_objects,
+          appraisal_purpose : this.updata.appraisal_purpose,
+          contract_type : this.updata.contract_type,
+          contract_amount : this.updata.contract_amount,
           content : this.updata.content,
         }).then(res => {
             // console.log(res)

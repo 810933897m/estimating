@@ -219,7 +219,7 @@
             <p style="display:none;">{{scope.row}}</p>
             <!-- <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button> -->
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
-            <!-- <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button> -->
+            <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
             <!-- <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button> -->
 
@@ -385,8 +385,7 @@ export default {
           this.$router.push({path:'/detailInquiry',query:{id:row.id}})
       },
       addProject(row){//转立项
-          this.$router.push({path:'/addProjectInitiation',query:{row:row,id:row.id}})
-        
+          this.$router.push({path:'/addProjectInitiationPublic',query:{row:row,id:row.id}})
       },
       //分页
       handleCurrentChange: function(currentPage){//换页

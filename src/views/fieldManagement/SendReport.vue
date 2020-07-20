@@ -211,7 +211,7 @@
         </el-table-column>
         
         <el-table-column
-        label="发送分数"
+        label="发送份数"
         align="center">
           <template slot-scope="scope" >
             <p :title="scope.row.send_num" class="nooverflow">{{scope.row.send_num}}</p>

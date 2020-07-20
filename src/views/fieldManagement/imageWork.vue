@@ -1,35 +1,8 @@
 <template>
     <div class="app-container" style="">
         
-        <el-tabs v-model="activeName" type="card" style="position:relative;">
-            <el-tab-pane label="图片信息" name="img" style="display:flex;width:100%;">
-                <!-- <div style="width:100%;float:left;margin-top:10px;">
-                    <el-button type="success" style="float:left;margin-top:5px;margin-left:10px;" circle icon="el-icon-check"></el-button>
-                </div> -->
-            
-            
-            <!-- <div style="width:100%;float:left;margin-top:30px;">
-                <el-button v-for="(item1,index1) in list1" :key="index1+'B'" @click="last(index1)">
-                    {{item1.title}}({{item1.count}})
-                </el-button>
-                </div> -->
-                <!-- <section>
-                <img v-for="(item,index) in slide1"
-                v-preview="item.src" class="preview"  :key="index" :src="item.src" alt="">
-                </section> -->
-                <!-- <div style="width:100%;position:absolute;left:0;top:130px;"> -->
-                <!-- <vue-preview 
-                :slides="slide1" 
-                class="preview" 
-                @onClose="closeHandler"
-                deleteBtnColor="#e12e2e"
-                previewBtnColor="#3caaff"
-                :removeInside="true"
-                @onRemove="handleRemove"
-                :removeEnable="true">
-                <template slot="scope"></template>
-                </vue-preview> -->
-                <!-- </div> -->
+        <!-- <el-tabs v-model="activeName" type="card" style="position:relative;">
+            <el-tab-pane label="图片信息" name="img" style="display:flex;width:100%;"> -->
                 
                 <div style="width:690px;float:left;margin-top:10px;">
                     <!-- <el-button type="success" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-check" @click="del(item.guid)"></el-button> -->
@@ -53,7 +26,7 @@
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
                 
-                <div style="width:570px;float:left;border:1px solid black;">
+                <div style="width:570px;float:left;border:1px solid #ccc;">
                     <!-- <p>回收站</p> -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
                         <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
@@ -67,7 +40,7 @@
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
-                        <img :src="item.src" alt="" class="preview2">
+                        <img :src="item.thumb" alt="" class="preview2">
                         <p style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
@@ -75,13 +48,13 @@
                     </div>
                 </div>
 
-            </el-tab-pane>
+            <!-- </el-tab-pane> -->
             
                     
                         
-                    <el-tab-pane label="地图信息" name="map">
+                    <!-- <el-tab-pane label="地图信息" name="map"> -->
 
-                        <el-form ref="form" label-width="120px" style="margin-top:10px;">
+                        <el-form ref="form" label-width="120px" style="margin-top:10px;display:none;">
                             
                             <el-form-item label="具体位置" class="form-input" prop="title" style="width:60%;float:left;">
                                 <el-input  placeholder="请输入" v-model="position"></el-input>
@@ -121,8 +94,8 @@
                             </el-tabs>
                             
                         </el-form>
-                </el-tab-pane>
-        </el-tabs>
+                <!-- </el-tab-pane>
+        </el-tabs> -->
 
         <div v-show="showText">
             <p>{{offsetX}}{{offsetY}}</p>

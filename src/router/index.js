@@ -222,6 +222,14 @@ console.log(Layout)
                 title:'新增报告',
             },
             hidden: true
+        },{//修改询价
+            path: '/addProjectInitiationPublic',
+            component: () => import('@/views/inquiryManagement/addProjectInitiationPublic'),
+            name:'addProjectInitiationPublic',
+            meta:{
+                title:'对公立项',
+            },
+            hidden: true
         },{//报告详情
             path: '/detaiPprojectInitiation',
             component: () => import('@/views/inquiryManagement/detaiPprojectInitiation'),

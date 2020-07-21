@@ -845,9 +845,7 @@ export default {
             }
           });
         }
-        
-          
-          
+       
       },
       addCommodity(){//添加询价
         this.$router.push({path:'/addInquiry'})

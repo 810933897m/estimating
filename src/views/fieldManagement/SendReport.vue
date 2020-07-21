@@ -542,7 +542,7 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-      this.agentList =[];
+        this.agentList =[];
         // console.log(this.activeName)
         if(this.activeName == 'first'){
           request.post("/admin/projectExpress/query").then(res => {

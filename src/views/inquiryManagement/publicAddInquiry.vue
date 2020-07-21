@@ -376,7 +376,6 @@ export default {
                 
                 // console.log(res.data)
                 if (res.code == 200) {
-                    console.log(res)
                     this.city=res.data.param.city;//城市
                     this.bank=res.data.param.bank;//询价银行
                     this.factor=res.data.param.factor;//特殊因素
@@ -387,7 +386,6 @@ export default {
                     this.bazaar_crew=res.data.bazaar_crew;//市场人员
                     this.ask_price=res.data.ask_price;//询值人员
                     this.price_check=res.data.price_check;//价格变更审核人员
-                    console.log(this.ask_price)
                 }
                 
             });
@@ -396,7 +394,6 @@ export default {
             this.showDiv = true;
             request.post("/admin/askPrice/query",{
                 plot_name : this.form.plot_name,
-
             }).then(res => {
             // console.log(res)
             if (res.code == 200) {
@@ -424,43 +421,13 @@ export default {
             // });
         },
         addCommodity(){//点击提交按钮
-            console.log(this.form)
-            console.log(this.publicAgentList)
-                
                 request.post("/admin/askPrice/create", {//发送数据到后台
                     plot_name : this.form.plot_name,
-                    // unit_number : this.form.unit_number,
-                    // construct_area : this.form.construct_area,
-                    // ask_price : this.form.ask_price,
-                    // ask_univalence : this.form.ask_univalence,
                     ask_price_total : this.form.ask_price_total,
                     child : this.publicAgentList,
                     city : this.form.city,
-                    // district : this.form.district,
-                    // plot_address : this.form.plot_address,
                     floor : this.form.floor,
-                    // activate_time : this.form.activate_time,
-                    // house_way : this.form.house_way,
-                    // special_element : this.form.special_element,
-                    // ask_bank : this.form.ask_bank,
-                    // remark : this.form.remark,
-                    // total_floor : this.form.total_floor,
-                    // plot_special : this.form.plot_special,
-                    // total_prices : this.form.total_prices,
-                    // bazaar_crew : this.form.bazaar_crew,
-                    // factor : this.form.facto,
                     }).then(res => {
-                    //     this.form.forEach(item => {
-                    //     console.log(item)
-                    //     if(item == ''){
-                    //         this.$message({
-                    //             // type: res.errno === 0 ? "success" : "warning",
-                    //             type: "warning",
-                    //             message: '请核实是否全部填写完成！'//提示未核实
-                    //         });
-                    //     }
-                    // });
-                        console.log(res)
                         if(res.code == 200){
                             this.$message({
                             // type: res.errno === 0 ? "success" : "warning",
@@ -496,7 +463,6 @@ export default {
                     bazaar_crew : this.form.bazaar_crew,
                     factor : this.form.facto,
                     }).then(res => {
-                        console.log(res)
                             if(res.code == 200){
                                 this.$message({
                                 // type: res.errno === 0 ? "success" : "warning",
@@ -519,7 +485,6 @@ export default {
             }).then(res => {
                 if (res.code == 200) {
                     this.allInquiry1 = res.data.list;
-                    console.log(this.allInquiry1)
                 }
             });
         },

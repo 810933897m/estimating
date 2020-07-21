@@ -434,7 +434,6 @@ export default {
       },
       Pending(row){//挂起
         this.dialogFormVisible2=true;
-        // console.log(row)
         this.Pendingid = row.id;
       },
       PendingBtn(){//挂起确定
@@ -478,11 +477,9 @@ export default {
             });
       },
       excelFileClass(param){//上传附件
-          // console.log(param);
             let formData = new FormData();
             formData.append('id', this.uploadId);
             formData.append('excel', param.file);
-            // console.log(formData)
             request.post("/admin/excel/upload",
               formData
               ).then(res => {
@@ -494,12 +491,11 @@ export default {
                 });
                 this.$refs.uploadExcel.clearFiles();
                 this.uploadListBack = res.data.data;
-                    // console.log(this.uploadListBack)
                 }
             });
       },
       handleClick(tab, event){//改变状态
-        // console.log(this.activeName)
+        this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/appraisal/query").then(res => {
             if (res.code == 200) {
@@ -661,7 +657,6 @@ export default {
           name : '',
         }).then(res => {//二次人员获取
             if (res.code == 200) {
-              // console.log(res)
               this.twoExamine1 = res.data;
             }
         });
@@ -736,7 +731,6 @@ export default {
       },
       AssignTasks(row){//分配任务
         this.dialogFormVisible=true;
-        // console.log(row)
         this.outworkid = row.admin_id;
         this.ROW = row;
       },
@@ -768,12 +762,9 @@ export default {
           });
         this.dialogFormVisible=false;
         }
-        // console.log(this.ROW.id);
-        // console.log(this.outworkid);
         
       },
       getInfo(row, event, column){//点击跳到综合页面
-        // console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       updateAgent(row) {//修改按钮
@@ -789,7 +780,6 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      // console.log(currentPage)  
           this.currentPage = currentPage;
         if(this.distribution == 0){
           request.post("/admin/appraisal/query",{
@@ -867,7 +857,6 @@ export default {
         this.$router.push({path:'/addInquiry'})
       },
       uploadBtn(row){
-        // console.log(row);
         this.uploadId = row.id;
         this.dialogFormVisible1 = true;
       },
@@ -876,7 +865,6 @@ export default {
             id : row.id
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               // this.loadUrl = ;
               window.open(res.data.url, '_blank')
             }
@@ -886,7 +874,6 @@ export default {
         this.$router.push({path:'/imageWork',query:{id:row.id}})
       },
       examineBtn(row){//二审提交
-      // console.log(row.id)
         this.Id = row.id;
         this.dialogFormVisible3 = true;
       },

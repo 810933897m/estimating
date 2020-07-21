@@ -652,7 +652,7 @@
                 label="开票金额"
                 align="center">
                   <template slot-scope="scope">
-                    <el-input @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
+                    <el-input type="number" @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
                   </template>
                 </el-table-column>
 
@@ -1222,7 +1222,6 @@ export default {
               this.billingList.push(element)
             }
           });
-          console.log(this.billingList)
           this.dialogVisibleAdd = true;
         },
         countMoney(money){
@@ -1235,7 +1234,6 @@ export default {
           this.add.charge_amount = sum;
         },
         confirmRevisionAdd(){
-          console.log(this.add)
           let list1={}
           let list2 = [];
           this.billingList.forEach(element => {
@@ -1245,7 +1243,6 @@ export default {
             }
             list2.push(list1)
           });
-          console.log(list2)
 
           request.post("/admin/ProjectInvoice/create",{
             // project_id : this.Id,

@@ -314,8 +314,8 @@
                 <el-input v-model="form.reconnaissance"></el-input>
             </el-form-item> -->
             <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-radio v-model="reconnaissance" label="0">是</el-radio>
-                <el-radio v-model="reconnaissance" label="1">否</el-radio>
+                <el-radio v-model="reconnaissance" label="1">是</el-radio>
+                <el-radio v-model="reconnaissance" label="0">否</el-radio>
             </el-form-item>
             <el-form-item label="勘察备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.costs_reserved" placeholder="请输入"></el-input>
@@ -690,14 +690,14 @@ export default {
                 settlement_method : '',
                 money_due : '',
                 fee_note : '',
-                reconnaissance : '0',
+                reconnaissance : '1',
                 costs_reserved : '',
                 materials_offer_way : '',
                 courier_method : '',
                 delivery_note : '',
                 project_approval_remark : '',
             },
-            reconnaissance : '0',
+            reconnaissance : '1',
             allInquiry1 : [],
             activeName: 'first',
             fileList:[],

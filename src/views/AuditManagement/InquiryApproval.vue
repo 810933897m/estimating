@@ -415,7 +415,6 @@ export default {
       },
       AssignTasks(row){//分配任务
         this.dialogFormVisible=true;
-        console.log(row)
         this.outworkid = row.admin_id;
         this.ROW = row;
         this.old_price = row.old_price;
@@ -425,7 +424,6 @@ export default {
       },
       AssignTasks1(row){//分配任务
         this.dialogFormVisible=true;
-        console.log(row)
         this.outworkid = row.admin_id;
         this.ROW = row;
         this.old_price = row.old_price;
@@ -476,7 +474,6 @@ export default {
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       confirmDetail(row) {//点击查看询价详情
@@ -488,7 +485,6 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-          console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
             request.post("/admin/askPriceCheck/query",{
@@ -496,7 +492,6 @@ export default {
             keyword : this.search,
             status:0,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
@@ -507,7 +502,6 @@ export default {
             keyword : this.search,
             status:1,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
@@ -518,7 +512,6 @@ export default {
             keyword : this.search,
             status:2,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }

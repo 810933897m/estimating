@@ -260,11 +260,10 @@ export default {
         this.Id = row.id;
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+        this.agentList = [];
         if(this.activeName == 'first'){
           this.getAgentList();//渲染列表
         }else if(this.activeName == 'two'){
-          // console.log('2')
           request.post("/admin/ProjectInvoice/PublicUnreviewed",{
           invoice_examiner_status : this.activeName1,
         }).then(res => {
@@ -279,11 +278,10 @@ export default {
         }
       },
       handleClick1(tab, event){//改变状态
-        console.log(this.activeName)
+        this.agentList = [];
         if(this.activeName == 'first'){
           this.getAgentList();//渲染列表
         }else if(this.activeName == 'two'){
-          // console.log('2')
           request.post("/admin/ProjectInvoice/PublicUnreviewed",{
           invoice_examiner_status : this.activeName1,
         }).then(res => {
@@ -366,12 +364,10 @@ export default {
       },
       AssignTasks(row){//分配任务
         this.dialogFormVisible=true;
-        console.log(row)
         this.outworkid = row.admin_id;
         this.ROW = row;
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       outworkidBtn(){//同意确定
@@ -467,7 +463,6 @@ export default {
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-      console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
             request.post("/admin/ProjectInvoice/PrivateUnreviewed",{
@@ -475,7 +470,6 @@ export default {
             keyword : this.search,
             invoice_examiner_status : this.activeName1,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
@@ -486,7 +480,6 @@ export default {
             keyword : this.search,
             invoice_examiner_status : this.activeName1,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }

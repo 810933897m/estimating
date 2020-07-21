@@ -13,6 +13,7 @@
       <el-form ref="form" >
         <el-form-item>
             <el-radio v-model="activeName" label="first" @change="handleClick()">未收款</el-radio>
+            <el-radio v-model="activeName" label="part" @change="handleClick()">部分收款</el-radio>
             <el-radio v-model="activeName" label="two" @change="handleClick()">已收款</el-radio>
             <!-- <el-radio v-model="activeName" label="success" @change="handleClick()">收款成功</el-radio>
             <el-radio v-model="activeName" label="no" @change="handleClick()">收款失败</el-radio> -->
@@ -514,7 +515,7 @@
                 label="收款金额"
                 align="center">
                   <template slot-scope="scope">
-                    <el-input @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
+                    <el-input type="number" @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>
                     <!-- <p :title="scope.row.project_address" class="nooverflow">{{scope.row.project_address}}</p> -->
                   </template>
                 </el-table-column>
@@ -617,6 +618,19 @@ export default {
         }else if(this.activeName == 'two'){
           request.post("/admin/Financial/financialQuery",{
             type : 1,
+          }).then(res => {
+            if (res.code == 200) {
+              this.agentList = res.data.list;
+              this.count = res.data.page.count;
+              this.max = res.data.page.max;
+              this.page = res.data.page.page;
+              this.size = res.data.page.size;
+            }
+        });
+        }
+        else if (this.activeName == 'part'){
+          request.post("/admin/Financial/financialQuery",{
+            type : 2,
           }).then(res => {
             if (res.code == 200) {
               this.agentList = res.data.list;
@@ -874,20 +888,16 @@ export default {
               this.billingList.push(element)
             }
           });
-          console.log(this.billingList)
           this.dialogVisibleAdd = true;
         },
         countMoney(money){
-          // console.log()
           let sum = 0;
           this.billingList.forEach(element => {
             sum += Number(element.charge_amount)
           });
-          // console.log(sum)
           this.add.charge_amount_total = sum;
         },
         confirmRevisionAdd(){
-          console.log(this.add)
           let list1={}
           let list2 = [];
           this.billingList.forEach(element => {
@@ -897,7 +907,7 @@ export default {
             }
             list2.push(list1)
           });
-          console.log(list2)
+
           request.post("/admin/Financial/create",{
                 child : list2,
                 charge_amount_total : this.add.charge_amount_total,
@@ -925,7 +935,7 @@ export default {
           })
         },
         printReceipt(row){//打印
-          console.log(row)
+          // console.log(row)
         },
   }
 }

@@ -277,7 +277,7 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-        console.log(this.activeName)
+        this.agentList = [];
         if(this.activeName == 'first'){
           request.post("/admin/projectMake/query",{
             make_status : 1,
@@ -340,7 +340,6 @@ export default {
         });
         request.post("/admin/Auditing/param").then(res => {
             if (res.code == 200) {
-              console.log(res)
               this.ask_univalence1 = res.data.check_user;
               // this.agentList = res.data.list;
             }
@@ -385,18 +384,15 @@ export default {
         }
       },
       getInfo(row, event, column){//点击跳到综合页面
-        console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       AssignTasks(row){//分配任务
         this.tongyi = true;
-        console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
       refuse(row){
         this.tongyi = false;
-        console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
@@ -416,13 +412,9 @@ export default {
           });
         this.dialogFormVisible=false;
         this.admin_desc = '';
-        
-        console.log(this.ROW.id);
-        console.log(this.outworkid);
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-          console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
             request.post("/admin/projectPrint/query",{
@@ -430,7 +422,6 @@ export default {
               page : currentPage,
               keyword : this.search,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }
@@ -441,7 +432,6 @@ export default {
               page : currentPage,
               keyword : this.search,
           }).then(res => {
-              console.log(res)
               if (res.code == 200) {
                 this.agentList = res.data.list;
               }

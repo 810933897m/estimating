@@ -279,7 +279,6 @@ export default {
 
           }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.$message({
                 // type: res.errno === 0 ? "success" : "warning",
                 type: "success",
@@ -300,7 +299,6 @@ export default {
           type : 0,
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.agentList = res.data.list;
               this.agentList.forEach(item => {
                 if(item.approval_status == 1){
@@ -328,7 +326,6 @@ export default {
           name : '公司简称',
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.company1 = res.data;
             }
         });
@@ -337,7 +334,6 @@ export default {
           name : '项目分类',
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.project_classify1 = res.data;
             }
         });
@@ -346,7 +342,6 @@ export default {
           name : '报告类型',
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.report_tale1 = res.data;
             }
         });
@@ -355,7 +350,6 @@ export default {
           name : '字母分类',
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.Alphabetic1 = res.data;
             }
         });
@@ -369,18 +363,15 @@ export default {
           name : this.report_number,
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.report_number_children1 = res.data;
             }
         });
       },
       generateReport(row){//生成报告
-        // console.log(row.id)
         this.generateReportId = row.id;
         this.dialogVisible = true;
       },
       getInfo(row, event, column){
-        // console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       searchBtn(){//搜索

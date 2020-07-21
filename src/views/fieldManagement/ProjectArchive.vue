@@ -84,9 +84,9 @@
       label="旧报告编号"
       width="200px"
       align="center">
-        <!-- <template slot-scope="scope">
-          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
-        </template> -->
+        <template slot-scope="scope">
+          <p :title="scope.row.old_report_number" class="nooverflow">{{scope.row.old_report_number}}</p>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -133,15 +133,6 @@
           <p :title="scope.row.report_tale" class="nooverflow">{{scope.row.report_tale}}</p>
         </template>
       </el-table-column>
-
-      <!-- <el-table-column
-      label="流程状态"
-      width="100px"
-      align="center">
-        <template slot-scope="scope">
-          <p :title="scope.row.price_status" class="nooverflow">{{scope.row.price_status}}</p>
-        </template>
-      </el-table-column> -->
     
       <el-table-column
       label="操作"
@@ -363,15 +354,6 @@ export default {
               this.size = res.data.page.size;
             }
         });
-
-        // request.post("/admin/values/query",{
-        //   type : 'express_type',
-        //   name : '',
-        // }).then(res => {
-        //     if (res.code == 200) {
-        //       this.express_type1 = res.data;
-        //     }
-        // });
 
     },serachBtn(){ // 搜索功能
       if(this.activeName == 'first'){

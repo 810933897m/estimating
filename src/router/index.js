@@ -131,7 +131,7 @@ console.log(Layout)
                 // keepAlive: true
             }
         },
-        {//报告立项
+        {//预评转正式
             path: 'Transition',
             name: 'Transition',
             component: () => import('@/views/inquiryManagement/Transition'),
@@ -148,7 +148,7 @@ console.log(Layout)
                 title:'添加询价',
             },
             hidden: true
-        },{//添加询价
+        },{//添加对公询价
             path: '/publicAddInquiry',
             component: () => import('@/views/inquiryManagement/publicAddInquiry'),
             name:'publicAddInquiry',
@@ -214,7 +214,7 @@ console.log(Layout)
                 title:'询价详情',
             },
             hidden: true
-        },{//修改询价
+        },{//新增报告
             path: '/addProjectInitiation',
             component: () => import('@/views/inquiryManagement/addProjectInitiation'),
             name:'addProjectInitiation',
@@ -222,7 +222,7 @@ console.log(Layout)
                 title:'新增报告',
             },
             hidden: true
-        },{//修改询价
+        },{//对公立项
             path: '/addProjectInitiationPublic',
             component: () => import('@/views/inquiryManagement/addProjectInitiationPublic'),
             name:'addProjectInitiationPublic',
@@ -238,7 +238,7 @@ console.log(Layout)
                 title:'报告详情',
             },
             hidden: true
-        },{//修改报告
+        },{//修改报告立项
             path: '/updateprojectInitiation',
             component: () => import('@/views/inquiryManagement/updateprojectInitiation'),
             name:'updateprojectInitiation',
@@ -246,7 +246,7 @@ console.log(Layout)
                 title:'修改报告立项',
             },
             hidden: true
-        },{//修改报告
+        },{//预评转正式
             path: '/updateTransition',
             component: () => import('@/views/inquiryManagement/updateTransition'),
             name:'updateTransition',
@@ -603,19 +603,19 @@ console.log(Layout)
     },
     
 ]
-console.log(constantRouterMap)
+// console.log(constantRouterMap)
 sessionStorage.setItem('route',JSON.stringify(constantRouterMap))
 // console.log()
 getRoute()
 // constantRouterMap = JSON.parse(sessionStorage.getItem('route'));
 
 
-console.log('1')
-console.log('1')
+// console.log('1')
+// console.log('1')
 
-console.log(JSON.parse(sessionStorage.getItem('route1')))
+// console.log(JSON.parse(sessionStorage.getItem('route1')))
 var routers =  JSON.parse(sessionStorage.getItem('route1'));
-console.log(routers)
+// console.log(routers)
 export default new Router({
     
     // mode: 'history', //后端支持可开

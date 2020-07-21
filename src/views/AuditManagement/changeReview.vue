@@ -291,8 +291,7 @@ export default {
             // });
       },
       handleClick(tab, event){//改变状态
-      this.agentList =[];
-        // console.log(this.activeName)
+        this.agentList =[];
         if(this.activeName == 'first'){
           request.post("/admin/projectChangeCheck/query",{
             type : 0,
@@ -371,7 +370,6 @@ export default {
           name:'',
         }).then(res => {
             if (res.code == 200) {
-              // console.log(res)
               this.ask_univalence1 = res.data.check_user;
               // this.agentList = res.data.list;
             }
@@ -434,7 +432,6 @@ export default {
       },
       AssignTasks(row){//分配任务
         this.tongyi = true;
-        // console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
@@ -445,7 +442,6 @@ export default {
             this.title = res.data;
           })
         this.tongyi = false;
-        // console.log(row)
         this.dialogFormVisible = true;
         this.Id = row.id;
       },
@@ -465,8 +461,6 @@ export default {
           });
         this.dialogFormVisible=false;
         this.admin_desc = '';
-        // console.log(this.ROW.id);
-        // console.log(this.outworkid);
       },
       outworkidBtn1(){//分配任务确定
           request.post("/admin/projectChangeCheck/refuse",{
@@ -484,13 +478,9 @@ export default {
           });
         this.dialogFormVisible=false;
         this.admin_desc = '';
-        
-        // console.log(this.ROW.id);
-        // console.log(this.outworkid);
       },
       //分页
       handleCurrentChange: function(currentPage){//换页
-          // console.log(currentPage)  
           this.currentPage = currentPage;
           if(this.activeName == 'first'){
           request.post("/admin/projectChangeCheck/query",{
@@ -542,17 +532,14 @@ export default {
         this.$router.push({path:'/addInquiry'})
       },
       uploadBtn(row){
-        // console.log(row);
         this.dialogFormVisible1 = true;
       },
       submitBtn(row){//提交
         this.ReportReviewerId = row.id;
         this.price_status = row.price_status;
         this.dialogFormVisible2 = true;
-        // console.log(this.ReportReviewerId,this.price_status)
       },
       getInfo(row, event, column){//点击跳到综合页面
-        // console.log(row.id);
         window.open(row.project_info_url, '_blank')
       },
       submit(){
@@ -561,7 +548,6 @@ export default {
           price_status : this.price_status,
           ask_univalence : this.ask_univalence,
         }).then(res => {
-            // console.log(res)
             if (res.code == 200) {
               this.$message({
                     // type: res.errno === 0 ? "success" : "warning",

@@ -74,7 +74,7 @@
                 <el-input  style="width:180px;" placeholder="请输入" v-model="form.bazaar_crew"></el-input>
             </el-form-item>
 
-              <el-form-item label="询值人员" class="form-input" prop="title" style="width:300px;float:left;">
+              <el-form-item label="报值人员" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.ask_price"></el-input>
             </el-form-item>
 
@@ -84,6 +84,10 @@
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" disabled v-model="form.ask_price_total" @change="totalPrices();sumComputed()"></el-input>
+            </el-form-item>
+
+            <el-form-item  label="抵押总价" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入" disabled v-model="form.mortgage_price"></el-input>
             </el-form-item>
       
             <el-form-item style="position:relative;width:300px;float:left;">
@@ -113,7 +117,6 @@
 
             <el-form-item label="项目信息" class="form-input1" prop="title">
                 <el-input
-                disabled
                 type="textarea"
                 :rows="2"
                 placeholder="请输入"
@@ -321,6 +324,7 @@ export default {
             cpPicture:[],
             paramFile : '',
             form : {
+                mortgage_price : '',
                 total_prices : '',
                 plot_name : '',
                 city:'北京市',
@@ -625,11 +629,11 @@ export default {
         },
         showInput(){
             if(this.factor == 1){
-             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  住宅建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.ask_bank+'  备注:'+this.form.remark+' 询值人员'+this.form.ask_price+'  报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 报值人员'+this.form.ask_price+' 报值人'+localStorage.getItem('username')+'@'+this.form.bazaar_crew
             }else{
-             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  住宅建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.ask_bank+'  备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 询值人员'+this.form.ask_price+'  报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 报值人员'+this.form.bazaar_crew+' 报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
             }
-            // this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 询值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.$refs.selectAskPrice.selectedLabel
+            // this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 报值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.$refs.selectAskPrice.selectedLabel
         },
         inquiryBtn(){
             this.showDiv = true;
@@ -718,7 +722,7 @@ export default {
                 ask_univalence : this.form.ask_univalence,
                 ask_price_total : this.form.ask_price_total,
                 right_nature : this.form.right_nature,
-
+                mortgage_price : this.form.mortgage_price,
                 city : this.city1,
                 district : this.form.district,
                 plot_address : this.form.plot_address,

@@ -189,8 +189,9 @@
       label="操作"
       v-if="distribution == '1'"
       fixed="right"
-      width="330px" align="center">
+      width="400px" align="center">
         <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="downLoad_image(scope.row)" >下载图片</el-button>
           <el-button size="small" type="primary" @click="Pending(scope.row)" >挂起</el-button>
           <!-- <el-button size="small" type="primary" @click="unHangUp(scope.row)" >解挂</el-button> -->
           <!-- <el-button size="small" type="primary" @click="loadBtn(scope.row)" >下载</el-button> -->
@@ -284,6 +285,56 @@
           </el-dialog>
           <!-- **************分配任务弹出框************** -->
 
+          <!-- 下载图片弹出框 -->
+          <el-dialog style="" :append-to-body='true' title="下载" :visible.sync="dialogFormVisibleImage">
+              <el-table 
+              class="table-picture"
+              :data="imageList"
+              border
+              max-height="550"
+              style="width: 100%;">
+
+              <el-table-column
+              label="id"
+              align="center">
+                <template slot-scope="scope" >
+                  {{scope.row.id}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="标题"
+              align="center">
+                <template slot-scope="scope" >
+                  {{scope.row.title}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="文件大小"
+              align="center">
+                <template slot-scope="scope" >
+                  {{scope.row.size}}
+                </template>
+              </el-table-column>
+
+              <el-table-column
+              label="操作"
+              align="center">
+                <template slot-scope="scope" >
+                    <el-button size="small" type="primary" @click="uploadImage(scope.row)">
+                      下载
+                    </el-button>
+                </template>
+              </el-table-column>
+               </el-table>
+              <span slot="footer" class="dialog-footer">
+                <!-- <el-button type="primary" @click="imageDownLoadBtn(),dialogFormVisibleImage = false">保 存</el-button> -->
+                <el-button @click="dialogFormVisibleImage = false">取 消</el-button>
+            </span>
+          </el-dialog>
+          <!-- **************下载图片弹出框************** -->
+
 
           <!-- 二次审核弹出框 -->
           <el-dialog style="" :append-to-body='true' title="提交审核" :visible.sync="dialogFormVisible3">
@@ -349,7 +400,7 @@ import map from '@/utils/city';
 export default {
     data() {
       return {
-        
+        imageList : [],
         uploadListBack:[],
         admin_desc : '',
         fileList:[],
@@ -392,6 +443,7 @@ export default {
         dialogFormVisible1 : false,//上传附件弹出框
         dialogFormVisible2 : false,//挂起弹出框
         dialogFormVisible3 : false,
+        dialogFormVisibleImage : false,
         disa : true,
         shopId : '',//id存储
         formLabelWidth : '120px',
@@ -767,6 +819,9 @@ export default {
       getInfo(row, event, column){//点击跳到综合页面
         window.open(row.project_info_url, '_blank')
       },
+      uploadImage(row){
+        window.open(row.url, '_blank')
+      },
       updateAgent(row) {//修改按钮
         // console.log(row);
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
@@ -882,6 +937,17 @@ export default {
       },
       Printing(row){//打印
         window.open(row.donwload_image,'_blank')
+      },
+      downLoad_image(row){//下载图片
+        console.log(row)
+        request.post("/admin/ProjectFiles/query",{
+            id : row.id
+        }).then(res => {
+            if (res.code == 200) {
+              this.imageList = res.data;
+            }
+        });
+        this.dialogFormVisibleImage = true;
       },
   }
 }

@@ -92,7 +92,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item ref="selectAskPrice" label="询值人员" class="select">
+              <el-form-item ref="selectAskPrice" label="报值人员" class="select">
                   <el-select v-model="form.ask_price" filterable placeholder="请选择" style="width:150px;float:left;">
                     <el-option
                     v-for="item in ask_price"
@@ -507,7 +507,7 @@ export default {
     },
     methods: {
         showInput(){
-            this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 询值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.$refs.selectAskPrice.selectedLabel
+            this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 报值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.bazaar_crew1
         },
         inquiryBtn(){
             this.showDiv = true;
@@ -566,7 +566,7 @@ export default {
             //         this.type=res.data.param.type;//房屋类型
                     
             //         this.bazaar_crew=res.data.bazaar_crew;//市场人员
-            //         this.ask_price=res.data.ask_price;//询值人员
+            //         this.ask_price=res.data.ask_price;//报值人员
             //         this.price_check=res.data.price_check;//价格变更审核人员
                     
             //         this.price_check1 = res.data.price_check[0].value;

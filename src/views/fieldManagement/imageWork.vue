@@ -9,6 +9,7 @@
                     <div style="width:100%;float:left;">
                         <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="sortBtn()">保存排序</el-button>
                         <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()">下载PDF</el-button>
+                        <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="downdloadImage()">外勘图片上传</el-button>
                     </div>
                     <div v-for="(item,index) in slide1" v-dragging="{ list: slide1, item: item, group: 'src' }" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
@@ -100,6 +101,62 @@
         <div v-show="showText">
             <p>{{offsetX}}{{offsetY}}</p>
         </div>
+
+          <!--*************收款记录模态框*************-->
+        <el-dialog
+        title="外勘图片上传"
+        :visible.sync="dialogFormVisibleDownLoad"
+        width="50%">
+            <el-form ref="form" label-width="120px" style="width:100%;">
+                  <el-form-item label="分类1" class="select" style="">
+                  <el-select v-model="category"  @change="categoryChange" filterable style="width:300px;">
+                      <el-option
+                      v-for="item in category1"
+                      :key="item.value"
+                      :label="item.title"
+                      :value="item.id">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="分类2" class="select" style="">
+                  <el-select v-model="Category" filterable style="width:300px;">
+                      <el-option
+                      v-for="item in Category1"
+                      :key="item.value"
+                      :label="item.title"
+                      :value="item.id">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="上传图片" prop="coverFile">
+                <el-upload
+                class="upload-demo"
+                ref="upload"
+                :limit="1"
+                :http-request="ImgUploadSectionFile"
+                :with-credentials="true"
+                :auto-upload="true"
+                accept=".png,.jpg,.gif,.svg"
+                action=""
+                list-type="list"
+                :file-list="fileList">
+                    <el-button slot="trigger" type="primary">
+                        选取图片
+                    </el-button>
+                </el-upload>
+            </el-form-item>
+            
+                </el-form>
+                  
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+                <el-button type="primary" @click="downLoadBtn(),dialogFormVisibleDownLoad = false">保 存</el-button>
+                <el-button @click="dialogFormVisibleDownLoad = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************收款记录模态框*************-->
+
     </div>
 </template>
 
@@ -119,6 +176,12 @@ export default {
     },
     data() {
         return {
+            picture : '',
+            fileList : [],
+            category : '',
+            Category : '',
+            category1 : [],
+            Category1 : [],
             showText : false,
             offsetX : '',
             offsetY : '',
@@ -142,6 +205,7 @@ export default {
             zoom: 17,
             loadUrl: '',
             dialogFormVisible : false,
+            dialogFormVisibleDownLoad : false,
             imgs: [
         {
           src: 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1598707441,413137432&fm=26&gp=0.jpg',
@@ -379,6 +443,7 @@ export default {
             });
         },
         getlist(){
+            this.category1 = [];
             this.list11 = [];
             this.slide1 = [];
             request.post("/admin/appraisal/info",{
@@ -423,14 +488,24 @@ export default {
                     this.loadUrl = res.data.download;
                 }
             });
+            
+            request.post("/admin/appraisal/uploadType").then(res => {
+                if (res.code == 200){
+                    res.data.forEach(element => {
+                        this.category1.push(element)
+                    });
+                    console.log(this.category1)
+                    // this.category1 = res.data;
+                }
+            });
+            
         },
         closeHandler () {
-        console.log('cloooooose')
+            console.log('cloooooose')
         },
         handleRemove (index, fileList, target) {
             console.log(index + fileList + target)
             this.imgs = fileList
-            
         },
         sortBtn(){//排序
             let sort = [];
@@ -459,6 +534,57 @@ export default {
                     // }
                 }
             })
+        },
+        downdloadImage(){
+            console.log(this.$route.query.id)
+            this.dialogFormVisibleDownLoad = true;
+        },
+        ImgUploadSectionFile(param){//图片上传
+            let formData = new FormData();
+            formData.append('images', param.file);
+            request.post("/admin/appraisal/upload", formData).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '上传成功'//提示上传成功
+                        });
+                    this.picture = res.data;
+                }
+            });
+        },
+        downLoadBtn(){//确认按钮
+            request.post("/admin/appraisal/uploads", {
+                images : this.picture,
+                pos : this.category,
+                type : this.Category,
+                id : this.$route.query.id
+            }).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '上传成功'//提示上传成功
+                        });
+                    this.picture = res.data;
+                    this.getlist();
+
+                }
+            });
+            this.category = '';
+            this.Category = '';
+            this.$refs.upload.clearFiles();
+            console.log(this.Category,this.category)
+        },
+        categoryChange(selVal){//改变第一层获取第二层数据
+        this.Category1 = [];
+            this.category1.forEach(element => {
+                if(element.id == selVal){
+                    element.category.forEach(element1 => {
+                        this.Category1.push(element1)
+                    });
+                }
+            });
         },
     }
 };

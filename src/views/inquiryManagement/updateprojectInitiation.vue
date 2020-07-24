@@ -16,6 +16,24 @@
                 </el-button>
 
             </el-dialog>
+            
+            <!-- 修改联系人 -->
+            <el-dialog style="" :append-to-body='true' title="修改" :visible.sync="dialogFormVisibleUpdate">
+                <el-form-item label="看房联系人" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update.name"></el-input>
+                </el-form-item>
+
+                <el-form-item label="联系人电话" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update.telephone"></el-input>
+                </el-form-item>
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="updateContactBtn()">
+                    保存
+                </el-button>
+
+            </el-dialog>
+            <!-- 修改联系人 -->
+
 
             <el-dialog style="" :append-to-body='true' title="添加" :visible.sync="dialogFormVisible1">
                 <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
@@ -44,6 +62,37 @@
 
                 <el-button type="primary" style="margin-left:60%;" plain @click="addContactBtn1()">
                     立即添加
+                </el-button>
+
+            </el-dialog>
+
+            <el-dialog style="" :append-to-body='true' title="修改" :visible.sync="dialogFormVisibleUpdate1">
+                <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.name" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="联系电话" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.telephone" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="所属机构" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.subsidiary_organ" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="分支机构" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.affiliated_agency" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="地址" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.company_addr" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <!-- <el-form-item label="邮政编码" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.post_code"></el-input>
+                </el-form-item> -->
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="updateContactBtn1()">
+                    保存
                 </el-button>
 
             </el-dialog>
@@ -119,7 +168,7 @@
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">询值人员*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">报值人员*</span>
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.ask_price"></el-input>
             </el-form-item>
 
@@ -129,6 +178,10 @@
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" disabled v-model="form.ask_price_total"></el-input>
+            </el-form-item>
+
+            <el-form-item  label="抵押总价" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入" disabled v-model="form.mortgage_price"></el-input>
             </el-form-item>
 
             <el-form-item label="土地出让金" class="form-input" prop="title" style="width:300px;float:left;">
@@ -317,9 +370,9 @@
             <!-- <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.reconnaissance"></el-input>
             </el-form-item> -->
-            <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-radio v-model="reconnaissance" label="0">是</el-radio>
-                <el-radio v-model="reconnaissance" label="1">否</el-radio>
+            <el-form-item label="勘察" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-radio v-model="reconnaissance" label="1">是</el-radio>
+                <el-radio v-model="reconnaissance" label="0">否</el-radio>
             </el-form-item>
             <el-form-item label="勘察备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.costs_reserved" placeholder="请输入"></el-input>
@@ -356,6 +409,7 @@
             label="操作"
             align="center">
                 <template slot-scope="scope">
+                    <el-button size="small" type="primary" @click="updateContact(scope.row,scope.$index)" >修改</el-button>
                     <el-button size="small" type="danger" @click="delContact(scope.$index)" >删除</el-button>
                 </template>
             </el-table-column>
@@ -438,6 +492,7 @@
                 label="操作"
                 align="center">
                     <template slot-scope="scope">
+                        <el-button size="small" type="primary" @click="updateContact1(scope.row,scope.$index)" >修改</el-button>
                         <el-button size="small" type="danger" @click="delContact1(scope.$index)" >删除</el-button>
                     </template>
                 </el-table-column>
@@ -568,6 +623,14 @@ export default {
             search : '',
             dialogVisible : false,
             dialogVisible1 : false,
+            dialogFormVisibleUpdate : false,
+            dialogFormVisibleUpdate1 : false,
+            update : {
+                name:'',
+                telephone: '',
+            },
+            i : '',
+            k : '',
             subsidiary_organ1:[],
             affiliated_agency1:[],
             subsidiary_department1:[],
@@ -579,7 +642,13 @@ export default {
             values_type : '',
             selectBox : [],
             selectBox1 : [],
-
+            update1:{
+                name: '',
+                telephone: '',
+                subsidiary_organ: '',
+                affiliated_agency: '',
+                company_addr: '',
+            },
             add:{
                 name: '',
                 telephone: '',
@@ -617,6 +686,7 @@ export default {
                 }
             ],
             form : {
+                mortgage_price : '',
                 payment_order : '',
                 report_number:'',
                 subsidiary_organ : '',
@@ -655,7 +725,7 @@ export default {
                 project_approval_remark : '',
                 right_nature : '',
             },
-            reconnaissance : '0',
+            reconnaissance : '1',
             allInquiry1 : [],
             activeName: 'first',
             fileList:[],
@@ -740,6 +810,7 @@ export default {
             var s={};
             s.name = this.name;
             s.telephone = this.telephone;
+            console.log(s)
             this.linkman.push(s)
             this.$message({
                 // type: res.errno === 0 ? "success" : "warning",
@@ -806,7 +877,7 @@ export default {
             //         this.type=res.data.param.type;//房屋类型
                     
             //         this.bazaar_crew=res.data.bazaar_crew;//市场人员
-            //         this.ask_price=res.data.ask_price;//询值人员
+            //         this.ask_price=res.data.ask_price;//报值人员
             //         this.price_check=res.data.price_check;//价格变更审核人员
             //         console.log(this.ask_price)
             //     }
@@ -817,7 +888,13 @@ export default {
                     if (res.code == 200) {
                         console.log(res)
                         this.linkman = res.data.linkman;
+                        if(!this.linkman){
+                            this.linkman = [];
+                        }
                         this.ContractList = res.data.express;
+                        if(!this.ContractList){
+                            this.ContractList = [];
+                        }
                         this.checko = res.data.project_contract_id;
                     }
             });
@@ -868,7 +945,7 @@ export default {
                 send_num : this.form.send_num,
                 subsidiary_organ : this.form.subsidiary_organ,
                 affiliated_agency : this.form.affiliated_agency,
-                
+                mortgage_price : this.form.mortgage_price,
                 project_contract_id :this.checko,
                 linkman : this.linkman,
                 // ask_price_id : this.$route.query.id,
@@ -1146,6 +1223,62 @@ export default {
                     }
                 });
             }
+        },
+        updateContact(row,index){//修改联系人
+            // console.log(row,index)
+            this.i = index;
+            this.update.name = row.name;
+            this.update.telephone = row.telephone;
+            this.dialogFormVisibleUpdate = true;
+            // console.log(this.update)
+        },
+        updateContactBtn(){
+            this.linkman[this.i].name = this.update.name;
+            this.linkman[this.i].telephone = this.update.telephone;
+            // console.log(this.update)
+            // this.linkman.splice(this.i,1,this.update);
+            // console.log(this.linkman)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '修改成功'//提示修改成功
+            });
+            this.update.name = '';
+            this.update.telephone = '';
+            this.dialogFormVisibleUpdate = false;
+        },
+        updateContact1(row,index){//修改联系人
+            // console.log(row,index)
+            this.k = index;
+            this.update1.name = row.name;
+            this.update1.telephone = row.telephone;
+            this.update1.subsidiary_organ = row.subsidiary_organ;
+            this.update1.affiliated_agency = row.affiliated_agency;
+            this.update1.company_addr = row.company_addr;
+            this.dialogFormVisibleUpdate1 = true;
+            // console.log(this.update)
+        },
+        updateContactBtn1(){
+            this.ContractList[this.k].name = this.update1.name;
+            this.ContractList[this.k].telephone = this.update1.telephone;
+            this.ContractList[this.k].subsidiary_organ = this.update1.subsidiary_organ;
+            this.ContractList[this.k].affiliated_agency = this.update1.affiliated_agency;
+            this.ContractList[this.k].company_addr = this.update1.company_addr;
+            // console.log(this.update)
+            // this.linkman.splice(this.i,1,this.update);
+            // console.log(this.linkman)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '修改成功'//提示修改成功
+            });
+            
+            this.update1.name = '';
+            this.update1.telephone = '';
+            this.update1.subsidiary_organ = '';
+            this.update1.affiliated_agency = '';
+            this.update1.company_addr = '';
+            this.dialogFormVisibleUpdate1 = false;
         },
         selectBtn1(value,label){
             // console.log(this.values_type)

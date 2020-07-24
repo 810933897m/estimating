@@ -77,7 +77,7 @@
             </el-form-item>
 
               <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">询值人员*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">报值人员*</span>
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.ask_price"></el-input>
             </el-form-item>
 
@@ -87,6 +87,10 @@
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.ask_price_total" @change="totalPrices();sumComputed()"></el-input>
+            </el-form-item>
+
+            <el-form-item  label="抵押总价" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入" v-model="form.mortgage_price"></el-input>
             </el-form-item>
       
             <el-form-item style="position:relative;width:300px;float:left;">
@@ -123,7 +127,6 @@
 
             <el-form-item label="项目信息" class="form-input1" prop="title" style="">
             <el-input
-            disabled
             type="textarea"
             :rows="2"
             placeholder="请输入"
@@ -357,6 +360,9 @@ export default {
             activate_time : '',
             plot_address : "",
             ask_price_total:'',
+
+            mortgage_price : '',
+
             construct_area:'',
             ask_price:'',
             create_time : '',
@@ -439,10 +445,14 @@ export default {
                         this.form.ask_price_total = 0;
                     }
                 }
-                this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                this.form.total_prices = parseFloat(this.form.mortgage_price * this.factor).toFixed(2);
                 console.log(this.form.total_prices)
                 if(this.form.total_prices == 'NaN'){
                     this.form.total_prices = 0;
+                }
+                this.form.mortgage_price =  parseFloat(this.form.ask_price_total - this.form.tudi).toFixed(2);
+                if(this.form.mortgage_price == 'NaN'){
+                    this.form.mortgage_price = 0;
                 }
             },
             'factor' : function(){//监听房屋类型值改变做算法
@@ -487,9 +497,13 @@ export default {
                         this.form.ask_price_total = 0;
                     }
                 }
-                this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                this.form.total_prices = parseFloat(this.form.mortgage_price * this.factor).toFixed(2);
                 if(this.form.total_prices == 'NaN'){
                     this.form.total_prices = 0;
+                }
+                this.form.mortgage_price =  parseFloat(this.form.ask_price_total - this.form.tudi).toFixed(2);
+                if(this.form.mortgage_price == 'NaN'){
+                    this.form.mortgage_price = 0;
                 }
             },
     },
@@ -552,16 +566,20 @@ export default {
                         this.form.ask_price_total = 0;
                     }
                 }
-                this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                this.form.total_prices = parseFloat(this.form.mortgage_price * this.factor).toFixed(2);
                 if(this.form.total_prices == 'NaN'){
                     this.form.total_prices = 0;
+                }
+                this.form.mortgage_price =  parseFloat(this.form.ask_price_total - this.form.tudi).toFixed(2);
+                if(this.form.mortgage_price == 'NaN'){
+                    this.form.mortgage_price = 0;
                 }
         },
         showInput(){
             if(this.factor == 1){
-             this.textarea =this.form.enquiry_department+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' '+this.form.house_way+' 建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+'/'+this.form.total_floor+' '+this.form.ask_bank+' '+this.form.remark+' 询值人员'+this.form.ask_price+'  报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.ask_price+' 报值人'+localStorage.getItem('username')+'@'+this.form.bazaar_crew
             }else{
-             this.textarea =this.form.enquiry_department+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' '+this.form.house_way+' 建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+' 询值总价'+this.form.ask_price_total+'万  楼层'+this.form.floor+'/'+this.form.total_floor+' '+this.form.ask_bank+' '+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 询值人员'+this.form.ask_price+'  报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 '+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.bazaar_crew+' 报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
             }
         },
         totalPrices(){//当改变值时做算法
@@ -604,7 +622,12 @@ export default {
                         this.form.ask_price_total = 0;
                     }
                 }
-                this.form.total_prices = parseFloat(this.form.ask_price_total * this.factor).toFixed(2);
+                
+                this.form.mortgage_price =  parseFloat(this.form.ask_price_total - this.form.tudi).toFixed(2);
+                if(this.form.mortgage_price == 'NaN'){
+                    this.form.mortgage_price = 0;
+                }
+                this.form.total_prices = parseFloat(this.form.mortgage_price * this.factor).toFixed(2);
                 if(this.form.total_prices == 'NaN'){
                     this.form.total_prices = 0;
                 }
@@ -622,7 +645,7 @@ export default {
             //         this.house_way=res.data.param.house_way;//房屋用途
             //         this.type=res.data.param.type;//房屋类型
             //         this.bazaar_crew=res.data.bazaar_crew;//市场人员
-            //         this.ask_price=res.data.ask_price;//询值人员
+            //         this.ask_price=res.data.ask_price;//报值人员
             //         this.price_check=res.data.price_check;//价格变更审核人员
             //         console.log(this.ask_price)
             //     }
@@ -686,6 +709,7 @@ export default {
                     total_prices : this.form.total_prices,
                     bazaar_crew : this.form.bazaar_crew,
                     factor : this.factor,
+                    mortgage_price : this.form.mortgage_price,
 
                     land_leasing : this.form.tudi,
                     }).then(res => {
@@ -736,6 +760,7 @@ export default {
                     total_prices : this.form.total_prices,
                     bazaar_crew : this.form.bazaar_crew,
                     factor : this.factor,
+                    mortgage_price : this.form.mortgage_price,
 
                     land_leasing : this.form.tudi,
                     }).then(res => {

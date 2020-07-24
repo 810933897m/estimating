@@ -17,6 +17,23 @@
 
             </el-dialog>
 
+            <!-- 修改联系人 -->
+            <el-dialog style="" :append-to-body='true' title="修改" :visible.sync="dialogFormVisibleUpdate">
+                <el-form-item label="看房联系人" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update.name"></el-input>
+                </el-form-item>
+
+                <el-form-item label="联系人电话" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update.telephone"></el-input>
+                </el-form-item>
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="updateContactBtn()">
+                    保存
+                </el-button>
+
+            </el-dialog>
+            <!-- 修改联系人 -->
+
             <el-dialog style="" :append-to-body='true' title="添加" :visible.sync="dialogFormVisible1">
                 <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
                     <el-input v-model="add.name" placeholder="请输入"></el-input>
@@ -44,6 +61,37 @@
 
                 <el-button type="primary" style="margin-left:60%;" plain @click="addContactBtn1()">
                     立即添加
+                </el-button>
+
+            </el-dialog>
+
+            <el-dialog style="" :append-to-body='true' title="修改" :visible.sync="dialogFormVisibleUpdate1">
+                <el-form-item label="姓名" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.name" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="联系电话" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.telephone" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="所属机构" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.subsidiary_organ" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="分支机构" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.affiliated_agency" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <el-form-item label="地址" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="update1.company_addr" placeholder="请输入"></el-input>
+                </el-form-item>
+
+                <!-- <el-form-item label="邮政编码" class="form-input" prop="title" style="width:90%;">
+                    <el-input v-model="add.post_code"></el-input>
+                </el-form-item> -->
+
+                <el-button type="primary" style="margin-left:60%;" plain @click="updateContactBtn1()">
+                    保存
                 </el-button>
 
             </el-dialog>
@@ -119,7 +167,7 @@
             </el-form-item>
 
             <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">询值人员*</span>
+                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('ask_price','')">报值人员*</span>
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.ask_price"></el-input>
             </el-form-item>
 
@@ -129,6 +177,10 @@
 
             <el-form-item  label="询值总价" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" disabled v-model="form.ask_price_total"></el-input>
+            </el-form-item>
+
+            <el-form-item  label="抵押总价" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入" disabled v-model="form.mortgage_price"></el-input>
             </el-form-item>
 
             <el-form-item  label="净值系数" class="form-input" prop="title" style="width:300px;float:left;">
@@ -363,6 +415,7 @@
             label="操作"
             align="center">
                 <template slot-scope="scope">
+                    <el-button size="small" type="primary" @click="updateContact(scope.row,scope.$index)" >修改</el-button>
                     <el-button size="small" type="danger" @click="delContact(scope.$index)" >删除</el-button>
                 </template>
             </el-table-column>
@@ -389,12 +442,11 @@
                 </el-select>
               </el-form-item>
 
-              <el-button type="primary" v-show="tableShow" style="float:left;margin-left:50px;" plain @click="addExpress()">
+              <el-button type="primary" style="float:left;margin-left:50px;" plain @click="addExpress()">
                 添加
             </el-button>
               
               <el-table 
-              v-show="tableShow"
                 class="table-picture"
                 :data="ContractList"
                 border
@@ -445,6 +497,7 @@
                 label="操作"
                 align="center">
                     <template slot-scope="scope">
+                        <el-button size="small" type="primary" @click="updateContact1(scope.row,scope.$index)" >修改</el-button>
                         <el-button size="small" type="danger" @click="delContact1(scope.$index)" >删除</el-button>
                     </template>
                 </el-table-column>
@@ -614,13 +667,28 @@ export default {
             contractList1:[],
             checko : '',
 
+            dialogFormVisibleUpdate : false,
+            dialogFormVisibleUpdate1 : false,
+            update : {
+                name:'',
+                telephone: '',
+            },
+            i : '',
+            k : '',
+
 
             values_type : '',
             selectBox : [],
             selectBox1 : [],
             outworker_relevance_name : '',
             outworker_relevance_name1 :[],
-
+            update1:{
+                name: '',
+                telephone: '',
+                subsidiary_organ: '',
+                affiliated_agency: '',
+                company_addr: '',
+            },
             add:{
                 name: '',
                 telephone: '',
@@ -634,7 +702,7 @@ export default {
             market_leader1:[],
             ContractList:[],
             tableShow :false,
-            express : '',
+            express : '快递',
             express1 : [
                 {
                     label: "快递",
@@ -658,6 +726,7 @@ export default {
                 }
             ],
             form : {
+                mortgage_price : '',
                 payment_order : '',
                 report_number:'',
                 subsidiary_organ : '',
@@ -847,7 +916,7 @@ export default {
             //         this.type=res.data.param.type;//房屋类型
                     
             //         this.bazaar_crew=res.data.bazaar_crew;//市场人员
-            //         this.ask_price=res.data.ask_price;//询值人员
+            //         this.ask_price=res.data.ask_price;//报值人员
             //         this.price_check=res.data.price_check;//价格变更审核人员
             //         console.log(this.ask_price)
             //     }
@@ -869,7 +938,7 @@ export default {
             }
             request.post("/admin/project/create",{
                 outworker_relevance_name : this.outworker_relevance_name,
-
+                mortgage_price : this.form.mortgage_price,
                 house_type : this.house_type,
                 plot_name : this.form.plot_name,
                 right_nature : this.form.right_nature,
@@ -1175,6 +1244,62 @@ export default {
                     }
                 });
             }
+        },
+        updateContact(row,index){//修改联系人
+            // console.log(row,index)
+            this.i = index;
+            this.update.name = row.name;
+            this.update.telephone = row.telephone;
+            this.dialogFormVisibleUpdate = true;
+            // console.log(this.update)
+        },
+        updateContactBtn(){
+            this.linkman[this.i].name = this.update.name;
+            this.linkman[this.i].telephone = this.update.telephone;
+            // console.log(this.update)
+            // this.linkman.splice(this.i,1,this.update);
+            // console.log(this.linkman)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '修改成功'//提示修改成功
+            });
+            this.update.name = '';
+            this.update.telephone = '';
+            this.dialogFormVisibleUpdate = false;
+        },
+        updateContact1(row,index){//修改联系人
+            // console.log(row,index)
+            this.k = index;
+            this.update1.name = row.name;
+            this.update1.telephone = row.telephone;
+            this.update1.subsidiary_organ = row.subsidiary_organ;
+            this.update1.affiliated_agency = row.affiliated_agency;
+            this.update1.company_addr = row.company_addr;
+            this.dialogFormVisibleUpdate1 = true;
+            // console.log(this.update)
+        },
+        updateContactBtn1(){
+            this.ContractList[this.k].name = this.update1.name;
+            this.ContractList[this.k].telephone = this.update1.telephone;
+            this.ContractList[this.k].subsidiary_organ = this.update1.subsidiary_organ;
+            this.ContractList[this.k].affiliated_agency = this.update1.affiliated_agency;
+            this.ContractList[this.k].company_addr = this.update1.company_addr;
+            // console.log(this.update)
+            // this.linkman.splice(this.i,1,this.update);
+            // console.log(this.linkman)
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "success",
+                message: '修改成功'//提示修改成功
+            });
+            
+            this.update1.name = '';
+            this.update1.telephone = '';
+            this.update1.subsidiary_organ = '';
+            this.update1.affiliated_agency = '';
+            this.update1.company_addr = '';
+            this.dialogFormVisibleUpdate1 = false;
         },
         selectBtn1(value,label){
             console.log(value)

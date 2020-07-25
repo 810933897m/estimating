@@ -629,9 +629,9 @@ export default {
         },
         showInput(){
             if(this.factor == 1){
-             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 报值人员'+this.form.ask_price+' 报值人'+localStorage.getItem('username')+'@'+this.form.bazaar_crew
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.ask_price+' 报值人'+localStorage.getItem('username')+'@'+this.form.bazaar_crew
             }else{
-             this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 报值人员'+this.form.bazaar_crew+' 报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 '+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.bazaar_crew+' 报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
             }
             // this.textarea = this.$refs.selectionCity.selectedLabel+this.form.district+this.form.plot_address+this.form.unit_number+'    '+this.form.unit_number+'  建筑面积'+this.form.construct_area+'  询值单价'+this.form.ask_univalence+'  楼层'+this.form.floor+' '+this.form.floor+' 报值人员'+this.$refs.selectAskPrice.selectedLabel+'  报值人'+localStorage.getItem('username')+'@'+this.$refs.selectAskPrice.selectedLabel
         },

@@ -81,6 +81,7 @@
       width="250px" 
       align="center">
         <template slot-scope="scope">
+          <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="updatePassword(scope.row)" >修改密码</el-button>
           <el-button v-if="!scope.row.project_status" size="small" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
           <!-- <div v-show="dialogFormVisible" class="dialog-box"></div> -->
           <el-button size="small" type="primary" @click="confirmDetail(scope.row)">查看</el-button>
@@ -115,6 +116,10 @@
                     <el-input v-model="updata.email"></el-input>
                 </el-form-item>
 
+                <!-- <el-form-item label="重置密码">
+                    <el-input type="password" v-model="updata.password"></el-input>
+                </el-form-item> -->
+
                 <el-form-item label="状态">
                     <el-radio v-model="updata.status" label="0">正常</el-radio>
                     <el-radio v-model="updata.status" label="1">禁用</el-radio>
@@ -124,6 +129,37 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmRevision(),dialogVisible = false">保 存</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************修改模态框结束*************-->
+
+        <!--*************修改模态框*************-->
+        <el-dialog
+        title="修改密码"
+        :visible.sync="dialogVisiblePassword"
+        width="50%">
+        <!-- :before-close="handleClose" -->
+            <el-form ref="updata" label-width="120px">
+                <el-form-item label="原始密码">
+                    <el-input v-model="update1.password"></el-input>
+                </el-form-item>
+
+                <el-form-item label="新密码">
+                    <el-input v-model="update1.newPassword"></el-input>
+                </el-form-item>
+
+                <el-form-item label="确认密码">
+                    <el-input v-model="update1.newPassword1"></el-input>
+                </el-form-item>
+
+                <!-- <el-form-item label="重置密码">
+                    <el-input type="password" v-model="updata.password"></el-input>
+                </el-form-item> -->
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRevision1()">保 存</el-button>
+                <el-button @click="dialogVisiblePassword = false">取 消</el-button>
             </span>
         </el-dialog>
         <!--*************修改模态框结束*************-->
@@ -168,6 +204,7 @@ export default {
       return {
         dialogVisible: false,
         dialogVisible1: false,
+        dialogVisiblePassword: false,
         roles:[],
         role:[],
         timestamp : [
@@ -180,6 +217,12 @@ export default {
           userno : '',
           email : '',
           status : '',
+          password : '',
+        },
+        update1:{
+          password : '',
+          newPassword : '',
+          newPassword1 : '',
         },
         search : '',
         options:map.options,
@@ -273,12 +316,26 @@ export default {
         });
         // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
       },
+      updatePassword(row) {//修改按钮
+      this.UpId =row.id;
+        this.dialogVisiblePassword = true;
+        // request.post("/admin//admin/get",{//获取修改原数据
+        //   id : row.id,
+        // }).then(res => {
+        //     // console.log(res)
+        //     if (res.code == 200) {
+        //       this.update1 = res.data;
+        //     }
+        // });
+        // this.$router.push({path:'/updataInquiry',query:{id:row.id}})
+      },
       confirmRevision(){//确认修改
         request.post("/admin//admin/update",{
           id : this.UpId,
           userno : this.updata.userno,
           email : this.updata.email,
           status : Number(this.updata.status),
+          // password : this.updata.password,
         }).then(res => {
             // console.log(res)
             if (res.code == 200) {
@@ -290,6 +347,36 @@ export default {
               this.getAgentList();
             }
         });
+      },
+      confirmRevision1(){//确认修改
+      if(this.update1.newPassword != this.update1.newPassword1){
+        this.$message({
+                  // type: res.errno === 0 ? "success" : "warning",
+                  type: "warning",
+                  message: '两次密码不一致'//提示两次密码不一致
+              });
+      }else{
+        request.post("/admin/User/modify",{
+          id : this.UpId,
+          old_password : this.update1.password,
+          password : this.update1.newPassword,
+          confirm_password : this.update1.newPassword1,
+        }).then(res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                  // type: res.errno === 0 ? "success" : "warning",
+                  type: "success",
+                  message: '密码修改成功'//提示密码修改成功
+              });
+              this.getAgentList();
+              this.dialogVisiblePassword = false;
+              this.update1.password = '';
+              this.update1.newPassword = '';
+              this.update1.newPassword1 = '';
+            }
+        });
+      }
       },
       handleChange (value) {
         this.center = value[2];

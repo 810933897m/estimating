@@ -163,6 +163,150 @@
             </el-form-item> -->
         </el-form>
         
+        <div style="margin-top:15px;margin-top:10px;margin-bottom:20px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">询价信息</span></div>
+        <el-form ref="form" label-width="0px" style="width:100%;">
+        <div style="width:1200px;margin-left:5%;display: flex;
+        flex-direction: column;
+        align-items: center;
+        ">
+            <h3>对公项目询值结果通知单</h3>
+        </div>
+        <div style="width:1200px;border:1px solid black;border-bottom:0;margin-left:5%;">
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <!-- 
+                    <el-form-item label="" class="form-input" prop="title" style="width:200px;">
+                        <el-input  placeholder="请输入" v-model="form.ask_price"></el-input>
+                    </el-form-item>
+                 -->
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    询值人员：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <!-- <el-input  placeholder="请输入" v-model="form.ask_price"></el-input> -->
+                        <input type="text" placeholder="请输入" v-model="form.ask_price" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+                <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
+                    金融机构：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <!-- <el-input  placeholder="请输入" v-model="form.ask_price"></el-input> -->
+                        <input type="text" placeholder="请输入" v-model="form.ask_bank" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    项目名称：
+                </div>
+                <div style="height:50px;line-height:50px;width:997px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.project_name" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    测算人员：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.test_user" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+                <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
+                    用途：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.house_way" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    建筑面积：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.construct_area" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+                <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
+                    土地面积：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.land_area" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    估价总价（万元）：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.ask_price_total" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+                <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
+                    估价单价：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.ask_univalence" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <div style="width:100%;height:50px;border-bottom:1px solid black;">
+                <div style="height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    净值（万元）：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.total_prices" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+                <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
+                    审核人员：
+                </div>
+                <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.check_user" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+            <!-- <div  style="width:100%;min-height:130px;border-bottom:1px solid black;">
+                <div style="min-height:130px;line-height:130px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    项目特殊情况注意事项：
+                </div>
+                <div style="min-height:50px;line-height:50px;width:997px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:600px;margin-left:100px;margin-top:3px;">
+                        <el-input
+                        type="textarea"
+                        :rows="2"
+                        placeholder=""
+                        v-model="form.remark">
+                        </el-input>
+                    </el-form-item>
+                </div>
+            </div> -->
+            <div  style="width:100%;min-height:50px;border-bottom:1px solid black;">
+                <div style="min-height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    项目特殊情况注意事项：
+                </div>
+                <div style="min-height:50px;line-height:50px;width:997px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.remark" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
+                    </el-form-item>
+                </div>
+            </div>
+        </div>
+        </el-form>
+
         <div style="margin-top:15px;margin-top:10px;margin-bottom:20px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">项目信息</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
@@ -261,18 +405,9 @@
                 <el-input  style="width:180px;"  placeholder="请输入"  v-model="form.settlement_method"></el-input>
             </el-form-item>
 
-            <!-- <el-form-item label="" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.settlement_method"></el-input>
-            </el-form-item> -->
-
             <el-form-item label="应收金额(元)" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.money_due" placeholder="请输入"></el-input>
             </el-form-item>
-
-            <!-- <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select1('payment_order','')">付费*</span>
-                <el-input  style="width:180px;" placeholder="请输入付费"  v-model="form.payment_order"></el-input>
-            </el-form-item> -->
 
             <el-form-item label="付费" class="select" style="">
                 <el-select v-model="form.payment_order" filterable style="width:120px;">
@@ -305,11 +440,8 @@
             </el-form-item>
         </el-form> -->
 
-        <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">勘察事项</span></div>
+        <!-- <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">勘察事项</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
-            <!-- <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.reconnaissance"></el-input>
-            </el-form-item> -->
             <el-form-item label="是否勘察" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-radio v-model="reconnaissance" label="1">是</el-radio>
                 <el-radio v-model="reconnaissance" label="0">否</el-radio>
@@ -366,7 +498,7 @@
 
             </el-table>
             
-        </el-form>
+        </el-form> -->
         
         <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">报告发送方式</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
@@ -654,44 +786,37 @@ export default {
                 }
             ],
             form : {
-                payment_order : '',
-                report_number:'',
-                subsidiary_organ : '',
-                affiliated_agency : '',
-                bank_clerk : '',
-                bank_phone : '',
-                subsidiary_department : '',
-                subsidiary_department_children : '',
+                ask_price : '',
+                ask_bank : '',
+                project_name : '',
+                test_user : '',
+                house_way : '',
+                construct_area : '',
+                ask_price_total : '',
+                ask_univalence : '',
+                total_prices : '',
+                check_user : '',
+                remark : '',
+                land_area : '',
+                delivery_note : '',
+                project_approval_remark : '',
+
                 send_num : '',
                 project_classify : '',
                 inquiry_purpose : '',
-                property_type : '',
                 report_tale : '',
-                city : '',
-                plot_name : '',
                 project_address : '',
                 load_address : '',
-                construct_area : '',
                 land_area : '',
-                ask_univalence : '',
-                ask_price_total : '',
-                total_net_price : '',
                 lending_agency : '',
                 lending_bank : '',
+                subsidiary_organ : '',
+                affiliated_agency : '',
                 valuation_principal : '',
                 valuation_client_phone : '',
-                market_leader : '',
-                invoice : '',
-                contract : '',
                 settlement_method : '',
                 money_due : '',
-                fee_note : '',
-                reconnaissance : '1',
-                costs_reserved : '',
-                materials_offer_way : '',
-                courier_method : '',
-                delivery_note : '',
-                project_approval_remark : '',
+                payment_order : '',
             },
             reconnaissance : '1',
             allInquiry1 : [],
@@ -858,75 +983,42 @@ export default {
         },
         addProjectInitiation(){
             console.log(this.form)
-            if(this.form.payment_order == '先付费'){
-                this.form.payment_order = 0;
-            }else{
-                this.form.payment_order = 1;
-            }
-            request.post("/admin/project/create",{
-                outworker_relevance_name : this.outworker_relevance_name,
-
-                house_type : this.house_type,
-                plot_name : this.form.plot_name,
-                right_nature : this.form.right_nature,
-                unit_number : this.form.unit_number,
-                construct_area : this.form.construct_area,
-                ask_price : this.form.ask_price,
-                ask_univalence : this.form.ask_univalence,
-                ask_price_total : this.form.ask_price_total,
-                enquiry_department : this.form.enquiry_department,
-                city : this.form.city,
-                district : this.form.district,
-                plot_address : this.form.plot_address,
-                floor : this.form.floor,
-                activate_time : this.form.activate_time,
-                house_way : this.form.house_way,
-                ask_bank : this.form.ask_bank,
-                remark : this.form.remark,
-                total_floor : this.form.total_floor,
-                plot_special : this.form.plot_special,
-                total_prices : this.form.total_prices,
-                bazaar_crew : this.form.bazaar_crew,
-                factor : this.form.factor,
-                bank_clerk : this.form.bank_clerk,
-                bank_phone : this.form.bank_phone,
-                subsidiary_department : this.form.subsidiary_department,
-                subsidiary_department_children : this.form.subsidiary_department_children,
-                send_num : this.form.send_num,
-                subsidiary_organ : this.form.subsidiary_organ,
-                affiliated_agency : this.form.affiliated_agency,
-                
-                project_contract_id :this.checko,
-                linkman : this.linkman,
+            request.post("/admin/PublicProject/create",{
                 id : this.$route.query.id,
-                
+                ask_price : this.form.ask_price,
+                ask_bank :  this.form.ask_bank,
+                project_name : this.form.project_name,
+                test_user : this.form.test_user,
+                house_way : this.form.house_way,
+                construct_area : this.form.construct_area,
+                ask_price_total : this.form.ask_price_total,
+                ask_univalence : this.form.ask_univalence,
+                total_prices : this.form.total_prices,
+                check_user : this.form.check_user,
+                remark : this.form.remark,
+                land_area : this.form.land_area,
+                delivery_note : this.form.delivery_note,
+                project_approval_remark : this.form.project_approval_remark,
+                project_contract_id :this.checko,
+                express : this.ContractList,
+
+                send_num : this.form.send_num,
                 project_classify : this.form.project_classify,
                 inquiry_purpose : this.form.inquiry_purpose,
-                property_type : this.form.property_type,
                 report_tale : this.form.report_tale,
-                express : this.ContractList,
                 project_address : this.form.project_address,
                 load_address : this.form.load_address,
+                land_area : this.form.land_area,
                 lending_agency : this.form.lending_agency,
                 lending_bank : this.form.lending_bank,
+                subsidiary_organ : this.form.subsidiary_organ,
+                affiliated_agency : this.form.affiliated_agency,
                 valuation_principal : this.form.valuation_principal,
                 valuation_client_phone : this.form.valuation_client_phone,
                 settlement_method : this.form.settlement_method,
-                land_area : this.form.land_area,
-                total_net_price : this.form.total_net_price,
                 money_due : this.form.money_due,
                 payment_order : this.form.payment_order,
-                market_leader : this.form.market_leader,
-                invoice : this.form.invoice,
-                contract : this.form.contract,
-                fee_note : this.form.fee_note,
-                reconnaissance : this.reconnaissance,
-                costs_reserved : this.form.costs_reserved,
-                materials_offer_way : this.form.materials_offer_way,
-                courier_method : this.form.courier_method,
-                report_number:this.form.report_number,
-                delivery_note : this.form.delivery_note,
-                project_approval_remark : this.form.project_approval_remark,
+
             }).then(res => {
             // console.log(res)
             if (res.code == 200) {

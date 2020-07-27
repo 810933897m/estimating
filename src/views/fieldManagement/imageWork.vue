@@ -11,6 +11,12 @@
                         <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()">下载PDF</el-button>
                         <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="downdloadImage()">外勘图片上传</el-button>
                     </div>
+
+                    <div style="width:95%;margin-left:20px;margin-top:20px;float:left;">
+                        <el-radio v-model="activeName" label="one" @change="handleClick()">现场勘察照片</el-radio>
+                        <el-radio v-model="activeName" label="two" @change="handleClick()">房屋产权照片</el-radio>
+                        <el-radio v-model="activeName" label="three" @change="handleClick()">定位信息</el-radio>
+                    </div>
                     <div v-for="(item,index) in slide1" v-dragging="{ list: slide1, item: item, group: 'src' }" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
                         <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
@@ -27,7 +33,7 @@
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
                 
-                <div style="width:570px;float:left;border:1px solid #ccc;">
+                <div style="margin-top:90px;width:570px;float:left;border:1px solid #ccc;">
                     <!-- <p>回收站</p> -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
                         <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
@@ -35,7 +41,7 @@
 
                     <!-- <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
-                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="ht 本周计划：估价新需求tps://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
@@ -151,7 +157,7 @@
                 </el-form>
                   
             <span slot="footer" class="dialog-footer" style="margin-top:10px;">
-                <el-button type="primary" @click="downLoadBtn(),dialogFormVisibleDownLoad = false">保 存</el-button>
+                <el-button type="primary" @click="downLoadBtn()">保 存</el-button>
                 <el-button @click="dialogFormVisibleDownLoad = false">取 消</el-button>
             </span>
         </el-dialog>
@@ -189,11 +195,11 @@ export default {
             showImg : false,
             suolueImg : '',
             activeName1:'first',
+            activeName : 'one',
             bigImg : '',
             smallImg:'',
             baiduShow1 : false,
             position : '',
-            activeName:'img',
             show1 : true,
             show : false,
             longitude:"",
@@ -259,6 +265,178 @@ export default {
     methods: {
         handleClick(tab, event){
             this.baiduShow1 = false;
+            if(this.activeName == 'one'){
+                this.category1 = [];
+            this.list11 = [];
+            this.slide1 = [];
+            request.post("/admin/appraisal/info",{
+                id : this.$route.query.id,
+                pos : 1
+            }).then(res => {
+                if (res.code == 200) {
+                    this.slide11 = res.data.images
+                    // console.log(slide11)
+                    this.position = res.data.baidu.query;
+                    this.bigImg = res.data.baidu.big_image;
+                    this.smallImg = res.data.baidu.small_image;
+                    // this.list = res.data.images;
+                    // for(let i=0;i<this.list.length;i++){
+                    //     this.list[i].category.forEach(element => {
+                    //         // console.log('12412')
+                    //         this.list11.push(element)
+                    //     });
+                    // }
+                    // this.slide11 = [];
+                    // this.imgs = [];
+
+                    // for(let j=0;j<this.slide11.length;j++){
+                        this.slide11.forEach(element => {
+                            var ss={};
+                            ss.src = element.src;
+                            ss.msrc = element.thumb;
+                            ss.id = element.id;
+                            ss.guid = element.guid;
+                            ss.title = element.title;
+                            // console.log(element.id)
+                            ss.w = 800;
+                            ss.h = 800;
+                            // ss.order = element.order;
+                            this.slide1.push(ss)
+                            // this.imgs.push(ss)
+                            // element.thumb
+                            // this.list1.push(element)
+                        });
+                    // }
+                    this.recovery = res.data.recovery;
+                    
+                    this.loadUrl = res.data.download;
+                }
+            });
+            
+            request.post("/admin/appraisal/uploadType").then(res => {
+                if (res.code == 200){
+                    res.data.forEach(element => {
+                        this.category1.push(element)
+                    });
+                    console.log(this.category1)
+                    // this.category1 = res.data;
+                }
+            });
+            }else if(this.activeName == 'two'){
+                this.category1 = [];
+            this.list11 = [];
+            this.slide1 = [];
+            request.post("/admin/appraisal/info",{
+                id : this.$route.query.id,
+                pos : 2
+            }).then(res => {
+                if (res.code == 200) {
+                    this.slide11 = res.data.images
+                    // console.log(slide11)
+                    this.position = res.data.baidu.query;
+                    this.bigImg = res.data.baidu.big_image;
+                    this.smallImg = res.data.baidu.small_image;
+                    // this.list = res.data.images;
+                    // for(let i=0;i<this.list.length;i++){
+                    //     this.list[i].category.forEach(element => {
+                    //         // console.log('12412')
+                    //         this.list11.push(element)
+                    //     });
+                    // }
+                    // this.slide11 = [];
+                    // this.imgs = [];
+
+                    // for(let j=0;j<this.slide11.length;j++){
+                        this.slide11.forEach(element => {
+                            var ss={};
+                            ss.src = element.src;
+                            ss.msrc = element.thumb;
+                            ss.id = element.id;
+                            ss.guid = element.guid;
+                            ss.title = element.title;
+                            // console.log(element.id)
+                            ss.w = 800;
+                            ss.h = 800;
+                            // ss.order = element.order;
+                            this.slide1.push(ss)
+                            // this.imgs.push(ss)
+                            // element.thumb
+                            // this.list1.push(element)
+                        });
+                    // }
+                    this.recovery = res.data.recovery;
+                    
+                    this.loadUrl = res.data.download;
+                }
+            });
+            
+            request.post("/admin/appraisal/uploadType").then(res => {
+                if (res.code == 200){
+                    res.data.forEach(element => {
+                        this.category1.push(element)
+                    });
+                    console.log(this.category1)
+                    // this.category1 = res.data;
+                }
+            });
+            }else if(this.activeName == 'three'){
+                this.category1 = [];
+            this.list11 = [];
+            this.slide1 = [];
+            request.post("/admin/appraisal/info",{
+                id : this.$route.query.id,
+                pos : 3
+            }).then(res => {
+                if (res.code == 200) {
+                    this.slide11 = res.data.images
+                    // console.log(slide11)
+                    this.position = res.data.baidu.query;
+                    this.bigImg = res.data.baidu.big_image;
+                    this.smallImg = res.data.baidu.small_image;
+                    // this.list = res.data.images;
+                    // for(let i=0;i<this.list.length;i++){
+                    //     this.list[i].category.forEach(element => {
+                    //         // console.log('12412')
+                    //         this.list11.push(element)
+                    //     });
+                    // }
+                    // this.slide11 = [];
+                    // this.imgs = [];
+
+                    // for(let j=0;j<this.slide11.length;j++){
+                        this.slide11.forEach(element => {
+                            var ss={};
+                            ss.src = element.src;
+                            ss.msrc = element.thumb;
+                            ss.id = element.id;
+                            ss.guid = element.guid;
+                            ss.title = element.title;
+                            // console.log(element.id)
+                            ss.w = 800;
+                            ss.h = 800;
+                            // ss.order = element.order;
+                            this.slide1.push(ss)
+                            // this.imgs.push(ss)
+                            // element.thumb
+                            // this.list1.push(element)
+                        });
+                    // }
+                    this.recovery = res.data.recovery;
+                    
+                    this.loadUrl = res.data.download;
+                }
+            });
+            
+            request.post("/admin/appraisal/uploadType").then(res => {
+                if (res.code == 200){
+                    res.data.forEach(element => {
+                        this.category1.push(element)
+                    });
+                    console.log(this.category1)
+                    // this.category1 = res.data;
+                }
+            });
+            }
         },
         baiduShowBtn(){//百度地图显示
             
@@ -386,12 +564,14 @@ export default {
         },
         reduction(row){//删除图片
             console.log(row)
-            this.$confirm("您确定要还原？", "提示", {
+            if(this.activeName == 'one'){
+                this.$confirm("您确定要还原？", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消"
             }).then(() => {
                 request.post("/admin/appraisal/reduction", {
-                        id:row
+                        id:row,
+                        pos:1
                 }).then(res => {
                     // res.errno === 0 && this.getList();
                     this.$message({
@@ -400,7 +580,7 @@ export default {
                         message: '还原成功！'
                     });
                     if(this.showImg == false){
-                        this.getlist();
+                        this.handleClick();
                     }else{
                         location.reload();
                     }
@@ -412,15 +592,74 @@ export default {
                     });
                 });
             });
+            }else if(this.activeName == 'two'){
+                this.$confirm("您确定要还原？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/reduction", {
+                        id:row,
+                        pos:2
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '还原成功！'
+                    });
+                    if(this.showImg == false){
+                        this.handleClick();
+                    }else{
+                        location.reload();
+                    }
+                    
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "还原失败!"
+                    });
+                });
+            });
+            }else if(this.activeName == 'three'){
+                this.$confirm("您确定要还原？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/reduction", {
+                        id:row,
+                        pos:3
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '还原成功！'
+                    });
+                    if(this.showImg == false){
+                        this.handleClick();
+                    }else{
+                        location.reload();
+                    }
+                    
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "还原失败!"
+                    });
+                });
+            });
+            }
+            
         },
         del(row){//删除图片
-            console.log(row)
+            if(this.activeName == 'one'){
             this.$confirm("您确定要删除？", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消"
             }).then(() => {
                 request.post("/admin/appraisal/delete", {
-                        id:row
+                        id:row,
+                        pos:1
                 }).then(res => {
                     // res.errno === 0 && this.getList();
                     this.$message({
@@ -429,7 +668,7 @@ export default {
                         message: '删除成功！'
                     });
                     if(this.showImg == false){
-                        this.getlist();
+                        this.handleClick();
                     }else{
                         location.reload();
                     }
@@ -441,13 +680,72 @@ export default {
                     });
                 });
             });
+            }else if(this.activeName == 'two'){
+            this.$confirm("您确定要删除？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/delete", {
+                        id:row,
+                        pos:2
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '删除成功！'
+                    });
+                    if(this.showImg == false){
+                        this.handleClick();
+                    }else{
+                        location.reload();
+                    }
+                    
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "删除失败!"
+                    });
+                });
+            });
+            }else if(this.activeName == 'three'){
+            this.$confirm("您确定要删除？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+                request.post("/admin/appraisal/delete", {
+                        id:row,
+                        pos:3
+                }).then(res => {
+                    // res.errno === 0 && this.getList();
+                    this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '删除成功！'
+                    });
+                    if(this.showImg == false){
+                        this.handleClick();
+                    }else{
+                        location.reload();
+                    }
+                    
+                }).catch(res => {
+                    this.$message({
+                        type: "warning",
+                        message: "删除失败!"
+                    });
+                });
+            });
+            }
+            
         },
         getlist(){
             this.category1 = [];
             this.list11 = [];
             this.slide1 = [];
             request.post("/admin/appraisal/info",{
-                id : this.$route.query.id
+                id : this.$route.query.id,
+                pos : 1
             }).then(res => {
                 if (res.code == 200) {
                     this.slide11 = res.data.images
@@ -508,7 +806,8 @@ export default {
             this.imgs = fileList
         },
         sortBtn(){//排序
-            let sort = [];
+            if(this.activeName == 'one'){
+                let sort = [];
             this.slide1.forEach(element => {
                 // console.log(element.id)
                 // console.log(element.id)
@@ -517,6 +816,7 @@ export default {
             // console.log(sort)
             request.post("/admin/appraisal/order",{
                 data : sort,
+                pos : 1
                 // order : order,
             }).then(res => {
                 if(res.code == 200){
@@ -527,13 +827,71 @@ export default {
                     });
                     // console.log(this.loader)
                     if(this.loader == 'all'){
-                        this.getlist();
+                        this.handleClick();
                     }
                     // else{
                     //     location.reload();
                     // }
                 }
             })
+            }else if(this.activeName == 'two'){
+                let sort = [];
+            this.slide1.forEach(element => {
+                // console.log(element.id)
+                // console.log(element.id)
+                sort.push(element.id)
+            });
+            // console.log(sort)
+            request.post("/admin/appraisal/order",{
+                data : sort,
+                pos : 2
+                // order : order,
+            }).then(res => {
+                if(res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '排序成功'//提示排序成功
+                    });
+                    // console.log(this.loader)
+                    if(this.loader == 'all'){
+                        this.handleClick();
+                    }
+                    // else{
+                    //     location.reload();
+                    // }
+                }
+            })
+            }else if(this.activeName == 'three'){
+                let sort = [];
+            this.slide1.forEach(element => {
+                // console.log(element.id)
+                // console.log(element.id)
+                sort.push(element.id)
+            });
+            // console.log(sort)
+            request.post("/admin/appraisal/order",{
+                data : sort,
+                pos : 3
+                // order : order,
+            }).then(res => {
+                if(res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '排序成功'//提示排序成功
+                    });
+                    // console.log(this.loader)
+                    if(this.loader == 'all'){
+                        this.handleClick();
+                    }
+                    // else{
+                    //     location.reload();
+                    // }
+                }
+            })
+            }
+            
         },
         downdloadImage(){
             console.log(this.$route.query.id)
@@ -554,6 +912,14 @@ export default {
             });
         },
         downLoadBtn(){//确认按钮
+        console.log(this.picture)
+        if(!this.picture){
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "warning",
+                message: '请选择图片再上传'//提示请选择图片再上传
+            });
+        }else{
             request.post("/admin/appraisal/uploads", {
                 images : this.picture,
                 pos : this.category,
@@ -566,15 +932,18 @@ export default {
                         type: "success",
                         message: '上传成功'//提示上传成功
                         });
-                    this.picture = res.data;
-                    this.getlist();
-
+                    // this.picture = res.data;
+                    this.handleClick();
+                    this.dialogFormVisibleDownLoad = false;
                 }
             });
             this.category = '';
             this.Category = '';
             this.$refs.upload.clearFiles();
+            this.picture ='';
             console.log(this.Category,this.category)
+        }
+            
         },
         categoryChange(selVal){//改变第一层获取第二层数据
         this.Category1 = [];

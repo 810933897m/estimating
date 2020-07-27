@@ -338,7 +338,6 @@
 
           <!-- 二次审核弹出框 -->
           <el-dialog style="" :append-to-body='true' title="提交审核" :visible.sync="dialogFormVisible3">
-           
             <el-form ref="form" label-width="120px" :model="form" style="width:100%;">
               <div style="width:100%;position:relative;height:50px;">
                   <el-form-item label="二审人员" class="select" style="float:left;">

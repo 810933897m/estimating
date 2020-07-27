@@ -374,8 +374,8 @@
                 <el-radio v-model="reconnaissance" label="1">是</el-radio>
                 <el-radio v-model="reconnaissance" label="0">否</el-radio>
             </el-form-item>
-            <el-form-item label="勘察备注" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.costs_reserved" placeholder="请输入"></el-input>
+            <el-form-item label="勘察备注" class="form-input" prop="title" style="width:500px;float:left;">
+                <el-input v-model="form.costs_reserved" placeholder="请输入" style="width:300px;"></el-input>
             </el-form-item>
 
             <el-button type="primary" style="float:left;margin-left:50px;" plain @click="addContact()">

@@ -316,18 +316,9 @@
                 <el-input  style="width:180px;"  placeholder="请输入"  v-model="form.settlement_method"></el-input>
             </el-form-item>
 
-            <!-- <el-form-item label="" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.settlement_method"></el-input>
-            </el-form-item> -->
-
             <el-form-item label="应收金额(元)" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.money_due" placeholder="请输入"></el-input>
             </el-form-item>
-
-            <!-- <el-form-item style="position:relative;width:300px;float:left;">
-                <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select1('payment_order','')">付费*</span>
-                <el-input  style="width:180px;" placeholder="请输入付费"  v-model="form.payment_order"></el-input>
-            </el-form-item> -->
 
             <el-form-item label="付费" class="select" style="">
                 <el-select v-model="form.payment_order" filterable style="width:120px;">
@@ -369,8 +360,8 @@
                 <el-radio v-model="reconnaissance" label="1">是</el-radio>
                 <el-radio v-model="reconnaissance" label="0">否</el-radio>
             </el-form-item>
-            <el-form-item label="勘察备注" class="form-input" prop="title" style="width:300px;float:left;">
-                <el-input v-model="form.costs_reserved" placeholder="请输入"></el-input>
+            <el-form-item label="勘察备注" class="form-input" prop="title" style="width:500px;float:left;">
+                <el-input v-model="form.costs_reserved" placeholder="请输入" style="width:300px;"></el-input>
             </el-form-item>
 
             <el-form-item label="查勘人" class="select" style="float:left;">

@@ -20,16 +20,18 @@
                     询值人员：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;color:black;">
-                        <el-input  placeholder="请输入" v-model="form.ask_price"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <!-- <el-input  placeholder="请输入" v-model="form.ask_price"></el-input> -->
+                        <input type="text" placeholder="请输入" v-model="form.ask_price" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
                 <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
                     金融机构：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.ask_bank"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <!-- <el-input  placeholder="请输入" v-model="form.ask_price"></el-input> -->
+                        <input type="text" placeholder="请输入" v-model="form.ask_bank" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
@@ -38,8 +40,8 @@
                     项目名称：
                 </div>
                 <div style="height:50px;line-height:50px;width:997px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:600px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.project_name"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.project_name" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
@@ -48,16 +50,16 @@
                     测算人员：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.test_user"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.test_user" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
                 <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
                     用途：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.house_way"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.house_way" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
@@ -66,16 +68,16 @@
                     建筑面积：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.construct_area"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.construct_area" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
                 <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
                     土地面积：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.land_area"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.land_area" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
@@ -84,16 +86,16 @@
                     估价总价（万元）：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.ask_price_total"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.ask_price_total" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
                 <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
                     估价单价：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.ask_univalence"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.ask_univalence" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
@@ -102,20 +104,20 @@
                     净值（万元）：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;border-right:1px solid black;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.total_prices"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.total_prices" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
                 <div style="height:50px;line-height:50px;width:200px;text-align:center;border-right:1px solid black;float:left;">
                     审核人员：
                 </div>
                 <div style="height:50px;line-height:50px;width:400px;text-align:center;float:left;">
-                    <el-form-item label="" class="form-input" prop="title" style="width:200px;margin-left:100px;margin-top:3px;">
-                        <el-input  placeholder="请输入" v-model="form.check_user"></el-input>
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.check_user" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>
-            <div style="width:100%;min-height:130px;border-bottom:1px solid black;">
+            <!-- <div  style="width:100%;min-height:130px;border-bottom:1px solid black;">
                 <div style="min-height:130px;line-height:130px;width:195px;text-align:center;border-right:1px solid black;float:left;">
                     项目特殊情况注意事项：
                 </div>
@@ -127,6 +129,16 @@
                         placeholder=""
                         v-model="form.remark">
                         </el-input>
+                    </el-form-item>
+                </div>
+            </div> -->
+            <div  style="width:100%;min-height:50px;border-bottom:1px solid black;">
+                <div style="min-height:50px;line-height:50px;width:195px;text-align:center;border-right:1px solid black;float:left;">
+                    项目特殊情况注意事项：
+                </div>
+                <div style="min-height:50px;line-height:50px;width:997px;text-align:center;float:left;">
+                    <el-form-item label="" class="form-input" prop="title" style="width:90%;margin-top:3px;color:black;">
+                        <input type="text" placeholder="请输入" v-model="form.remark" style="float:left;margin-left:20px;width:80%;height:40px;border:0;outline:none;">
                     </el-form-item>
                 </div>
             </div>

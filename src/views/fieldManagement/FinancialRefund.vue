@@ -667,7 +667,7 @@
                 </el-table-column>
 
                 <el-table-column
-                label="收款金额"
+                label="退款金额"
                 align="center">
                   <template slot-scope="scope">
                     <el-input type="number" @change="countMoney(scope.row.charge_amount)" v-model="scope.row.charge_amount"></el-input>

@@ -221,6 +221,7 @@
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="updateAgent(scope.row)" >修改</el-button>
             <el-button size="small" v-if="!scope.row.project_status" type="primary" @click="addProject(scope.row)" >转立项</el-button>
             <el-button size="small" v-if="scope.row.project_status" type="info" disabled>修改</el-button>
+            <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button>
             <!-- <el-button size="small" v-if="scope.row.project_status" type="info" disabled>转立项</el-button> -->
 
           

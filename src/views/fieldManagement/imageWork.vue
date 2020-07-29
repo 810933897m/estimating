@@ -41,7 +41,7 @@
 
                     <!-- <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
-                    <img class="preview" src="ht 本周计划：估价新需求tps://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
+                    <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
@@ -324,61 +324,61 @@ export default {
             });
             }else if(this.activeName == 'two'){
                 this.category1 = [];
-            this.list11 = [];
-            this.slide1 = [];
-            request.post("/admin/appraisal/info",{
-                id : this.$route.query.id,
-                pos : 2
-            }).then(res => {
-                if (res.code == 200) {
-                    this.slide11 = res.data.images
-                    // console.log(slide11)
-                    this.position = res.data.baidu.query;
-                    this.bigImg = res.data.baidu.big_image;
-                    this.smallImg = res.data.baidu.small_image;
-                    // this.list = res.data.images;
-                    // for(let i=0;i<this.list.length;i++){
-                    //     this.list[i].category.forEach(element => {
-                    //         // console.log('12412')
-                    //         this.list11.push(element)
-                    //     });
-                    // }
-                    // this.slide11 = [];
-                    // this.imgs = [];
+                this.list11 = [];
+                this.slide1 = [];
+                request.post("/admin/appraisal/info",{
+                    id : this.$route.query.id,
+                    pos : 2
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.slide11 = res.data.images
+                        // console.log(slide11)
+                        this.position = res.data.baidu.query;
+                        this.bigImg = res.data.baidu.big_image;
+                        this.smallImg = res.data.baidu.small_image;
+                        // this.list = res.data.images;
+                        // for(let i=0;i<this.list.length;i++){
+                        //     this.list[i].category.forEach(element => {
+                        //         // console.log('12412')
+                        //         this.list11.push(element)
+                        //     });
+                        // }
+                        // this.slide11 = [];
+                        // this.imgs = [];
 
-                    // for(let j=0;j<this.slide11.length;j++){
-                        this.slide11.forEach(element => {
-                            var ss={};
-                            ss.src = element.src;
-                            ss.msrc = element.thumb;
-                            ss.id = element.id;
-                            ss.guid = element.guid;
-                            ss.title = element.title;
-                            // console.log(element.id)
-                            ss.w = 800;
-                            ss.h = 800;
-                            // ss.order = element.order;
-                            this.slide1.push(ss)
-                            // this.imgs.push(ss)
-                            // element.thumb
-                            // this.list1.push(element)
+                        // for(let j=0;j<this.slide11.length;j++){
+                            this.slide11.forEach(element => {
+                                var ss={};
+                                ss.src = element.src;
+                                ss.msrc = element.thumb;
+                                ss.id = element.id;
+                                ss.guid = element.guid;
+                                ss.title = element.title;
+                                // console.log(element.id)
+                                ss.w = 800;
+                                ss.h = 800;
+                                // ss.order = element.order;
+                                this.slide1.push(ss)
+                                // this.imgs.push(ss)
+                                // element.thumb
+                                // this.list1.push(element)
+                            });
+                        // }
+                        this.recovery = res.data.recovery;
+                        
+                        this.loadUrl = res.data.download;
+                    }
+                });
+                
+                request.post("/admin/appraisal/uploadType").then(res => {
+                    if (res.code == 200){
+                        res.data.forEach(element => {
+                            this.category1.push(element)
                         });
-                    // }
-                    this.recovery = res.data.recovery;
-                    
-                    this.loadUrl = res.data.download;
-                }
-            });
-            
-            request.post("/admin/appraisal/uploadType").then(res => {
-                if (res.code == 200){
-                    res.data.forEach(element => {
-                        this.category1.push(element)
-                    });
-                    console.log(this.category1)
-                    // this.category1 = res.data;
-                }
-            });
+                        console.log(this.category1)
+                        // this.category1 = res.data;
+                    }
+                });
             }else if(this.activeName == 'three'){
                 this.category1 = [];
             this.list11 = [];

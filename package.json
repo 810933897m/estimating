@@ -12,6 +12,7 @@
   "dependencies": {
     "awe-dnd": "^0.3.4",
     "axios": "^0.18.0",
+    "clipboard": "^2.0.6",
     "echarts": "^4.2.0-rc.2",
     "el-tree-transfer": "^2.2.0",
     "element-china-area-data": "^4.1.2",

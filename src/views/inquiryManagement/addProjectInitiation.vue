@@ -107,22 +107,26 @@
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.city"></el-input>
               </el-form-item>
 
-            <el-form-item style="position:relative;width:300px;float:left;">
+            <!-- <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('city_children','')">行政区*</span>
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.district"></el-input>
+            </el-form-item> -->
+
+            <el-form-item label="房屋坐落" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input placeholder="请输入" v-model="form.district"></el-input>
             </el-form-item>
 
             <el-form-item label="小区名称" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.plot_name"></el-input>
             </el-form-item>
 
-            <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
+            <!-- <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.plot_address"></el-input>
             </el-form-item>
 
             <el-form-item label="楼栋单元号" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.unit_number"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;">房屋类型*</span>
@@ -880,7 +884,7 @@ export default {
         getSelect() {//初始渲染列表方法封装
             this.form = this.$route.query.row;
             this.form.reconnaissance = '0';
-            this.form.project_address = this.$route.query.row.district+this.$route.query.row.plot_name+this.$route.query.row.plot_address+this.$route.query.row.unit_number;
+            this.form.project_address = this.$route.query.row.district+this.$route.query.row.plot_name;
             console.log(this.form.reconnaissance)
             console.log(this.form)
             request.post("/admin/values/query",{
@@ -933,7 +937,6 @@ export default {
                 house_type : this.house_type,
                 plot_name : this.form.plot_name,
                 right_nature : this.form.right_nature,
-                unit_number : this.form.unit_number,
                 construct_area : this.form.construct_area,
                 ask_price : this.form.ask_price,
                 ask_univalence : this.form.ask_univalence,
@@ -941,7 +944,6 @@ export default {
                 enquiry_department : this.form.enquiry_department,
                 city : this.form.city,
                 district : this.form.district,
-                plot_address : this.form.plot_address,
                 floor : this.form.floor,
                 activate_time : this.form.activate_time,
                 house_way : this.form.house_way,

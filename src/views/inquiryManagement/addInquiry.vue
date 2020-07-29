@@ -12,22 +12,26 @@
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.city"></el-input>
               </el-form-item>
 
-            <el-form-item style="position:relative;width:300px;float:left;">
+              <el-form-item label="房屋坐落" class="form-input" prop="title" style="width:300px;float:left;position:relative;">
+                <el-input placeholder="请输入" v-model="form.district"></el-input>
+                </el-form-item>
+
+            <!-- <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('city_children','')">行政区*</span>
                 <el-input  style="width:180px;" placeholder="请输入"  v-model="form.district"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="小区名称" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.plot_name"></el-input>
             </el-form-item>
 
-            <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
+            <!-- <el-form-item label="小区地址" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.plot_address"></el-input>
             </el-form-item>
 
             <el-form-item label="楼栋单元号" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input placeholder="请输入" v-model="form.unit_number"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item style="position:relative;width:300px;float:left;">
                 <span style="float:left;cursor: pointer;position:absolute;left:50px;" @click="Select('house_type','')">房屋类型*</span>
@@ -148,6 +152,9 @@
             </el-button>
             <el-button type="primary" style="" plain @click="inquiryBtn()">
                 查看历史记录
+            </el-button>
+            <el-button type="primary" class="tag-read" :data-clipboard-text="textarea" style="" plain @click="copy()">
+                复制
             </el-button>
         </div>
         <!-- <el-form v-for="(item,index) in publickList" :key="index" ref="form" label-width="120px" style="width:100%;padding-right:50px;">
@@ -312,6 +319,8 @@ import request from "@/utils/request";
 import { quillEditor } from 'vue-quill-editor';
 import quillConfig from '@/utils/quill-config'
 import map from '@/utils/city';
+
+import Clipboard from 'clipboard';
 export default {
     created() {
         
@@ -358,7 +367,6 @@ export default {
             floor:'',
             bazaar_crew:'',
             activate_time : '',
-            plot_address : "",
             ask_price_total:'',
 
             mortgage_price : '',
@@ -370,7 +378,6 @@ export default {
             remark:'',
             show_project_staus:'',
             show_price_status:'',
-            unit_number : '',
             facto : "1",
             plot_special:'',
             tudi : '',
@@ -577,9 +584,9 @@ export default {
         },
         showInput(){
             if(this.factor == 1){
-                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.ask_price+' 报值人'+localStorage.getItem('username')+'@'+this.form.bazaar_crew
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 '+' 报值人'+this.form.ask_price+'@'+this.form.bazaar_crew
             }else{
-                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+this.form.plot_address+this.form.unit_number+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 '+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 报值人员'+this.form.bazaar_crew+' 报值人'+localStorage.getItem('username')+'@'+this.form.ask_price
+                this.textarea =this.form.enquiry_department+' 小区名称:'+this.form.plot_name+ ' '+this.form.city+this.form.district+' 住宅建筑面积'+this.form.construct_area+' 询值单价'+this.form.ask_univalence+' '+this.form.ask_bank+' 备注:'+this.form.remark+' 按'+this.house_type+'管理' +' 需扣除土地出让金'+this.tudiMoney+'万 '+'抵押总价:'+this.form.mortgage_price+'万 净值总价:'+this.form.total_prices+'万 '+' 报值人'+this.form.ask_price+'@'+this.form.bazaar_crew
             }
         },
         totalPrices(){//当改变值时做算法
@@ -689,7 +696,6 @@ export default {
                     house_type : this.house_type,
                     plot_name : this.form.plot_name,
                     right_nature : this.form.right_nature,
-                    unit_number : this.form.unit_number,
                     construct_area : this.form.construct_area,
                     ask_price : this.form.ask_price,
                     ask_univalence : this.form.ask_univalence,
@@ -697,7 +703,6 @@ export default {
                     enquiry_department : this.form.enquiry_department,
                     city : this.form.city,
                     district : this.form.district,
-                    plot_address : this.form.plot_address,
                     floor : this.form.floor,
                     activate_time : this.form.activate_time,
                     house_way : this.form.house_way,
@@ -738,7 +743,6 @@ export default {
         addProjectCommodity(){
             request.post("/admin/AskPrice/create", {//发送数据到后台
                     plot_name : this.form.plot_name,
-                    unit_number : this.form.unit_number,
                     construct_area : this.form.construct_area,
                     ask_price : this.form.ask_price,
                     ask_univalence : this.form.ask_univalence,
@@ -747,7 +751,6 @@ export default {
                     house_type : this.house_type,
                     city : this.form.city,
                     district : this.form.district,
-                    plot_address : this.form.plot_address,
                     floor : this.form.floor,
                     activate_time : this.form.activate_time,
                     house_way : this.form.house_way,
@@ -963,6 +966,24 @@ export default {
                 this.form.right_nature = value;
             }
             
+        },
+         copy() {
+            var clipboard = new Clipboard('.tag-read')
+            clipboard.on('success', e => {
+                this.$message({
+                    // type: res.errno === 0 ? "success" : "warning",
+                    type: "success",
+                    message: '复制成功'//提示复制成功
+                });
+            // 释放内存
+            clipboard.destroy()
+            })
+            clipboard.on('error', e => {
+            // 不支持复制
+            console.log('该浏览器不支持自动复制')
+            // 释放内存
+            clipboard.destroy()
+            })
         },
     }
 };

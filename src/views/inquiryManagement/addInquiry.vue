@@ -311,6 +311,8 @@
         </el-dialog>
         <!--*************模态框结束*************-->
         
+
+        
     </div>
 </template>
 
@@ -358,7 +360,7 @@ export default {
             total_prices : '',
             plot_name : '',
             city:'北京市',
-            district : '朝阳区',
+            district : '',
             total_floor:'',
             house_way : '',
             house_type : '',

@@ -19,16 +19,37 @@
                     </div>
                     <div v-for="(item,index) in slide1" v-dragging="{ list: slide1, item: item, group: 'src' }" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
-                        <img @click="preview(item.src)" :src="item.msrc" alt="" class="preview">
-                        <p style="margin-left:30px;float:left;width:150px;">{{item.title}}</p>
-                        <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button>
-                　　    
+                        <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:20px;margin-bottom:2px;">upload<i class="el-icon-upload el-icon--right"></i></el-button> -->
+                        <img @click="preview(item.src)" :src="'http://192.168.0.10'+item.msrc" alt="" class="preview">
+                        <!-- <p style="margin-left:30px;float:left;width:80px;overflow:auto;">{{item.title}}</p> -->
+                        <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
+                        <el-input  style="margin-left:5px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input>
+                        <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
+                        
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button>
+                        <el-button type="primary" icon="el-icon-plus" style="float:left;margin-top:5px;margin-left:5px;" circle></el-button>
+                        <el-button type="danger" style="float:left;margin-top:5px;margin-left:5px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button>
+                <!-- 　　    <el-button type="primary" style="float:right;margin-top:0px;margin-right:10px;" circle icon="el-icon-delete"  @click="del(item.id)"></el-button> -->
+                       
+                        <!-- <el-upload
+                        class="upload-demo"
+                        style="float:left;margin-top:5px;margin-left:5px;"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
+                        multiple
+                        :limit="1"
+                        :on-exceed="handleExceed"
+                        :file-list="fileList">
+                        <el-button size="small" type="primary" style="float:left;margin-top:5px;margin-left:5px;">点击上传</el-button>
+                        </el-upload> -->
                     </div>
                     
                     
                     <!-- 查看报告任务弹出框 -->
                         <el-dialog style="" :append-to-body='true' title="查看大图" :visible.sync="dialogFormVisible">
-                            <img class="preview1" :src="suolueImg" alt="">
+                            <img class="preview1" :src="'http://192.168.0.10'+suolueImg" alt="">
                         </el-dialog>
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
@@ -47,7 +68,7 @@
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
-                        <img :src="item.thumb" alt="" class="preview2">
+                        <img :src="'http://192.168.0.10'+item.thumb" alt="" class="preview2">
                         <p style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
@@ -468,9 +489,10 @@ export default {
             
         },
         preview(row){
+            console.log(row)
             this.suolueImg = row;
             this.dialogFormVisible = true;
-        },
+        }, 
         positionBtn(){
             // var map = new BMap.Map("allmap");          
             // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
@@ -740,6 +762,7 @@ export default {
             
         },
         getlist(){
+            console.log(this.$route.query.outworker_relevance_id)
             this.category1 = [];
             this.list11 = [];
             this.slide1 = [];

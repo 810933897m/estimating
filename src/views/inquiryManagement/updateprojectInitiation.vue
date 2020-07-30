@@ -374,13 +374,19 @@
                 <el-radio v-model="reconnaissance" label="1">是</el-radio>
                 <el-radio v-model="reconnaissance" label="0">否</el-radio>
             </el-form-item>
-            <el-form-item label="勘察备注" class="form-input" prop="title" style="width:500px;float:left;">
+            <!-- <el-form-item label="勘察备注" class="form-input" prop="title" style="width:500px;float:left;">
                 <el-input v-model="form.costs_reserved" placeholder="请输入" style="width:300px;"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-button type="primary" style="float:left;margin-left:50px;" plain @click="addContact()">
                 添加
             </el-button>
+
+            <div style="float:left;width:100%;">
+                <el-form-item label="勘察备注" class="form-input" prop="title" style="float:left;">
+                    <el-input v-model="form.costs_reserved" placeholder="请输入" style="width:800px;"></el-input>
+                </el-form-item>
+            </div>
 
             <el-table 
             class="table-picture"
@@ -421,9 +427,9 @@
         <div style="margin-top:15px;float:left;margin-bottom:20px;width:100%;background:rgb(48,65,85);color:white;height:30px;"><span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">报告发送方式</span></div>
         <el-form ref="form" :model="form" label-width="120px" style="width:90%;padding-right:50px;">
 
-            <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
+            <!-- <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
                 <el-input v-model="form.delivery_note" placeholder="请输入"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="收取方式" class="select" >
                 <el-select @change="selectExpress" v-model="express" filterable placeholder="请选择" style="width:180px;float:left;">
@@ -439,6 +445,10 @@
               <el-button type="primary" v-show="tableShow" style="float:left;margin-left:50px;" plain @click="addExpress()">
                 添加
             </el-button>
+
+            <el-form-item label="备注" class="form-input" prop="title" style="width:300px;float:left;">
+                <el-input v-model="form.delivery_note" placeholder="请输入" style="width:500px;"></el-input>
+            </el-form-item>
               
               <el-table 
               v-show="tableShow"

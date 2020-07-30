@@ -925,7 +925,7 @@ export default {
         });
       },
       imageBtn(row){//图片
-        this.$router.push({path:'/imageWork',query:{id:row.id}})
+        this.$router.push({path:'/imageWork',query:{id:row.id,outworker_relevance_id:row.outworker_relevance_id}})
       },
       examineBtn(row){//二审提交
         this.Id = row.id;

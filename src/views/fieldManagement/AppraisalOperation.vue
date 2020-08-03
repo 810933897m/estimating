@@ -90,9 +90,9 @@
       width="200px"
       key="5"
       align="center">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
-        </template>
+        </template> -->
       </el-table-column>
 
       <el-table-column
@@ -101,7 +101,7 @@
       key="6"
       align="center">
         <template slot-scope="scope">
-          <p :title="scope.row.plot_address" class="nooverflow">{{scope.row.plot_address}}</p>
+          <p :title="scope.row.district" class="nooverflow">{{scope.row.district}}</p>
         </template>
       </el-table-column>
 

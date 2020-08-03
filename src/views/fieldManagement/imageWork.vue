@@ -23,11 +23,12 @@
                         <img @click="preview(item.src)" :src="'http://192.168.0.10'+item.msrc" alt="" class="preview">
                         <!-- <p style="margin-left:30px;float:left;width:80px;overflow:auto;">{{item.title}}</p> -->
                         <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
-                        <el-input  style="margin-left:5px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input>
+                        <el-input style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.image_name"></el-input>
+                        <!-- <el-input  v-if="!item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input> -->
+
                         <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
-                        
-                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button>
-                        <el-button type="primary" icon="el-icon-plus" style="float:left;margin-top:5px;margin-left:5px;" circle></el-button>
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" @click="update(item.id,item.image_name)"></el-button>
+                        <el-button type="primary" icon="el-icon-plus" style="float:left;margin-top:5px;margin-left:5px;" circle @click="selectBtn(item)"></el-button>
                         <el-button type="danger" style="float:left;margin-top:5px;margin-left:5px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button>
                 <!-- 　　    <el-button type="primary" style="float:right;margin-top:0px;margin-right:10px;" circle icon="el-icon-delete"  @click="del(item.id)"></el-button> -->
                        
@@ -58,6 +59,7 @@
                     <!-- <p>回收站</p> -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
                         <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
+                        <button style="float:right;margin-right:10px;margin-top:5px;border:0;outline:none;cursor: pointer;" @click="recoveryUpload">上传</button>
                     </div>
 
                     <!-- <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
@@ -69,12 +71,57 @@
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
                         <img :src="'http://192.168.0.10'+item.thumb" alt="" class="preview2">
-                        <p style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
+                        <p v-if="item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.image_name}}</p>
+                        <p v-if="!item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
                         <el-button type="primary" style="float:left;margin-top:5px;" plain @click="reduction(item.id)">还原</el-button>
                     </div>
+                    <div v-show="showDownload" style="width:100%;float:left;margin-top:30px;">
+                        <el-table 
+                        class="table-picture"
+                        :data="imageList"
+                        border
+                        max-height="550"
+                        style="width: 100%;">
+
+                        <el-table-column
+                        label="id"
+                        align="center">
+                            <template slot-scope="scope" >
+                            {{scope.row.id}}
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                        label="标题"
+                        align="center">
+                            <template slot-scope="scope" >
+                            {{scope.row.title}}
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                        label="文件大小"
+                        align="center">
+                            <template slot-scope="scope" >
+                            {{scope.row.size}}
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                        label="操作"
+                        align="center">
+                            <template slot-scope="scope" >
+                                <el-button size="small" type="primary" @click="uploadImage(scope.row)">
+                                下载
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        </el-table>
+                    </div>
                 </div>
+                
 
             <!-- </el-tab-pane> -->
             
@@ -129,7 +176,7 @@
             <p>{{offsetX}}{{offsetY}}</p>
         </div>
 
-          <!--*************收款记录模态框*************-->
+          <!--*************外勘上传模态框*************-->
         <el-dialog
         title="外勘图片上传"
         :visible.sync="dialogFormVisibleDownLoad"
@@ -182,7 +229,78 @@
                 <el-button @click="dialogFormVisibleDownLoad = false">取 消</el-button>
             </span>
         </el-dialog>
-        <!--*************收款记录模态框*************-->
+        <!--*************外勘上传模态框*************-->
+
+        <!--*************回收站上传模态框*************-->
+        <el-dialog
+        title="回收站图片上传"
+        :visible.sync="dialogFormVisibleDownLoad1"
+        width="50%">
+            <el-form ref="form" label-width="120px" style="width:100%;">
+                  <el-form-item label="分类" class="select" style="">
+                  <el-select v-model="category"  @change="categoryChange" filterable style="width:300px;">
+                      <el-option
+                      v-for="item in category1"
+                      :key="item.value"
+                      :label="item.title"
+                      :value="item.id">
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <!-- <el-form-item label="分类2" class="select" style="">
+                  <el-select v-model="Category" filterable style="width:300px;">
+                      <el-option
+                      v-for="item in Category1"
+                      :key="item.value"
+                      :label="item.title"
+                      :value="item.id">
+                      </el-option>
+                  </el-select>
+                </el-form-item> -->
+
+                <el-form-item label="上传图片" prop="coverFile">
+                <el-upload
+                class="upload-demo"
+                ref="upload"
+                :limit="1"
+                :http-request="ImgUploadSectionFile1"
+                :with-credentials="true"
+                :auto-upload="true"
+                accept=".png,.jpg,.gif,.svg"
+                action=""
+                list-type="list"
+                :file-list="fileList">
+                    <el-button slot="trigger" type="primary">
+                        选取图片
+                    </el-button>
+                </el-upload>
+            </el-form-item>
+            
+                </el-form>
+                  
+            <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+                <el-button type="primary" @click="downLoadBtn1()">保 存</el-button>
+                <el-button @click="dialogFormVisibleDownLoad1 = false">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!--*************回收站上传模态框*************-->
+
+        <el-dialog
+        title="选择插入图片"
+        :visible.sync="dialogFormVisibleSelect"
+        width="80%">
+        <div style="float:left;width:100%;">
+            <div v-for="(item,index) in recovery1" :key="index" style="width:230px;float:left;margin-top:10px;">
+                <img :src="'http://192.168.0.10'+item.thumb" alt="" style="cursor: pointer;" class="preview2" @click="appendImage(item)">
+            </div>
+        </div>
+        <span slot="footer" class="dialog-footer" style="margin-top:10px;">
+            <!-- <el-button type="primary" @click="downLoadBtn1()">保 存</el-button> -->
+            <el-button @click="dialogFormVisibleSelect = false">取 消</el-button>
+        </span>
+        </el-dialog>
+        <!--*************回收站上传模态框*************-->
 
     </div>
 </template>
@@ -203,7 +321,12 @@ export default {
     },
     data() {
         return {
+            showDownload : false,
+            imageList : [],
+            pos : "1",
+            imageAppend : {},
             picture : '',
+            picture1 : '',
             fileList : [],
             category : '',
             Category : '',
@@ -233,6 +356,8 @@ export default {
             loadUrl: '',
             dialogFormVisible : false,
             dialogFormVisibleDownLoad : false,
+            dialogFormVisibleDownLoad1 : false,
+            dialogFormVisibleSelect : false,
             imgs: [
         {
           src: 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1598707441,413137432&fm=26&gp=0.jpg',
@@ -264,6 +389,7 @@ export default {
             slide1: [],
             slide11 : [],
             recovery : [],
+            recovery1 : [],
         };
     },
     computed: {
@@ -287,6 +413,8 @@ export default {
         handleClick(tab, event){
             this.baiduShow1 = false;
             if(this.activeName == 'one'){
+                this.showDownload = false;
+                this.pos = "1";
                 this.category1 = [];
             this.list11 = [];
             this.slide1 = [];
@@ -318,6 +446,8 @@ export default {
                             ss.id = element.id;
                             ss.guid = element.guid;
                             ss.title = element.title;
+                            ss.image_name = element.image_name;
+                            ss.type = element.type;
                             // console.log(element.id)
                             ss.w = 800;
                             ss.h = 800;
@@ -329,6 +459,7 @@ export default {
                         });
                     // }
                     this.recovery = res.data.recovery;
+                    this.recovery1 = res.data.recovery;
                     
                     this.loadUrl = res.data.download;
                 }
@@ -344,6 +475,7 @@ export default {
                 }
             });
             }else if(this.activeName == 'two'){
+                this.pos = "2";
                 this.category1 = [];
                 this.list11 = [];
                 this.slide1 = [];
@@ -375,6 +507,8 @@ export default {
                                 ss.id = element.id;
                                 ss.guid = element.guid;
                                 ss.title = element.title;
+                                ss.image_name = element.image_name;
+                                ss.type = element.type;
                                 // console.log(element.id)
                                 ss.w = 800;
                                 ss.h = 800;
@@ -386,6 +520,7 @@ export default {
                             });
                         // }
                         this.recovery = res.data.recovery;
+                        this.recovery1 = res.data.recovery;
                         
                         this.loadUrl = res.data.download;
                     }
@@ -400,7 +535,19 @@ export default {
                         // this.category1 = res.data;
                     }
                 });
+
+                request.post("/admin/ProjectFiles/query",{
+                    id : this.$route.query.id
+                }).then(res => {
+                    if (res.code == 200) {
+                    this.imageList = res.data;
+                    }
+                });
+                this.showDownload = true;
+
             }else if(this.activeName == 'three'){
+                this.showDownload = false;
+                this.pos = "3";
                 this.category1 = [];
             this.list11 = [];
             this.slide1 = [];
@@ -432,6 +579,8 @@ export default {
                             ss.id = element.id;
                             ss.guid = element.guid;
                             ss.title = element.title;
+                            ss.image_name = element.image_name;
+                            ss.type = element.type;
                             // console.log(element.id)
                             ss.w = 800;
                             ss.h = 800;
@@ -443,6 +592,7 @@ export default {
                         });
                     // }
                     this.recovery = res.data.recovery;
+                    this.recovery1 = res.data.recovery;
                     
                     this.loadUrl = res.data.download;
                 }
@@ -577,6 +727,8 @@ export default {
                 ss.w = 800;
                 ss.h = 800;
                 ss.order = element.order;
+                ss.image_name = element.image_name;
+                ss.type = element.type;
                 
                 this.slide1.push(ss)
                 // this.imgs.push(ss)
@@ -794,6 +946,8 @@ export default {
                             ss.id = element.id;
                             ss.guid = element.guid;
                             ss.title = element.title;
+                            ss.image_name = element.image_name;
+                            ss.type = element.type;
                             // console.log(element.id)
                             ss.w = 800;
                             ss.h = 800;
@@ -805,6 +959,7 @@ export default {
                         });
                     // }
                     this.recovery = res.data.recovery;
+                    this.recovery1 = res.data.recovery;
                     
                     this.loadUrl = res.data.download;
                 }
@@ -934,6 +1089,20 @@ export default {
                 }
             });
         },
+        ImgUploadSectionFile1(param){//图片上传
+            let formData = new FormData();
+            formData.append('images', param.file);
+            request.post("/admin/appraisal/upload", formData).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '上传成功'//提示上传成功
+                        });
+                    this.picture1 = res.data;
+                }
+            });
+        },
         downLoadBtn(){//确认按钮
         console.log(this.picture)
         if(!this.picture){
@@ -968,6 +1137,43 @@ export default {
         }
             
         },
+        downLoadBtn1(){//确认按钮
+        console.log(this.picture1)
+        if(!this.picture1){
+            this.$message({
+                // type: res.errno === 0 ? "success" : "warning",
+                type: "warning",
+                message: '请选择图片再上传'//提示请选择图片再上传
+            });
+        }else{
+            request.post("/admin/Appraisal/recycleImgUpload", {
+                src : this.picture1,
+                pos : this.category,
+                // type : this.Category,
+                project_id : this.$route.query.id,
+                image_name : this.picture1,
+                outworker_relevance_id : this.$route.query.outworker_relevance_id,
+                // pos : this.category
+            }).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '上传成功'//提示上传成功
+                        });
+                    // this.picture = res.data;
+                    this.handleClick();
+                    this.dialogFormVisibleDownLoad1 = false;
+                }
+            });
+            this.category = '';
+            this.Category = '';
+            this.$refs.upload.clearFiles();
+            this.picture ='';
+            console.log(this.Category,this.category)
+        }
+            
+        },
         categoryChange(selVal){//改变第一层获取第二层数据
         this.Category1 = [];
             this.category1.forEach(element => {
@@ -977,6 +1183,73 @@ export default {
                     });
                 }
             });
+        },
+        update(id,name){
+            console.log(id,name)
+            request.post("/admin/Appraisal/renameImages", {
+                id : id,
+                image_name : name,
+            }).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '修改成功'//提示修改成功
+                        });
+                    // this.picture = res.data;
+                    this.handleClick();
+                    // this.dialogFormVisibleDownLoad = false;
+                }
+            });
+        },
+        recoveryUpload(){
+            this.dialogFormVisibleDownLoad1 = true;
+        },
+        selectBtn(row){
+            this.dialogFormVisibleSelect = true;
+            // console.log(row)
+            this.imageAppend = row;
+        },
+        appendImage(image){
+            // var ID = image.id;
+            // request.post("/admin/appraisal/info", {
+            //     id : this.$route.query.id,
+            //     pos : this.pos,
+            // }).then(res => {
+            //     if (res.code == 200){
+            //         // res.data.forEach(element => {
+                        
+            //         // });
+            //     }
+            // });
+
+            console.log(this.imageAppend)
+            console.log(image)
+            // var image_src = image_src;
+            // console.log(image_src.substr(5))
+            request.post("/admin/Appraisal/selectImage", {
+                image_id : image.id,
+                project_id : this.$route.query.id,
+                outworker_relevance_id : this.$route.query.outworker_relevance_id,
+                type : this.imageAppend.type,
+                src : image.src,
+                pos : this.pos,
+            }).then(res => {
+                if (res.code == 200){
+                        this.$message({
+                        // type: res.errno === 0 ? "success" : "warning",
+                        type: "success",
+                        message: '修改成功'//提示修改成功
+                    });
+                    // this.picture = res.data;
+                    this.handleClick();
+                    // this.dialogFormVisibleDownLoad = false;
+                }
+            });
+            this.dialogFormVisibleSelect = false;
+        },
+        uploadImage(row){
+            window.open(row.url, '_blank')
         },
     }
 };

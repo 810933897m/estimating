@@ -901,6 +901,16 @@ export default {
                 }
             });
 
+            request.post("/admin/values/query",{
+            type : 'payment_order',
+            name :'',
+            }).then(res => {
+                if (res.code == 200) {
+                console.log(res)
+                this.payment_order = res.data;
+                }
+            });
+
             
             // request.post("/admin/askPrice/param").then(res => {
                 
@@ -930,11 +940,11 @@ export default {
         },
         addProjectInitiation(){
             console.log(this.form)
-            if(this.form.payment_order == '先付费'){
-                this.form.payment_order = 0;
-            }else{
-                this.form.payment_order = 1;
-            }
+            // if(this.form.payment_order == '先付费'){
+            //     this.form.payment_order = 0;
+            // }else{
+            //     this.form.payment_order = 1;
+            // }
             request.post("/admin/project/create",{
                 outworker_relevance_name : this.outworker_relevance_name,
                 mortgage_price : this.form.mortgage_price,

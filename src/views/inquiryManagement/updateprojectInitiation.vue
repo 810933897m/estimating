@@ -869,11 +869,20 @@ export default {
             this.form.project_address = this.$route.query.row.district+this.$route.query.row.plot_name+this.$route.query.row.plot_address+this.$route.query.row.unit_number;
             console.log(this.form.reconnaissance)
             console.log(this.form)
-            if(this.form.payment_order == '0'){
-                this.form.payment_order ='先付费'
-            }else{
-                this.form.payment_order ='后付费'
-            }
+            // if(this.form.payment_order == '0'){
+            //     this.form.payment_order ='先付费'
+            // }else{
+            //     this.form.payment_order ='后付费'
+            // }
+            request.post("/admin/values/query",{
+            type : 'payment_order',
+            name :'',
+            }).then(res => {
+                if (res.code == 200) {
+                console.log(res)
+                this.payment_order = res.data;
+                }
+            });
             // request.post("/admin/askPrice/param").then(res => {
                 
             //     // console.log(res.data)
@@ -919,11 +928,11 @@ export default {
         addProjectInitiation(){
             
             // console.log(this.form)
-            if(this.form.payment_order == '先付费'){
-                this.form.payment_order = 0;
-            }else if(this.form.payment_order == '后付费'){
-                this.form.payment_order = 1;
-            }
+            // if(this.form.payment_order == '先付费'){
+            //     this.form.payment_order = 0;
+            // }else if(this.form.payment_order == '后付费'){
+            //     this.form.payment_order = 1;
+            // }
             request.post("/admin/project/update",{
                 id : this.$route.query.row.id,
                 // ask_price_id : this.$route.query.row.ask_price_id,

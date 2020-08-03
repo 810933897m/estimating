@@ -11,9 +11,9 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/admin': {
-                target: 'http://gj.maceyun.com',//服务器
+                // target: 'http://gj.maceyun.com',//服务器
                 // target: 'http://jiangri.xin/',//姜哥
-                // target: 'http://192.168.0.10',//宋伟
+                target: 'http://192.168.0.10',//宋伟
                 
                 changeOrigin: true,
                 pathRewrite: { 

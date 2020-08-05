@@ -1,15 +1,15 @@
 <template>
-    <div class="app-container" style="">
+    <div class="app-container" style="display:flex;">
         
         <!-- <el-tabs v-model="activeName" type="card" style="position:relative;">
             <el-tab-pane label="图片信息" name="img" style="display:flex;width:100%;"> -->
                 
-                <div style="width:690px;float:left;margin-top:10px;">
+                <div style="width:950px;float:left;margin-top:10px;">
                     <!-- <el-button type="success" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-check" @click="del(item.guid)"></el-button> -->
                     <div style="width:100%;float:left;">
                         <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="sortBtn()">保存排序</el-button>
                         <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()">下载PDF</el-button>
-                        <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="downdloadImage()">外勘图片上传</el-button>
+                        <!-- <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="downdloadImage()">外勘图片上传</el-button> -->
                     </div>
 
                     <div style="width:95%;margin-left:20px;margin-top:20px;float:left;">
@@ -23,11 +23,12 @@
                         <img @click="preview(item.src)" :src="'http://192.168.0.10'+item.msrc" alt="" class="preview">
                         <!-- <p style="margin-left:30px;float:left;width:80px;overflow:auto;">{{item.title}}</p> -->
                         <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
-                        <el-input style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.image_name"></el-input>
-                        <!-- <el-input  v-if="!item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input> -->
-
+                        <el-input v-if="item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.image_name"></el-input>
+                        <el-input  v-if="!item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input>
+ 
                         <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
-                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" @click="update(item.id,item.image_name)"></el-button>
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" v-if="item.image_name" @click="update(item.id,item.image_name)"></el-button>
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" v-if="!item.image_name" @click="update(item.id,item.title)"></el-button>
                         <el-button type="primary" icon="el-icon-plus" style="float:left;margin-top:5px;margin-left:5px;" circle @click="selectBtn(item)"></el-button>
                         <el-button type="danger" style="float:left;margin-top:5px;margin-left:5px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button>
                 <!-- 　　    <el-button type="primary" style="float:right;margin-top:0px;margin-right:10px;" circle icon="el-icon-delete"  @click="del(item.id)"></el-button> -->
@@ -55,10 +56,11 @@
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
                 
-                <div style="margin-top:90px;width:570px;float:left;border:1px solid #ccc;">
+                <div style="margin-top:90px;flex:1;float:left;border:1px solid #ccc;height:750px;overflow:auto;">
                     <!-- <p>回收站</p> -->
+                    <!-- position:fixed;top:130px; -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
-                        <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">回收站</span>
+                        <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">现场勘查照片汇总</span>
                         <button style="float:right;margin-right:10px;margin-top:5px;border:0;outline:none;cursor: pointer;" @click="recoveryUpload">上传</button>
                     </div>
 
@@ -75,7 +77,7 @@
                         <p v-if="!item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
-                        <el-button type="primary" style="float:left;margin-top:5px;" plain @click="reduction(item.id)">还原</el-button>
+                        <!-- <el-button type="primary" style="float:left;margin-top:5px;" plain @click="reduction(item.id)">还原</el-button> -->
                     </div>
                     <div v-show="showDownload" style="width:100%;float:left;margin-top:30px;">
                         <el-table 
@@ -85,39 +87,40 @@
                         max-height="550"
                         style="width: 100%;">
 
-                        <el-table-column
-                        label="id"
-                        align="center">
-                            <template slot-scope="scope" >
-                            {{scope.row.id}}
-                            </template>
-                        </el-table-column>
+                            <el-table-column
+                            label="id"
+                            align="center">
+                                <template slot-scope="scope" >
+                                {{scope.row.id}}
+                                </template>
+                            </el-table-column>
 
-                        <el-table-column
-                        label="标题"
-                        align="center">
-                            <template slot-scope="scope" >
-                            {{scope.row.title}}
-                            </template>
-                        </el-table-column>
+                            <el-table-column
+                            label="标题"
+                            align="center">
+                                <template slot-scope="scope" >
+                                {{scope.row.title}}
+                                </template>
+                            </el-table-column>
 
-                        <el-table-column
-                        label="文件大小"
-                        align="center">
-                            <template slot-scope="scope" >
-                            {{scope.row.size}}
-                            </template>
-                        </el-table-column>
+                            <el-table-column
+                            label="文件大小"
+                            align="center">
+                                <template slot-scope="scope" >
+                                {{scope.row.size}}
+                                </template>
+                            </el-table-column>
 
-                        <el-table-column
-                        label="操作"
-                        align="center">
-                            <template slot-scope="scope" >
-                                <el-button size="small" type="primary" @click="uploadImage(scope.row)">
-                                下载
-                                </el-button>
-                            </template>
-                        </el-table-column>
+                            <el-table-column
+                            label="操作"
+                            align="center">
+                                <template slot-scope="scope" >
+                                    <el-button size="small" type="primary" @click="uploadImage(scope.row)">
+                                    下载
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+
                         </el-table>
                     </div>
                 </div>
@@ -261,9 +264,10 @@
 
                 <el-form-item label="上传图片" prop="coverFile">
                 <el-upload
+                multiple
                 class="upload-demo"
                 ref="upload"
-                :limit="1"
+                :limit="50"
                 :http-request="ImgUploadSectionFile1"
                 :with-credentials="true"
                 :auto-upload="true"
@@ -321,12 +325,13 @@ export default {
     },
     data() {
         return {
+            fileImg : [],
             showDownload : false,
             imageList : [],
             pos : "1",
             imageAppend : {},
             picture : '',
-            picture1 : '',
+            picture1 : [],
             fileList : [],
             category : '',
             Category : '',
@@ -691,8 +696,16 @@ export default {
         //this.center.lat = e.point.lat
         },
         loadBtn(){//下载材料跳转链接
+            if(this.activeName == 'one'){
+
+            }else if (this.activeName == 'two'){
+
+            }else{
+
+            }
             // console.log(this.$route.query.id)
             window.open(this.loadUrl, '_blank')
+            // if(this.activeName1)
         },
         first(ind){
             // console.log(ind)
@@ -1090,6 +1103,8 @@ export default {
             });
         },
         ImgUploadSectionFile1(param){//图片上传
+        this.fileImg.push(param.file);// 一般情况下是在这里创建FormData对象，但我们需要上传多个文件，为避免发送多次请求，因此在这里只进行文件的获取，param可以拿到文件上传的所有信息
+        console.log(this.fileImg)
             let formData = new FormData();
             formData.append('images', param.file);
             request.post("/admin/appraisal/upload", formData).then(res => {
@@ -1099,7 +1114,9 @@ export default {
                         type: "success",
                         message: '上传成功'//提示上传成功
                         });
-                    this.picture1 = res.data;
+                        var pic = {"image_name":res.data,"src":res.data};
+                    this.picture1.push(pic);
+                    console.log(this.picture1)
                 }
             });
         },
@@ -1151,7 +1168,7 @@ export default {
                 pos : this.category,
                 // type : this.Category,
                 project_id : this.$route.query.id,
-                image_name : this.picture1,
+                // image_name : this.picture1,
                 outworker_relevance_id : this.$route.query.outworker_relevance_id,
                 // pos : this.category
             }).then(res => {

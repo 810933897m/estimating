@@ -8,7 +8,7 @@
                     <!-- <el-button type="success" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-check" @click="del(item.guid)"></el-button> -->
                     <div style="width:100%;float:left;">
                         <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="sortBtn()">保存排序</el-button>
-                        <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()">下载PDF</el-button>
+                        <el-button type="info" style="float:left;margin-left:20px;margin-top:0px;" plain @click="loadBtn()" v-if="activeName == 'one' || activeName == 'three'">下载PDF</el-button>
                         <!-- <el-button type="primary" style="float:left;margin-left:20px;margin-top:0px;" plain @click="downdloadImage()">外勘图片上传</el-button> -->
                     </div>
 
@@ -56,7 +56,7 @@
                         <!-- **************查看报告任务弹出框************** -->
                 </div>
                 
-                <div style="margin-top:90px;flex:1;float:left;border:1px solid #ccc;height:750px;overflow:auto;">
+                <div style="margin-top:90px;flex:1;float:left;border:1px solid #ccc;">
                     <!-- <p>回收站</p> -->
                     <!-- position:fixed;top:130px; -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
@@ -70,6 +70,7 @@
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
                     <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt=""> -->
+                    <div style="width:100%;height:750px;overflow:auto;">
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
                         <img :src="'http://192.168.0.10'+item.thumb" alt="" class="preview2">
@@ -123,6 +124,7 @@
 
                         </el-table>
                     </div>
+                 </div>
                 </div>
                 
 
@@ -696,15 +698,16 @@ export default {
         //this.center.lat = e.point.lat
         },
         loadBtn(){//下载材料跳转链接
+        // console.log(this.activeName)
             if(this.activeName == 'one'){
-
+                window.open(this.loadUrl+'&pos=1', '_blank')
             }else if (this.activeName == 'two'){
-
+                window.open(this.loadUrl+'&pos=2', '_blank')
             }else{
-
+                window.open(this.loadUrl+'&pos=3', '_blank')
             }
             // console.log(this.$route.query.id)
-            window.open(this.loadUrl, '_blank')
+            
             // if(this.activeName1)
         },
         first(ind){
@@ -1180,6 +1183,7 @@ export default {
                         });
                     // this.picture = res.data;
                     this.handleClick();
+                    this.picture1 = [];
                     this.dialogFormVisibleDownLoad1 = false;
                 }
             });

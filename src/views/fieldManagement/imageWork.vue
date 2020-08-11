@@ -61,7 +61,9 @@
                     <!-- position:fixed;top:130px; -->
                     <div style="margin-top:0px;float:left;width:100%;background:rgb(48,65,85);color:white;height:30px;">
                         <span style="float:left;margin-left:10px;margin-top:5px;font-size:15px;">现场勘查照片汇总</span>
+
                         <button style="float:right;margin-right:10px;margin-top:5px;border:0;outline:none;cursor: pointer;" @click="recoveryUpload">上传</button>
+                        <button style="float:right;margin-right:10px;margin-top:5px;border:0;outline:none;cursor: pointer;" @click="uploadAllImage">下载全部图片</button>
                     </div>
 
                     <!-- <img class="preview" src="https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2815163630,30850862&fm=26&gp=0.jpg" alt="">
@@ -74,8 +76,16 @@
                     <div v-for="(item,index) in recovery" :key="index" style="width:230px;float:left;margin-top:10px;">
                 <!-- 　　　　<img :src=" item.src " alt=""> -->
                         <img :src="'http://192.168.0.10'+item.thumb" alt="" class="preview2">
-                        <p v-if="item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.image_name}}</p>
-                        <p v-if="!item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.title}}</p>
+                        <!-- <p v-if="item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.image_name}}</p>
+                        <p v-if="!item.image_name" style="margin-left:30px;float:left;width:120px;">{{item.title}}</p> -->
+
+                        <el-input v-if="item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.image_name"></el-input>
+                        <el-input  v-if="!item.image_name" style="margin-left:15px;float:left;width:80px;margin-top:5px;" v-model="item.title"></el-input>
+ 
+                        <!-- <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit"></el-button> -->
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" v-if="item.image_name" @click="update(item.id,item.image_name)"></el-button>
+                        <el-button type="primary" style="float:left;margin-top:5px;margin-left:5px;" circle  icon="el-icon-edit" v-if="!item.image_name" @click="update(item.id,item.title)"></el-button>
+
                         <!-- <el-button type="danger" style="float:right;margin-top:5px;margin-right:10px;" circle icon="el-icon-delete" @click="del(item.id)"></el-button> -->
                         <!-- <el-button type="success" style="float:left;" circle @click="reduction(item.id)"></el-button> -->
                         <!-- <el-button type="primary" style="float:left;margin-top:5px;" plain @click="reduction(item.id)">还原</el-button> -->
@@ -1271,6 +1281,17 @@ export default {
         },
         uploadImage(row){
             window.open(row.url, '_blank')
+        },
+        uploadAllImage(){
+             request.post("/admin/Appraisal/downloadAll", {
+                id : this.$route.query.id,
+                pos : this.pos,
+            }).then(res => {
+                if (res.code == 200){
+                        window.open(res.data,'_blank')
+                    // this.handleClick();
+                }
+            });
         },
     }
 };

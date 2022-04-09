@@ -22,7 +22,7 @@
     "kindeditor": "^4.1.10",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "normalize.css": "^8.0.0",
     "nprogress": "^0.2.0",
     "quill-image-drop-module": "^1.0.3",
